@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
 
     res.send('Upload endpoint hit with data: ' + JSON.stringify(req.body));
 });*/
-router.post("/upload", async (req, res) => {
+router.post("/upload",checkauth, async (req, res) => {
     try {
         // Create a new document using the data from the request body
         let newDocument = {
@@ -74,9 +74,11 @@ router.post("/upload", async (req, res) => {
         
         let collection = await db.collection("posts");
         let result = await collection.insertOne(newDocument);
-
+        res.send(result).status(204);
         // Send a response back to the client
         res.status(200).send('Upload endpoint hit with data: ' + JSON.stringify(req.body));
+
+        
     } 
     catch (error) {
         console.error("Error in POST /upload route:", error);
@@ -85,7 +87,7 @@ router.post("/upload", async (req, res) => {
 });
 
 // UPDATE A RECORD BY ID 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id",checkauth, async (req, res) => {
     const query = { _id: new ObjectId(req.params.id) };
     const updates = {
     $set: {
