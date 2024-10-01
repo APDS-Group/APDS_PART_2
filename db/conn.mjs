@@ -1,4 +1,3 @@
-
 // Import the MongoClient class from the mongodb package
 import { MongoClient } from "mongodb";
 
@@ -16,16 +15,12 @@ const connectionString = process.env.ATLAS_URI || "";
 console.log(connectionString);
 
 // Create a new MongoClient instance using the connection string
-//const client = new MongoClient(connectionString);
-
 const client = new MongoClient(connectionString, {
    
     tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
 });
 
 let db = null; // Declare a variable to hold the database reference
-let conn = null; // Declare a variable to hold the connection object
-
 // Function to connect to the database
 export async function connectToDatabase() {
     if (!db) {
@@ -46,41 +41,5 @@ export async function connectToDatabase() {
     return db;
     
 }
-// Get a reference to the "users" database
-//let db = client.db("users");
-
 // Export the database reference for use in other parts of the application
 export default db;
-
-//set NODE_OPTIONS=--openssl-legacy-provider
-//node server.mjs
-
-
-/*// conn.mjs
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const uri = process.env.ATLAS_URI;
-
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
-});
-
-async function connectToDatabase() {
-    try {
-        await client.connect();
-        console.log("Connected to MongoDB");
-        return client;
-    } catch (error) {
-        console.error("FUCKKK connecting to MongoDB:", error);
-        throw error;
-    }
-}
-
-export default connectToDatabase;
-*/
-
