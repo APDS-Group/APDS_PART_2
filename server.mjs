@@ -9,10 +9,10 @@ import express from 'express';
 import cors from 'cors';
 
 // Import the routes
+
 import users from './routes/user.mjs';
 
 
-// Define the PORT to access the server
 const PORT = 5050; 
 // Create an instance of an Express application
 const app = express();
@@ -44,6 +44,12 @@ app.use((req, res, next) => {
 app.use("/user", users);
 app.route("/user", users);
 
+
+
+// Add a simple test route
+app.get('/test', (req, res) => {
+    res.send('Server is working!');
+});
 
 // Create an HTTPS server
 const server = https.createServer(options, app);
