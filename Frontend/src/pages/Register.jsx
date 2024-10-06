@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { handleError, handleSucess } from '../utils';
 import { Navigate } from 'react-router-dom';
 
 function Register() {
     const [registerInfo, setRegInfo] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+    const [errors, setErrors] = useState({
         name: '',
         email: '',
         password: ''
@@ -16,12 +20,23 @@ function Register() {
         const newUserInfo = { ...registerInfo };
         newUserInfo[name] = value;
         setRegInfo(newUserInfo);
+
+        // Clear the error for the field being updated
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: ''
+        }));
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
         const { name, email, password } = registerInfo;
         if (!name || !email || !password) {
+            setErrors({
+                name: !name ? 'Name is required' : '',
+                email: !email ? 'Email is required' : '',
+                password: !password ? 'Password is required' : ''
+            });
             return handleError('Name, email, and password are required');
         }
         try {
@@ -34,14 +49,14 @@ function Register() {
                 body: JSON.stringify(registerInfo),
             });
             const result = await response.json();
-            const { success, message, error } = result;
+            const { success, message, errors } = result;
             if (success) {
                 handleSucess(message);
                 setTimeout(() => {
                     setRedirectToLogin(true);
                 }, 1000);
-            } else if (error) {
-                handleError(error);
+            } else if (errors) {
+                setErrors(errors);
             } else if (!success) {
                 handleError(message);
             }
@@ -49,7 +64,7 @@ function Register() {
             handleError(error.message);
         }
     };
-    
+
     if (redirectToLogin) {
         return <Navigate to="/login" />;
     }
@@ -68,6 +83,7 @@ function Register() {
                         placeholder="Enter your name"
                         value={registerInfo.name}
                     />
+                    {errors.name && <div className="error">{errors.name}</div>}
                 </div>
                 <div>
                     <label htmlFor='email'>Email</label>
@@ -75,10 +91,10 @@ function Register() {
                         onChange={handleChange}
                         type="email"
                         name="email"
-                        autoFocus
                         placeholder="Enter your email"
                         value={registerInfo.email}
                     />
+                    {errors.email && <div className="error">{errors.email}</div>}
                 </div>
                 <div>
                     <label htmlFor='password'>Password</label>
@@ -86,15 +102,17 @@ function Register() {
                         onChange={handleChange}
                         type="password"
                         name="password"
-                        autoFocus
                         placeholder="Enter your password"
                         value={registerInfo.password}
                     />
+                    {errors.password && <div className="error">{errors.password}</div>}
                 </div>
                 <button type="submit">Register</button>
+                <div className="center-text">
                 <span>Already have an account? <a href="/login">Login</a></span>
+            </div>
             </form>
-            <ToastContainer />
+         
         </div>
     );
 }

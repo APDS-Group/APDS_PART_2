@@ -1,31 +1,46 @@
-import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
+    // Initialize the useNavigate hook
+    const navigate = useNavigate(); 
     const [loginInfo, setLoginInfo] = React.useState({
         email: '',
         password: ''
     });
+    const [errors, setErrors] = useState({       
+        email: '',
+        password: ''
+    });
+   
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        console.log(name, value); // Log the input changes
+        const { name, value } = e.target;   
         const newUserInfo = { ...loginInfo };
         newUserInfo[name] = value;
         setLoginInfo(newUserInfo);
+
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: ''
+        }));
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { email, password } = loginInfo;
+        const { email, password } = loginInfo;      
         if (!email || !password) {
+            setErrors({
+                email: !email ? 'Email is required' : '',
+                password: !password ? 'Password is required' : ''
+            });
             return handleError('Email and password are required');
         }
         try {
             const url = "https://localhost:5050/user/login/";
-            console.log('Sending login request:', loginInfo); // Log the request being sent
+           
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -38,15 +53,16 @@ function Login() {
             }
            
             const result = await response.json();
-            console.log('Received response:', result); // Log the received response
+        
             const { success, message, token, name, error } = result;
             if (success) {
                 handleSucess(message);
                 localStorage.setItem('token', token);
                 localStorage.setItem('loggedInUser', name);
-                setTimeout(() => {
-                    Navigate('/home');
-                }, 1000);
+               // setTimeout(() => {
+               //     Navigate('/home');
+               // }, 1000);
+               navigate('/home'); 
             } else if (error) {
                 const details = error?.details[0]?.message || error;
                 handleError(details);
@@ -59,6 +75,7 @@ function Login() {
     };
 
     return (
+        <div >
         <div className='container'>
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
@@ -72,6 +89,7 @@ function Login() {
                         placeholder="Enter your email"
                         value={loginInfo.email}
                     />
+                   {errors.email && <div className="error">{errors.email}</div>}
                 </div>
                 <div>
                     <label htmlFor='password'>Password</label>
@@ -83,11 +101,14 @@ function Login() {
                         placeholder="Enter your password"
                         value={loginInfo.password}
                     />
+                  {errors.password && <div className="error">{errors.password}</div>}
                 </div>
                 <button type="submit">Login</button>
+                <div className="center-text">
                 <span>Don't have an account? <a href="/register">Register</a></span>
-            </form>
-            <ToastContainer />
+                </div>
+            </form>          
+        </div>      
         </div>
     );
 }

@@ -13,4 +13,4 @@ export const handleError = (msg) => {
         icon: false
     
     });
-}
+} 

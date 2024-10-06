@@ -59,7 +59,13 @@ body{
   display: flex;
   flex-direction: column;
 }
-
+.center-text {
+  display: flex;
+  font-weight: 600;
+  font-size: 15px;
+  justify-content: center;
+  margin-top: 1em; 
+}
 .container input{
   width: 100%;
   font-size: 20px;
@@ -70,10 +76,16 @@ body{
 }
 
 .container input::placeholder{
-  font-size: 20px;
-  font-style: italic;
+  font-size: 18px;
 }
 
+.error {
+    color: red;
+    font-size: 0.875em;
+    font-weight: 600;
+    margin-top: 0.25em;
+    text-align: right;
+}
 button{
   padding: 10px;
   font-size: 20px;
