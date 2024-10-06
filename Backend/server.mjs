@@ -11,6 +11,7 @@ import cors from 'cors';
 // Import the routes
 
 import users from './routes/user.mjs';
+import home from './routes/home.mjs';
 
 
 const PORT = 5050; 
@@ -29,6 +30,7 @@ const options = {
 app.use(cors());
 // Use express.json() middleware to parse JSON request bodies
 app.use(express.json());
+//app.user(bodyParser.json());
 
 // Set headers for CORS
 app.use((req, res, next) => {
@@ -43,6 +45,9 @@ app.use((req, res, next) => {
 
 app.use("/user", users);
 app.route("/user", users);
+
+app.use("/home", home);
+app.route("/home", home);
 
 
 

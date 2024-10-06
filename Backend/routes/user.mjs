@@ -3,6 +3,9 @@ import { connectToDatabase } from '../db/conn.mjs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ExpressBrute from 'express-brute';
+import { signup ,login} from '../Controller/AuthController.mjs';
+import { signupValidation, loginValidation } from '../Middlewares/AuthValidation.mjs';
+
 
 const router = express.Router();
 const db = await connectToDatabase();
@@ -10,8 +13,10 @@ const db = await connectToDatabase();
 var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
 var bruteforce = new ExpressBrute(store);
 
+
+
 // SIGN UP FUNCTION 
-router.post("/signup", async (req, res) => {
+/*router.post("/signup", async (req, res) => {
     try {
         const password = await bcrypt.hash(req.body.password, 10);
         let newUser = {
@@ -32,10 +37,13 @@ router.post("/signup", async (req, res) => {
         console.error("Error in POST /signup route:", error);
         res.status(500).send("Internal Server Error");
     }
-});
+});*/
+router.post("/signup", signupValidation, signup); 
+
+router.post("/login", loginValidation, login); 
 
 // LOGIN FUNCTION 
-router.post("/login", bruteforce.prevent, async (req, res) => {
+/*router.post("/login", bruteforce.prevent, async (req, res) => {
     const { email, password } = req.body;
     console.log(email + " " + password);
 
@@ -63,7 +71,7 @@ router.post("/login", bruteforce.prevent, async (req, res) => {
         console.error("Login error:", error);
         res.status(500).json({ message: "Login failed" });
     }
-});
+});*/
 
 // Define your routes here
 router.get('/', (req, res) => {
