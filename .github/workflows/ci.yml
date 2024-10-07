@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev-main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Navigate to Backend directory
+        run: cd Backend 
+      - name: Install dependencies
+        run: npm install
+        working-directory: Backend
+        
+      - name: Run tests with elevated permissions
+        run: |
+          sudo chmod -R 755 ./node_modules
+          npm test
+        working-directory: Backend
+
+
