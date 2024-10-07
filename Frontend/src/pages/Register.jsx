@@ -1,32 +1,34 @@
 // Import necessary modules and hooks from React and react-router-dom
 import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-function Login() {
+function Register() {
 
-    // Initialize the useNavigate hook for navigation
-    const navigate = useNavigate(); 
+    // State to handle redirection to the login page after successful registration
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-    // State to store login information (email and password)
-    const [loginInfo, setLoginInfo] = React.useState({
+    // State to store registration information (name, email, password)
+    const [registerInfo, setRegInfo] = useState({
+        name: '',
         email: '',
         password: ''
     });
 
-    // State to store error messages for email and password fields
-    const [errors, setErrors] = useState({       
+    // State to store error messages for name, email, and password fields
+    const [errors, setErrors] = useState({
+        name: '',
         email: '',
         password: ''
-    });
+    }); 
 
-    // Handle input changes and update the loginInfo state
+    // Handle input changes and update the registerInfo state
     const handleChange = (e) => {
-        const { name, value } = e.target;   
-        const newUserInfo = { ...loginInfo };
+        const { name, value } = e.target;
+        const newUserInfo = { ...registerInfo };
         newUserInfo[name] = value;
-        setLoginInfo(newUserInfo);
-
+        setRegInfo(newUserInfo);
+       
         // Clear the error message for the changed field
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -34,52 +36,50 @@ function Login() {
         }));
     };
 
-    // Handle form submission for login
-    const handleLogin = async (e) => {
+    // Handle form submission for registration
+    const handleRegister = async (e) => {
         e.preventDefault();
-        const { email, password } = loginInfo;      
+        const { name, email, password } = registerInfo;
 
-        // Validate email and password fields
-        if (!email || !password) {
+        // Validate name, email, and password fields
+        if (!name || !email || !password) {
             setErrors({
+                name: !name ? 'Name is required' : '',
                 email: !email ? 'Email is required' : '',
                 password: !password ? 'Password is required' : ''
             });
-            return handleError('Email and password are required');
+            return;
         }
 
         try {
-            const url = "https://localhost:5050/user/login/";
-           
-            // Send login request to the server
+            const url = "https://localhost:5050/user/signup";
+            // Send registration request to the server
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(loginInfo),
+                body: JSON.stringify(registerInfo),
             });
 
             const result = await response.json();
-            const { success, message, token, name, error } = result;
+            const { success, message, errors } = result;
 
             if (success) {
-                // Handle successful login
+                // Handle successful registration
                 handleSucess(message);
-                localStorage.setItem('token', token);
-                localStorage.setItem('loggedInUser', name);
-                navigate('/home'); 
-            } else if (error) {
-                // Handle server-side validation errors
-                const details = error?.details[0]?.message || error;
-                handleError(details);
+                setTimeout(() => {
+                    setRedirectToLogin(true);
+                }, 1000);
+            } else if (errors) {
+                // Handle validation errors from the server
+                setErrors(errors);
             } else if (!success) {
-                // Handle specific error messages for non-existent user or invalid credentials
-                if (message === "User does not exist" || message === "Invalid credentials") {
+                // Handle specific error message for existing user
+                if (message === "User already exists") {
                     setErrors((prevErrors) => ({
                         ...prevErrors,
-                        email: message === "User does not exist" ? message : '',
-                        password: message === "Invalid credentials" ? message : ''
+                        email: message
                     }));
                 } else {
                     handleError(message);
@@ -90,44 +90,58 @@ function Login() {
             handleError(error.message);
         }
     };
-    
+
+    // Redirect to the login page if registration is successful
+    if (redirectToLogin) {
+        return <Navigate to="/login" />;
+    }
+
     return (
-        <div>
-            <div className='container'>
-                <h1>Login</h1>
-                <form onSubmit={handleLogin}>
-                    <div>
-                        <label htmlFor='email'>Email</label>
-                        <input
-                            onChange={handleChange}
-                            type="email"
-                            name="email"
-                            autoFocus
-                            placeholder="Enter your email"
-                            value={loginInfo.email}
-                        />
-                        {errors.email && <div className="error">{errors.email}</div>}
-                    </div>
-                    <div>
-                        <label htmlFor='password'>Password</label>
-                        <input
-                            onChange={handleChange}
-                            type="password"
-                            name="password"
-                            autoFocus
-                            placeholder="Enter your password"
-                            value={loginInfo.password}
-                        />
-                        {errors.password && <div className="error">{errors.password}</div>}
-                    </div>
-                    <button type="submit">Login</button>
-                    <div className="center-text">
-                        <span>Don't have an account? <a href="/register">Register</a></span>
-                    </div>
-                </form>          
-            </div>      
+        <div className='container'>
+            <h1>Register</h1>
+            <form onSubmit={handleRegister}>
+                <div>
+                    <label htmlFor='name'>Name</label>
+                    <input
+                        onChange={handleChange}
+                        type="text"
+                        name="name"
+                        autoFocus
+                        placeholder="Enter your name"
+                        value={registerInfo.name}
+                    />
+                    {errors.name && <div className="error">{errors.name}</div>}
+                </div>
+                <div>
+                    <label htmlFor='email'>Email</label>
+                    <input
+                        onChange={handleChange}
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value={registerInfo.email}
+                    />
+                    {errors.email && <div className="error">{errors.email}</div>}
+                </div>
+                <div>
+                    <label htmlFor='password'>Password</label>
+                    <input
+                        onChange={handleChange}
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        value={registerInfo.password}
+                    />
+                    {errors.password && <div className="error">{errors.password}</div>}
+                </div>
+                <button type="submit">Register</button>
+                <div className="center-text">
+                    <span>Already have an account? <a href="/login">Login</a></span>
+                </div>
+            </form>         
         </div>
     );
 }
 
-export default Login;
+export default Register;
+// (Shaikh, 2024) __---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\
