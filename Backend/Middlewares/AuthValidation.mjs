@@ -91,4 +91,4 @@ const loginValidation = (req, res, next) => {
 
 // Export the signupValidation and loginValidation middleware functions
 export { signupValidation, loginValidation };
-//(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
+//(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____/
