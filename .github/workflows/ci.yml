@@ -23,7 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm install
         working-directory: Backend
-
-      - name: Run tests
-        run: npm test
+        
+      - name: Run tests with elevated permissions
+        run: |
+          sudo chmod -R 755 ./node_modules
+          npm test
         working-directory: Backend
+
+
