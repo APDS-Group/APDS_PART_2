@@ -16,30 +16,29 @@ console.log(connectionString);
 
 // Create a new MongoClient instance using the connection string
 const client = new MongoClient(connectionString, {
-   
     tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
 });
 
 let db = null; // Declare a variable to hold the database reference
+
 // Function to connect to the database
 export async function connectToDatabase() {
-    if (!db) {
+    if (!db) { // Check if the db variable is null
         try {
             // Attempt to connect to the MongoDB server
             await client.connect();
             // Log a success message if the connection is established
             console.log('MongoDB is CONNECTED!!! :)');
             // Get a reference to the "users" database
-            db= client.db("users");
-           // db = conn;
+            db = client.db("users");
         } catch (e) {
             // Log any errors that occur during the connection attempt
             console.error('Error connecting to MongoDB:', e);
-            throw e;
+            throw e; // Rethrow the error to be handled by the caller
         }
     }
-    return db;
-    
+    return db; // Return the database reference
 }
+
 // Export the database reference for use in other parts of the application
 export default db;

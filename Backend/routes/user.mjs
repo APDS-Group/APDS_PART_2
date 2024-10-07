@@ -1,80 +1,40 @@
+// Import the express module to create a router and handle HTTP requests
 import express from 'express';
-import { connectToDatabase } from '../db/conn.mjs';
-import ExpressBrute from 'express-brute';
-import { signup ,login} from '../Controller/AuthController.mjs';
+
+// Import the signup and login controller functions from the AuthController module
+import { signup, login } from '../Controller/AuthController.mjs';
+
+// Import the signupValidation and loginValidation middleware functions from the AuthValidation module
 import { signupValidation, loginValidation } from '../Middlewares/AuthValidation.mjs';
 
+// Import ExpressBrute for brute force protection
+import ExpressBrute from 'express-brute';
 
+// Create a new router instance using express.Router()
 const router = express.Router();
-const db = await connectToDatabase();
 
-var store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
+// Create a memory store for ExpressBrute (not recommended for production)
+var store = new ExpressBrute.MemoryStore();
+
+// Create a brute force instance with the store
 var bruteforce = new ExpressBrute(store);
 
+// Define a POST route for the "/signup" path
+// The signupValidation middleware is used to validate the request data
+// If the validation passes, the signup controller function is called to handle the request
+router.post("/signup", signupValidation, signup);
 
+// Define a POST route for the "/login" path
+// The bruteforce middleware is used to protect against brute force attacks
+// The loginValidation middleware is used to validate the request data
+// If the validation passes, the login controller function is called to handle the request
+router.post("/login", bruteforce.prevent, loginValidation, login);
 
-// SIGN UP FUNCTION 
-/*router.post("/signup", async (req, res) => {
-    try {
-        const password = await bcrypt.hash(req.body.password, 10);
-        let newUser = {
-            email: req.body.email,
-            password: (await password).toString()
-        };
-
-        let collection = db.collection("users");
-        let user = await collection.findOne({ email: req.body.email });
-        if (user) {
-            return res.status(400).send("User already exists");
-        }
-        //Registration successful
-        let result = await collection.insertOne(newUser);
-        console.log("Registration successful,Hashed Password:", password);
-        res.status(204).send(result);
-    } catch (error) {
-        console.error("Error in POST /signup route:", error);
-        res.status(500).send("Internal Server Error");
-    }
-});*/
-router.post("/signup", signupValidation, signup); 
-
-router.post("/login", loginValidation, login); 
-
-// LOGIN FUNCTION 
-/*router.post("/login", bruteforce.prevent, async (req, res) => {
-    const { email, password } = req.body;
-    console.log(email + " " + password);
-
-    try {
-        const collection = await db.collection("users");
-        const user = await collection.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ message: "Authentication failed" });
-        }
-
-        // Compare the provided password with the hashed password in the database
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) {
-            return res.status(401).json({ message: "Authentication failed" });
-        } else {
-            // Authentication successful
-            const token = jwt.sign({ email: req.body.email, password: req.body.password }, "this_secret_should_be_longer_than_it_is", { expiresIn: "1h" });
-            res.status(200).json({ message: "Login | Authentication successful", token: token, email: req.body.email });
-            
-            // TOKEN TO VERIFY USER'S SESSION 
-            console.log("your new token is", token);
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ message: "Login failed" });
-    }
-});*/
-
-// Define your routes here
+// Define a GET route for the root path ("/")
+// This route sends a simple response indicating that it is the user route
 router.get('/', (req, res) => {
     res.send('User route');
 });
 
-// Export the router as the default export
+// Export the router instance as the default export of this module
 export default router;

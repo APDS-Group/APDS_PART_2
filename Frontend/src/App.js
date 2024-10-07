@@ -3,13 +3,15 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import React from 'react';
-import { Helmet } from 'react-helmet'; // Import Helmet
+import { Helmet } from 'react-helmet'; 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
+      {/* Helmet is used to manage the document head, including meta tags */}
       <Helmet>
+        {/* Content Security Policy (CSP) to add security by defining where resources can be loaded from */}
         <meta
           httpEquiv="Content-Security-Policy"
           content={`
