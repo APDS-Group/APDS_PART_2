@@ -3,6 +3,8 @@ import { handleError, handleSucess } from '../utils';
 import { Navigate } from 'react-router-dom';
 
 function Register() {
+
+    const [redirectToLogin, setRedirectToLogin] = useState(false);
     const [registerInfo, setRegInfo] = useState({
         name: '',
         email: '',
@@ -12,16 +14,14 @@ function Register() {
         name: '',
         email: '',
         password: ''
-    });
-    const [redirectToLogin, setRedirectToLogin] = useState(false);
+    }); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         const newUserInfo = { ...registerInfo };
         newUserInfo[name] = value;
         setRegInfo(newUserInfo);
-
-        // Clear the error for the field being updated
+       
         setErrors((prevErrors) => ({
             ...prevErrors,
             [name]: ''
@@ -37,7 +37,7 @@ function Register() {
                 email: !email ? 'Email is required' : '',
                 password: !password ? 'Password is required' : ''
             });
-            return handleError('Name, email, and password are required');
+          //  return handleError('Name, email, and password are required');
         }
         try {
             const url = "https://localhost:5050/user/signup";
@@ -111,8 +111,7 @@ function Register() {
                 <div className="center-text">
                 <span>Already have an account? <a href="/login">Login</a></span>
             </div>
-            </form>
-         
+            </form>         
         </div>
     );
 }

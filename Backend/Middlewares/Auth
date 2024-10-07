@@ -3,13 +3,13 @@ import jwt from 'jsonwebtoken';
 const ensureAuthentication = (req, res, next) => {
    const authHeader = req.headers['authorization'];
     if (!authHeader) {
-        return res.status(403).json({ message: 'alt Unauthorized: JWT Token required' });
+        return res.status(403).json({ message: 'Unauthorized: JWT Token required' });
     }
 
     // Extract the token from the 'Bearer <token>' format
     const token = authHeader.split(' ')[1]; 
     if (!token) {
-        return res.status(403).json({ message: 'BEARER Unauthorized: JWT Token required' });
+        return res.status(403).json({ message: 'Unauthorized: JWT Token required' });
     }
 
     try {
@@ -17,7 +17,7 @@ const ensureAuthentication = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(403).json({ message: 'SAD Unauthorized: Invalid JWT Token' });
+        return res.status(403).json({ message: 'Unauthorized: Invalid JWT Token' });
     }
 };
 

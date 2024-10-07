@@ -3,12 +3,23 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import React from 'react';
+import { Helmet } from 'react-helmet'; // Import Helmet
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-
+      <Helmet>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content={`
+                      default-src 'self';
+                      script-src 'self';
+                      img-src https://*.my-s3-endpoint.com;
+                      media-src https://*.my-s3-endpoint.com;
+                `}
+        ></meta>
+      </Helmet>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/register" />} />
