@@ -1,4 +1,4 @@
-const { model } = require('mongoose'); //test
+const { model } = require('mongoose'); 
 
 // Email validation function
 const checkEmail = (email) => {
