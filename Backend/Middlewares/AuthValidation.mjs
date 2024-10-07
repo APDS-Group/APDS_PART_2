@@ -1,4 +1,4 @@
-const { model } = require('mongoose'); 
+
 
 // Email validation function
 const checkEmail = (email) => {
@@ -68,11 +68,11 @@ const loginValidation = (req, res, next) => {
     next();
 };
 
-// Export the functions
-module.exports = {
+export { signupValidation,loginValidation};
+/*module.exports = {
     checkEmail,
     checkPassword,
     checkString,
     signupValidation,
     loginValidation
-};
+};*/

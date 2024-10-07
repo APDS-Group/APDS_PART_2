@@ -1,7 +1,5 @@
 import express from 'express';
 import { connectToDatabase } from '../db/conn.mjs';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import ExpressBrute from 'express-brute';
 import { signup ,login} from '../Controller/AuthController.mjs';
 import { signupValidation, loginValidation } from '../Middlewares/AuthValidation.mjs';

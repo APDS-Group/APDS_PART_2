@@ -13,10 +13,11 @@ function App() {
         <meta
           httpEquiv="Content-Security-Policy"
           content={`
-                      default-src 'self';
-                      script-src 'self';
-                      img-src https://*.my-s3-endpoint.com;
-                      media-src https://*.my-s3-endpoint.com;
+            default-src 'self';
+            connect-src 'self' https://localhost:5050;
+            script-src 'self';
+            img-src https://*.my-s3-endpoint.com;
+            media-src https://*.my-s3-endpoint.com;
                 `}
         ></meta>
       </Helmet>
