@@ -25,19 +25,24 @@ jobs:
         run: npm install
         working-directory: Backend
 
-      # Step 1: Run Linting
+      # Step 1: Give execute permissions to ESLint binary
+      - name: Give execute permission to ESLint
+        run: sudo chmod +x ./node_modules/.bin/eslint
+        working-directory: Backend
+
+      # Step 2: Run Linting with elevated permissions
       - name: Run ESLint
         run: npm run lint
         working-directory: Backend
       
-      # Step 2: Run Tests with elevated permissions
+      # Step 3: Run Tests with elevated permissions
       - name: Run tests with elevated permissions
         run: |
           sudo chmod -R 755 ./node_modules
           npm test
         working-directory: Backend
 
-      # Step 3: Check for vulnerabilities
+      # Step 4: Check for vulnerabilities
       - name: Run npm audit
         run: npm audit --audit-level=moderate
         working-directory: Backend
