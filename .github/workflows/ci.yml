@@ -20,14 +20,62 @@ jobs:
 
       - name: Navigate to Backend directory
         run: cd Backend 
+      
       - name: Install dependencies
         run: npm install
         working-directory: Backend
-        
+
+      # Step 1: Run Linting
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: Backend
+      
+      # Step 2: Run Tests with elevated permissions
       - name: Run tests with elevated permissions
         run: |
           sudo chmod -R 755 ./node_modules
           npm test
         working-directory: Backend
 
+      # Step 3: Check for vulnerabilities
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        working-directory: Backend
+  zap:
+      runs-on: ubuntu-latest
+      needs: test  # This ensures ZAP runs after the tests
 
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+
+        - name: Start the application
+          run: |
+            cd Backend
+            npm install
+            npm start &
+          working-directory: Backend
+
+        - name: Wait for the app to be ready
+          run: |
+            sleep 30  # Adjust the sleep time based on your app's startup time
+
+        - name: Install OWASP ZAP
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y zaproxy
+
+        - name: Run OWASP ZAP
+          run: |
+            zap-baseline.py -t http://localhost:3000 -r zap_report.html
+
+        - name: Upload ZAP report
+          uses: actions/upload-artifact@v3
+          with:
+            name: zap-report
+            path: zap_report.html
