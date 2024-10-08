@@ -42,3 +42,4 @@ export async function connectToDatabase() {
 
 // Export the database reference for use in other parts of the application
 export default db;
+// (Shaikh, 2024) (The Independent Institute of Education, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\

@@ -36,4 +36,4 @@ const ensureAuthentication = (req, res, next) => {
 
 // Export the ensureAuthentication middleware function
 export { ensureAuthentication };
-//(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
+// (Shaikh, 2024) (The Independent Institute of Education, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\
