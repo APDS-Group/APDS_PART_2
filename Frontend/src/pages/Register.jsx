@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils';
 import { Navigate } from 'react-router-dom';
 
+
 function Register() {
 
     // State to handle redirection to the login page after successful registration
@@ -98,6 +99,7 @@ function Register() {
 
     return (
         <div className='container'>
+               
             <h1>Register</h1>
             <form onSubmit={handleRegister}>
                 <div>
