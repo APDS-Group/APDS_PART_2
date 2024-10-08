@@ -75,6 +75,8 @@ jobs:
       - name: Wait for the apps to be ready
         run: sleep 2
 
+      #Demonstration
+
 
       # Step 4: Run OWASP ZAP for the backend    
       #- name: ZAP API Scan 
