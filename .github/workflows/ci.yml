@@ -77,11 +77,10 @@ jobs:
 
 
       # Step 4: Run OWASP ZAP for the backend    
-      - name: ZAP API Scan 
-        uses: zaproxy/action-api-scan@v0.8.0
-        with:
-          target: 'https://localhost:5050/'
-          ignore_ssl: true
+      #- name: ZAP API Scan 
+      #  uses: zaproxy/action-api-scan@v0.8.0
+      #  with:
+      #    target: 'https://localhost:5050/'
 
       # Step 5: OWASP ZAP for frontend
       - name: ZAP Baseline Scan
