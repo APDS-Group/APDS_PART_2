@@ -19,8 +19,8 @@ jobs:
           node-version: '20'
 
       - name: Navigate to Backend directory
-        run: cd Backend 
-      
+        run: cd Backend
+
       - name: Install dependencies
         run: npm install
         working-directory: Backend
@@ -41,41 +41,65 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=moderate
         working-directory: Backend
+
   zap:
-      runs-on: ubuntu-latest
-      needs: test  # This ensures ZAP runs after the tests
+    runs-on: ubuntu-latest
+    needs: test  # This ensures ZAP runs after the tests
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-        - name: Start the application
-          run: |
-            cd Backend
-            npm install
-            npm start &
-          working-directory: Backend
+      # Step 1: Start the backend server
+      - name: Start Backend server
+        run: |
+          cd Backend
+          npm install
+          npm start &
+        working-directory: Backend
 
-        - name: Wait for the app to be ready
-          run: |
-            sleep 30  # Adjust the sleep time based on your app's startup time
+      # Step 2: Start the frontend server
+      - name: Start Frontend server
+        run: |
+          cd Frontend
+          npm install
+          npm start &
+        working-directory: Frontend
 
-        - name: Install OWASP ZAP
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y zaproxy
+      # Step 3: Wait for the apps to be ready
+      - name: Wait for the apps to be ready
+        run: sleep 2
 
-        - name: Run OWASP ZAP
-          run: |
-            zap-baseline.py -t http://localhost:3000 -r zap_report.html
+      # Step 4: Install OWASP ZAP
+      - name: Install OWASP ZAP
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zaproxy
 
-        - name: Upload ZAP report
-          uses: actions/upload-artifact@v3
-          with:
-            name: zap-report
-            path: zap_report.html
+      # Step 5: Run OWASP ZAP for the frontend
+      - name: Run OWASP ZAP on Frontend
+        run: |
+          zap-baseline.py -t http://localhost:3000 -r zap_report_frontend.html
+
+      # Step 6: Run OWASP ZAP for the backend
+      - name: Run OWASP ZAP on Backend
+        run: |
+          zap-baseline.py -t https://localhost:5050 -r zap_report_backend.html -I  # `-I` flag to ignore SSL warnings (for self-signed certificates)
+
+      # Step 7: Upload ZAP reports for both frontend and backend
+      - name: Upload Frontend ZAP report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report-frontend
+          path: zap_report_frontend.html
+
+      - name: Upload Backend ZAP report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report-backend
+          path: zap_report_backend.html
