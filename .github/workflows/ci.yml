@@ -27,7 +27,7 @@ jobs:
         run: npm install
         working-directory: Backend
 
-      # Step 1: Give execute permissions to ESLint binary
+      # Step 1: Give execute permissions to ESLint binary (ESLint, 2024)
       - name: Give execute permission to ESLint
         run: sudo chmod +x ./node_modules/.bin/eslint
         working-directory: Backend
@@ -37,7 +37,7 @@ jobs:
         run: npm run lint
         working-directory: Backend
 
-      # Step 3: Run Tests with elevated permissions
+      # Step 3: Run Tests with elevated permissions (Eze, 2020)
       - name: Run tests with elevated permissions
         run: |
           sudo chmod -R 755 ./node_modules
@@ -84,7 +84,7 @@ jobs:
       #  with:
       #    target: 'https://localhost:5050/'
 
-      # Step 5: OWASP ZAP for frontend
+      # Step 5: OWASP ZAP for frontend (Zaproxy, 2020)
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.13.0
         with:
