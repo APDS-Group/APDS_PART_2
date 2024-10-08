@@ -5,6 +5,11 @@ on:
     branches:
       - dev-main
 
+permissions:
+  issues: write  
+  contents: read  
+
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,16 +23,67 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Navigate to Backend directory
-        run: cd Backend 
       - name: Install dependencies
         run: npm install
         working-directory: Backend
-        
+
+      # Step 1: Give execute permissions to ESLint binary
+      - name: Give execute permission to ESLint
+        run: sudo chmod +x ./node_modules/.bin/eslint
+        working-directory: Backend
+
+      # Step 2: Run Linting
+      - name: Run ESLint
+        run: npm run lint
+        working-directory: Backend
+
+      # Step 3: Run Tests with elevated permissions
       - name: Run tests with elevated permissions
         run: |
           sudo chmod -R 755 ./node_modules
           npm test
         working-directory: Backend
 
+  zap:
+    runs-on: ubuntu-latest
+    needs: test
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Step 1: Start the backend server
+      - name: Start Backend server
+        run: |
+          npm install
+          npm start &
+        working-directory: Backend
+
+      # Step 2: Start the frontend server
+      - name: Start Frontend server
+        run: |
+          npm install
+          npm start &
+        working-directory: Frontend
+
+      # Step 3: Wait for the apps to be ready
+      - name: Wait for the apps to be ready
+        run: sleep 2
+
+
+      # Step 4: Run OWASP ZAP for the backend    
+      #- name: ZAP API Scan 
+      #  uses: zaproxy/action-api-scan@v0.8.0
+      #  with:
+      #    target: 'https://localhost:5050/'
+
+      # Step 5: OWASP ZAP for frontend
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          target: 'http://localhost:3000/'

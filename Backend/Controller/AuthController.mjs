@@ -17,10 +17,10 @@ import jwt from 'jsonwebtoken';
 const db = await connectToDatabase();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore();
+var store = new ExpressBrute.MemoryStore(); 
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store);
+var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
 
 // Import the dotenv package to load environment variables from a .env file
 import dotenv from "dotenv";
@@ -50,7 +50,7 @@ const signup = async (req, res) => {
     newUser.password = await bcrypt.hash(req.body.password, 10);
 
     // Insert the new user into the users collection
-    let result = await collection.insertOne(newUser);
+    let result = await collection.insertOne(newUser); // eslint-disable-line no-unused-vars
 
     // Return a 201 status with a success message
     res.status(201).json({ message: "Registration successful", success: true });
@@ -58,6 +58,7 @@ const signup = async (req, res) => {
   } catch (error) {
     // If an error occurs, return a 500 status with an error message
     res.status(500).json({ message: "Internal Server Error", success: false });
+    console.log(error)
   }
 };
 

@@ -5,7 +5,7 @@ import express from 'express';
 import { signup, login } from '../Controller/AuthController.mjs';
 
 // Import the signupValidation and loginValidation middleware functions from the AuthValidation module
-import { signupValidation, loginValidation } from '../Middlewares/AuthValidation.mjs';
+import { signupValidation, loginValidation } from '../Middlewares/AuthValidation.js';
 
 // Import ExpressBrute for brute force protection
 import ExpressBrute from 'express-brute';

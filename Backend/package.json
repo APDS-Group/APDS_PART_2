@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.mjs",
     "dev": "nodemon server.mjs",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -15,13 +16,18 @@
   "devDependencies": {
     "@babel/core": "^7.25.7",
     "@babel/preset-env": "^7.25.7",
+    "@eslint/js": "^9.12.0",
     "babel-jest": "^29.7.0",
+    "eslint": "^9.12.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.37.1",
+    "globals": "^15.10.0",
     "jest": "^29.7.0",
     "nodemon": "^3.1.4"
   },
   "jest": {
     "transform": {
-      "^.+\\.mjs$": "babel-jest"
+      "^.+\\.[t|j]sx?$": "babel-jest"
     },
     "roots": [
       "../Tests"
@@ -31,7 +37,6 @@
     },
     "testEnvironment": "node"
   },
-
   "dependencies": {
     "bcrypt": "^5.1.1",
     "brute": "^1.0.2",

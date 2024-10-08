@@ -1,10 +1,5 @@
-const {
-  checkEmail,
-  checkPassword,
-  checkString,
-  signupValidation,
-  loginValidation
-} = require('../Backend/Middlewares/AuthValidation.mjs');
+import { checkEmail, checkPassword, checkString, loginValidation, signupValidation } from '../Backend/Middlewares/AuthValidation.js';
+
 
 describe('Validation Functions', () => {
   describe('checkEmail', () => {

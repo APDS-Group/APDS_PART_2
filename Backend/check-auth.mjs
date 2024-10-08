@@ -8,6 +8,7 @@ const checkauth=(req, res, next) => {
        // req.userData = decoded;
         next();
     } catch (error) {
+        console.error(error);
         return res.status(401).json({
             message: "Authentication failed, invalid token"
         });
