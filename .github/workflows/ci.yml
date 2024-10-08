@@ -70,22 +70,17 @@ jobs:
       - name: Wait for the apps to be ready
         run: sleep 2
 
-      # Step 4: Install OWASP ZAP
-      - name: Install OWASP ZAP
-        run: |
-          wget -q https://github.com/zaproxy/zaproxy/releases/download/v2.13.0/ZAP_2_13_0_unix.sh -O zap.sh
-          chmod +x zap.sh
-          sudo ./zap.sh -q  # Installs OWASP ZAp
-
-      # Step 5: Run OWASP ZAP for the frontend
-      - name: Run OWASP ZAP on Frontend
-        run: |
-          zap-baseline.py -t http://localhost:3000 -r zap_report_frontend.html
+      # Step 5: OWASP ZAP for frontend
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          target: 'http://localhost:3000/'
 
       # Step 6: Run OWASP ZAP for the backend
-      - name: Run OWASP ZAP on Backend
-        run: |
-          zap-baseline.py -t https://localhost:5050 -r zap_report_backend.html -I
+      - name: ZAP Baseline Scan Backend
+        uses: zaproxy/action-baseline@v0.13.0
+        with:
+          target: 'https://localhost:5050/'
 
       # Step 7: Upload ZAP reports
       - name: Upload Frontend ZAP report
