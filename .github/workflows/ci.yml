@@ -75,19 +75,22 @@ jobs:
       - name: Wait for the apps to be ready
         run: sleep 2
 
+
+      # Step 4: Run OWASP ZAP for the backend    
+      - name: ZAP API Scan 
+        uses: zaproxy/action-api-scan@v0.8.0
+        with:
+          target: 'https://localhost:5050/'
+          ignore_ssl: true
+
       # Step 5: OWASP ZAP for frontend
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.13.0
         with:
           target: 'http://localhost:3000/'
+      
 
-      # Step 6: Run OWASP ZAP for the backend
-      - name: ZAP API Scan 
-        uses: zaproxy/action-api-scan@v0.8.0
-        with:
-          target: 'https://localhost:5050/'
-
-      # Step 7: Upload ZAP reports
+      # Step 6: Upload ZAP reports
       - name: Upload Frontend ZAP report
         uses: actions/upload-artifact@v3
         with:
