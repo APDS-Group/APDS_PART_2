@@ -58,7 +58,6 @@ jobs:
       # Step 1: Start the backend server
       - name: Start Backend server
         run: |
-          cd Backend
           npm install
           npm start &
         working-directory: Backend
@@ -66,8 +65,6 @@ jobs:
       # Step 2: Start the frontend server
       - name: Start Frontend server
         run: |
-          cd Frontend
-          npm install
           npm start &
         working-directory: Frontend
 
