@@ -50,7 +50,7 @@ function Home() {
                 setUserData(data);
                 
                 // Update the token status to indicate success
-                setTokenStatus('Token passed successfully.');
+                setTokenStatus('User authenicated | Valid token .');
             } catch (error) {
                 // Log the error to the console
                 console.error(error);
@@ -77,12 +77,21 @@ function Home() {
 
     // Render the Home component with the fetched user data and token status
     return (
-        <div>
+        <div className='container home-container '>         
             <h1>Home</h1>
-            <p>{userData}</p>
+            <p className='welcome-message'>Welcome back to you payment portal</p>
             <div>{tokenStatus}</div>
+            <div className='button-container'>
+            <button onClick={handlePaymentClick}>Make Payment</button>
         </div>
+    </div>
     );
+    
+    // Add the handlePaymentClick function
+    function handlePaymentClick() {
+        // Logic to handle payment click
+        console.log("Payment button clicked");
+    }
 }
 
 // Export the Home component as the default export

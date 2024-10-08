@@ -1,6 +1,6 @@
 // Email validation function
 const checkEmail = (email) => {
-    // Regular expression pattern to validate email addresses
+    // Regular expression pattern to validate email addresses (Stribizew, 2018)(Ryan, 2024)
     const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.(com|co\.za)$/;
     
     // Test the email against the pattern
@@ -14,7 +14,7 @@ const checkEmail = (email) => {
 
 // Password validation function
 const checkPassword = (password) => {
-    // Regular expression pattern to validate passwords
+    // Regular expression pattern to validate passwords (Stribizew, 2018)(Ryan, 2024)
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     
     // Test the password against the pattern
