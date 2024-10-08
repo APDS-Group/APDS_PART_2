@@ -82,8 +82,8 @@ jobs:
           target: 'http://localhost:3000/'
 
       # Step 6: Run OWASP ZAP for the backend
-      - name: ZAP Baseline Scan Backend
-        uses: zaproxy/action-baseline@v0.13.0
+      - name: ZAP API Scan 
+        uses: zaproxy/action-api-scan@v0.8.0
         with:
           target: 'https://localhost:5050/'
 
