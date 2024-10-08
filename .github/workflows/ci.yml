@@ -87,17 +87,3 @@ jobs:
         uses: zaproxy/action-baseline@v0.13.0
         with:
           target: 'http://localhost:3000/'
-      
-
-      # Step 6: Upload ZAP reports
-      - name: Upload Frontend ZAP report
-        uses: actions/upload-artifact@v3
-        with:
-          name: zap-report-frontend
-          path: zap_report_frontend.html
-
-      - name: Upload Backend ZAP report
-        uses: actions/upload-artifact@v3
-        with:
-          name: zap-report-backend
-          path: zap_report_backend.html
