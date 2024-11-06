@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build_test:
     docker:
@@ -7,8 +8,11 @@ jobs:
       - checkout
       - run:
           name: Install npm dependencies
-          command: |
-            npm install --save	
+          command: npm install
+      - run:
+          name: Run tests
+          command: npm test
+
   build_docker_image:
     docker:
       - image: circleci/node:12
@@ -18,14 +22,19 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker image
-          command: |
-            docker build -t nodejswebapp1 -t artisenzubair/tomcatlast:latest .
-            echo $DOCKER_PASSWORD | docker login -u artisenzubair --password-stdin
-            docker push artisenzubair/tomcatlast:latest
+          command: docker build -t apdsp3 -t st10158643/apdsp3:latest .
+      - run:
+          name: Login to Docker Hub
+          command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
+      - run:
+          name: Push Docker image
+          command: docker push st10158643/apdsp3:latest
 
 workflows:
-  build_test:
+  version: 2
+  build_and_deploy:
     jobs:
       - build_test
-      - build_docker_image
-      
+      - build_docker_image:
+          requires:
+            - build_test
