@@ -24,7 +24,7 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker image
-          command: docker build -t hxrm/apdsp3:latest -f Backend/Dockerfile Backend
+          command: docker build -t hxrm/apdsp3:latest -f Backend/MyDockerfile Backend
       - run:
           name: Login to Docker Hub
           command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
