@@ -22,13 +22,13 @@ jobs:
           docker_layer_caching: false
       - run:
           name: Build Docker image
-          command: docker build -t apdsp3 -t st10158643/apdsp3:latest .
+          command: docker build -t apdsp3 -t hxrm/apdsp3:latest .
       - run:
           name: Login to Docker Hub
           command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
       - run:
           name: Push Docker image
-          command: docker push st10158643/apdsp3:latest
+          command: docker push hxrm/apdsp3:latest
 
 workflows:
   version: 2
