@@ -9,9 +9,11 @@ jobs:
       - run:
           name: Install npm dependencies
           command: npm install
+          working_directory: Backend
       - run:
           name: Run tests
           command: npm test
+          working_directory: Backend
 
   build_docker_image:
     docker:
@@ -23,6 +25,7 @@ jobs:
       - run:
           name: Build Docker image
           command: docker build -t apdsp3 -t hxrm/apdsp3:latest .
+          working_directory: Backend
       - run:
           name: Login to Docker Hub
           command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
