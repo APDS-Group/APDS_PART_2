@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build_test:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16
     steps:
       - checkout
       - run:
@@ -17,14 +17,14 @@ jobs:
 
   build_docker_image:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: false
       - run:
           name: Build Docker image
-          command: docker build -t apdsp3 -t hxrm/apdsp3:latest .
+          command: docker build -t apdsp3 -t hxrm/apdsp3:latest -f Dockerfile .
           working_directory: Backend
       - run:
           name: Login to Docker Hub
