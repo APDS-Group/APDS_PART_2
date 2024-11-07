@@ -1,6 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:latest
 #FROM node:14-alpine
+
+# Install nodemon globally
+RUN npm install -g nodemon
 # Set the working directory inside the container
 WORKDIR /app
 
