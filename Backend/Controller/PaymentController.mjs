@@ -9,8 +9,6 @@ import ExpressBrute from 'express-brute';
 
 // Import the User model
 import { User } from '../Models/User.mjs';
-// Import the Employee model
-import { Employee } from '../Models/Employee.mjs';
 
 // Import jsonwebtoken for generating JWT tokens
 import jwt from 'jsonwebtoken';
