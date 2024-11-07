@@ -38,34 +38,9 @@ const checkString = (input) => {
     // Return null if the input is valid
     return null;
 };
-// Username validation function
-const checkUsername = (username) => {
-    const usernamePattern = /^[a-zA-Z0-9_.-]{3,}$/;
-    if (!usernamePattern.test(username)) {
-        return "Please enter a valid username with at least 3 characters.";
-    }
-    return null;
-};
 
-// ID number validation function
-const checkIdNumber = (idNumber) => {
-    const idNumberPattern = /^[0-9]{13}$/;
-    if (!idNumberPattern.test(idNumber)) {
-        return "Please enter a valid ID number with exactly 13 digits.";
-    }
-    return null;
-};
-
-// Account number validation function
-const checkAccountNumber = (accountNumber) => {
-    const accountNumberPattern = /^[0-9]{10}$/;
-    if (!accountNumberPattern.test(accountNumber)) {
-        return "Please enter a valid account number with exactly 10 digits.";
-    }
-    return null;
-};
 // Signup validation middleware
-/*const signupValidation = (req, res, next) => {
+const signupValidation = (req, res, next) => {
     // Extract name, email, and password from the request body
     const { name, email, password } = req.body;
 
@@ -89,93 +64,9 @@ const checkAccountNumber = (accountNumber) => {
     // Call the next middleware function in the stack
     next();
 };
-*/
-const signupValidation = (req, res, next) => {
-    // Extract firstname, lastname, username, email, password, accountNumber, and idNumber from the request body
-    const { firstname, lastname, username, email, password, accountNumber, idNumber } = req.body;
-
-    // Validate the firstname, lastname, username, email, password, accountNumber, and idNumber
-    const firstnameError = checkString(firstname);
-    const lastnameError = checkString(lastname);
-    const usernameError = checkUsername(username);
-    const emailError = checkEmail(email);
-    const passwordError = checkPassword(password);
-    const accountNumberError = checkAccountNumber(accountNumber);
-    const idNumberError = checkIdNumber(idNumber);
-
-    // If any validation errors exist, return a 400 status with the errors
-    if (firstnameError || lastnameError || usernameError || emailError || passwordError || accountNumberError || idNumberError) {
-        return res.status(400).json({
-            message: "Bad request",
-            errors: {
-                firstname: firstnameError,
-                lastname: lastnameError,
-                username: usernameError,
-                email: emailError,
-                password: passwordError,
-                accountNumber: accountNumberError,
-                idNumber: idNumberError
-            }
-        });
-    }
-
-    // If no validation errors, proceed to the next middleware
-    next();
-};
-
-
-const preRegisterValidation = (req, res, next) => {
-    // Extract firstname, lastname, username, password, employee number, and id number from the request body
-    const { firstname, lastname, username, password, empNum, idNumber} = req.body;
-
-    // Validate the firstname, lastname, username, email, password, accountNumber, and idNumber
-    const firstnameError = checkString(firstname);
-    const lastnameError = checkString(lastname);
-    const usernameError = checkUsername(username);
-    const passwordError = checkPassword(password);
-    const empNumError = checkAccountNumber(empNum);
-    const idNumberError = checkIdNumber(idNumber);
-
-    // If any validation errors exist, return a 400 status with the errors
-    if (firstnameError || lastnameError || usernameError || passwordError || empNumError || idNumberError) {
-        return res.status(400).json({
-            message: "Bad request",
-            errors: {
-                firstname: firstnameError,
-                lastname: lastnameError,
-                username: usernameError,
-                password: passwordError,
-                empNum: empNumError,
-                idNumber: idNumberError
-            }
-        });
-    }
-    // If no validation errors, proceed to the next middleware
-    next();
-};
-
 
 // Login validation middleware
 const loginValidation = (req, res, next) => {
-    const { usernameOrAccountNumber, password } = req.body;
-
-    const usernameError = checkUsername(usernameOrAccountNumber);
-    const accountNumberError = checkAccountNumber(usernameOrAccountNumber);
-    const passwordError = checkPassword(password);
-
-    if ((usernameError && accountNumberError) || passwordError) {
-        return res.status(400).json({
-            message: "Bad request",
-            errors: {
-                usernameOrAccountNumber: usernameError && accountNumberError ? "Please enter a valid username or account number." : null,
-                password: passwordError
-            }
-        });
-    }
-
-    next();
-};
-/*const loginValidation = (req, res, next) => {
     // Extract email and password from the request body
     const { email, password } = req.body;
 
@@ -197,27 +88,20 @@ const loginValidation = (req, res, next) => {
     // Call the next middleware function in the stack
     next();
 };
-*/
-// Login validation middleware
-const employeeValidation = (req, res, next) => {
-    const { username, password } = req.body;
-
-    const usernameError = checkUsername(username);
-    const passwordError = checkPassword(password);
-
-    if ((usernameError) || passwordError) {
-        return res.status(400).json({
-            message: "Bad request",
-            errors: {
-                username: usernameError? "Please enter a valid username" : null,
-                password: passwordError
-            }
-        });
+// SWIFT code validation function
+const checkSwiftCode = (swiftCode) => {
+    // Regular expression pattern to validate SWIFT codes
+    const swiftCodePattern = /^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$/;
+    
+    // Test the SWIFT code against the pattern
+    if (!swiftCodePattern.test(swiftCode)) {
+        // Return an error message if the SWIFT code is invalid
+        return "Please enter a valid SWIFT code.";
     }
-
-    next();
+    
+    // Return null if the SWIFT code is valid
+    return null;
 };
-
 // Export the signupValidation and loginValidation middleware functions
-export { signupValidation, loginValidation, preRegisterValidation, employeeValidation };
+export { signupValidation, loginValidation, checkSwiftCode };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____/

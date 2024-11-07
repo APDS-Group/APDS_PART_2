@@ -155,3 +155,53 @@ button {
     color: rgb(20, 15, 17);
     font-weight: 600px; 
   }
+  .container {
+    background-color: #fff;
+    padding: 32px 48px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.5);
+  }
+  
+  .container h1 {
+    font-size: 35px;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .container div input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25em;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  button[type="button"] {
+    background-color: #6c757d;
+  }
