@@ -10,6 +10,8 @@ import ExpressBrute from 'express-brute';
 // Import the User model
 import { User } from '../Models/User.mjs';
 
+// Import the Employee model
+import { Employee } from '../Models/Employee.mjs';
 // Import jsonwebtoken for generating JWT tokens
 import jwt from 'jsonwebtoken';
 
@@ -24,6 +26,7 @@ var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
 
 // Import the dotenv package to load environment variables from a .env file
 import dotenv from "dotenv";
+
 dotenv.config();
 
 // Define the signup controller function
@@ -103,8 +106,87 @@ const signup = async (req, res) => {
   }
 };
 */
+// Define the pre-register controller function
+const preRegister = async (req, res) => {
+  try {
+    const { firstname, lastname, username, password, empNum, idNumber } = req.body;
+
+    console.log("Received signup request with data:", { firstname, lastname, username,password, empNum, idNumber });
+
+    const db = await connectToDatabase();
+    let collection = db.collection("employees");
+
+    console.log("Checking if employee user already exists with username, or employee number");
+    const employee = await collection.findOne({
+      $or: [
+        { username: username },
+        { empNum: empNum }
+      ]
+    });
+
+    if (employee) {
+      let errorMessage = "User already exists with ";
+      if (employee.username === username) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "username";
+      if (employee.empNum === empNum) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "employee number";
+      console.log(errorMessage);
+      return res.status(400).json({ message: errorMessage, success: false });
+    }
+
+    // Create a new employee instance with the provided data
+    const newEmployee = new Employee({ firstname, lastname, username, password, empNum, idNumber });
+    newEmployee.password = await bcrypt.hash(req.body.password, 10);
+
+    console.log("Inserting new employee user into the database");
+   // await newEmployee.save();    
+    let result = await collection.insertOne(newEmployee);
+
+    console.log("Registration successful for employee:", username);
+    res.status(201).json({ message: "Registration successful", success: true });
+
+  } catch (error) {
+    console.log("Error during registration:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
+};
 
 // Define the login controller function
+const login = async (req, res) => {
+  try {
+    const { usernameOrAccountNumber, password } = req.body;
+
+    const user = await db.collection("users").findOne({
+      $or: [
+        { username: usernameOrAccountNumber },
+        { accountNumber: usernameOrAccountNumber }
+      ]
+    });
+
+    if (!user) {
+      return res.status(403).json({ message: "User does not exist", success: false });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(403).json({ message: "Invalid credentials", success: false });
+    }
+
+    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.status(200).json({
+      message: "Login successful",
+      success: true,
+      token: token,
+      email: user.email,
+      name: `${user.firstname} ${user.lastname}`
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error.message
+    });
+  }
+};
 /*const login = async (req, res) => {
   try {
     // Extract email and password from the request body
@@ -146,43 +228,43 @@ const signup = async (req, res) => {
   }
 };
 */
-const login = async (req, res) => {
+// Define the employee login controller function
+const employeeLogin = async (req, res) => {
   try {
-    const { usernameOrAccountNumber, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await db.collection("users").findOne({
-      $or: [
-        { username: usernameOrAccountNumber },
-        { accountNumber: usernameOrAccountNumber }
-      ]
-    });
+    console.log("Login attempt with username:", username);
 
-    if (!user) {
-      return res.status(403).json({ message: "User does not exist", success: false });
-    }
+    const db = await connectToDatabase();
+    let collection = db.collection("employees");
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const employee = await collection.findOne({ username: username });
+
+    if (!employee) {
+      console.log("Employee not found with username:", username);
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const isMatch = await bcrypt.compare(password, employee.password);
+    if (!isMatch) {
+      console.log("Invalid password for username:", username);
+      return res.status(403).json({ message: "Invalid credentials", success: false });
+    }
+
+    const token = jwt.sign({ username: employee.username, _id: employee._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.status(200).json({
       message: "Login successful",
       success: true,
       token: token,
-      email: user.email,
-      name: `${user.firstname} ${user.lastname}`
+      username: employee.username,
+      name: `${employee.firstname} ${employee.lastname}`
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      success: false,
-      error: error.message
-    });
+    console.log("Error during login:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
 // Export the signup and login controller functions
-export { signup, login };
+export { signup, login, preRegister, employeeLogin };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____

@@ -30,7 +30,7 @@ export async function connectToDatabase() {
             // Log a success message if the connection is established
             console.log('MongoDB is CONNECTED!!! :)');
             // Get a reference to the "users" database
-            db = client.db("users");
+            db = client.db("apds");
         } catch (e) {
             // Log any errors that occur during the connection attempt
             console.error('Error connecting to MongoDB:', e);

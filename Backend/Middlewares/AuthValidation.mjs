@@ -124,8 +124,38 @@ const signupValidation = (req, res, next) => {
 };
 
 
-// Login validation middleware
+const preRegisterValidation = (req, res, next) => {
+    // Extract firstname, lastname, username, password, employee number, and id number from the request body
+    const { firstname, lastname, username, password, empNum, idNumber} = req.body;
 
+    // Validate the firstname, lastname, username, email, password, accountNumber, and idNumber
+    const firstnameError = checkString(firstname);
+    const lastnameError = checkString(lastname);
+    const usernameError = checkUsername(username);
+    const passwordError = checkPassword(password);
+    const empNumError = checkAccountNumber(empNum);
+    const idNumberError = checkIdNumber(idNumber);
+
+    // If any validation errors exist, return a 400 status with the errors
+    if (firstnameError || lastnameError || usernameError || passwordError || empNumError || idNumberError) {
+        return res.status(400).json({
+            message: "Bad request",
+            errors: {
+                firstname: firstnameError,
+                lastname: lastnameError,
+                username: usernameError,
+                password: passwordError,
+                empNum: empNumError,
+                idNumber: idNumberError
+            }
+        });
+    }
+    // If no validation errors, proceed to the next middleware
+    next();
+};
+
+
+// Login validation middleware
 const loginValidation = (req, res, next) => {
     const { usernameOrAccountNumber, password } = req.body;
 
@@ -168,7 +198,26 @@ const loginValidation = (req, res, next) => {
     next();
 };
 */
+// Login validation middleware
+const employeeValidation = (req, res, next) => {
+    const { username, password } = req.body;
+
+    const usernameError = checkUsername(username);
+    const passwordError = checkPassword(password);
+
+    if ((usernameError) || passwordError) {
+        return res.status(400).json({
+            message: "Bad request",
+            errors: {
+                username: usernameError? "Please enter a valid username" : null,
+                password: passwordError
+            }
+        });
+    }
+
+    next();
+};
 
 // Export the signupValidation and loginValidation middleware functions
-export { signupValidation, loginValidation };
+export { signupValidation, loginValidation, preRegisterValidation, employeeValidation };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____/
