@@ -201,22 +201,23 @@ const loginValidation = (req, res, next) => {
 // Login validation middleware
 const employeeValidation = (req, res, next) => {
     const { username, password } = req.body;
-
+  
     const usernameError = checkUsername(username);
     const passwordError = checkPassword(password);
-
-    if ((usernameError) || passwordError) {
-        return res.status(400).json({
-            message: "Bad request",
-            errors: {
-                username: usernameError? "Please enter a valid username" : null,
-                password: passwordError
-            }
-        });
+  
+    if (usernameError || passwordError) {
+      console.log("Validation errors:", { usernameError, passwordError }); // Log validation errors
+      return res.status(400).json({
+        message: "Bad request",
+        errors: {
+          username: usernameError ? "Please enter a valid username" : null,
+          password: passwordError
+        }
+      });
     }
-
+  
     next();
-};
+  };
 
 // Export the signupValidation and loginValidation middleware functions
 export { signupValidation, loginValidation, preRegisterValidation, employeeValidation };

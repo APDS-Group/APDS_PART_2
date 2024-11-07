@@ -239,7 +239,7 @@ const employeeLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    console.log("Login attempt with username:", username);
+    console.log("Received login request with data:", { username, password }); // Log the received data
 
     const db = await connectToDatabase();
     let collection = db.collection("employees");
