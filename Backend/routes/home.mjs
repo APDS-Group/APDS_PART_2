@@ -2,7 +2,7 @@
 import express from 'express';
 
 // Import the ensureAuthentication middleware from the Auth module
-import { ensureAuthentication } from "../Middlewares/Auth";
+import { ensureAuthentication } from "../Middlewares/Auth.mjs";
 
 // Create a new router instance using express.Router()
 const router = express.Router();
