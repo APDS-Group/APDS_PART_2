@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  sonarscanner: psl/sonarscanner@0.0.4
+
 jobs:
   build_test:
     docker:
@@ -14,53 +17,6 @@ jobs:
           name: Run tests
           command: npm test
           working_directory: Backend
-
-  start_sonarqube:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Start SonarQube
-          command: |
-            docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
-      - run:
-          name: Wait for SonarQube to be ready
-          command: |
-            echo "Waiting for SonarQube to start..."
-            until curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
-              sleep 5
-            done
-            echo "SonarQube is up and running."
-
-  sonar_analysis:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-      - run:
-          name: Install SonarQube Scanner
-          command: npm install -g sonarqube-scanner
-      - run:
-          name: Run SonarQube Scanner
-          command: |
-            sonar-scanner \
-              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.sources=Backend \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONARQUBE_TOKEN
-
-  stop_sonarqube:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - setup_remote_docker
-      - run:
-          name: Stop SonarQube
-          command: docker stop sonarqube
-      - run:
-          name: Remove SonarQube container
-          command: docker rm sonarqube
 
   build_docker_image:
     docker:
@@ -80,18 +36,17 @@ jobs:
           command: docker push hxrm/apdsp3:latest
 
 workflows:
-  version: 2
   build_and_deploy:
     jobs:
       - build_test
-      - start_sonarqube
-      - sonar_analysis:
+      - sonarscanner/scan:
           requires:
             - build_test
-            - start_sonarqube
-      - stop_sonarqube:
-          requires:
-            - sonar_analysis
+          context: sonarqube
+          sonar-url: $SONAR_HOST_URL
+          sonar-login: $SONARQUBE_TOKEN
+          sonar-project-key: $SONAR_PROJECT_KEY
+          sonar-sources: Backend
       - build_docker_image:
           requires:
-            - sonar_analysis
+            - sonarscanner/scan
