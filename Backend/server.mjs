@@ -9,9 +9,10 @@ import express from 'express';
 import cors from 'cors';
 
 // Import the routes
-import employees from './routes/employee.mjs';
+
 import users from './routes/user.mjs';
 import home from './routes/home.mjs';
+import payment from './routes/payment.mjs';
 
 
 const PORT = 5050; 
@@ -43,15 +44,14 @@ app.use((req, res, next) => {
 
 // Use the imported routes
 
-app.use("/employee", employees);
-app.route("/employee", employees);
-
 app.use("/user", users);
 app.route("/user", users);
 
 app.use("/home", home);
 app.route("/home", home);
 
+app.use('/payment', payment);
+app.route('/payment', payment);
 
 
 // Add a simple test route
