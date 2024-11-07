@@ -1,5 +1,8 @@
 # Use the official Node.js image as the base image
-FROM node:14
+FROM node:14-alpine
+
+# Install nodemon globally
+RUN npm install -g nodemon
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -11,7 +14,7 @@ COPY package*.json ./
 RUN npm install
 
 # Ensure node_modules binaries have executable permissions
-RUN chmod -R 755 /app/node_modules/.bin
+#RUN chmod -R 755 /app/node_modules/.bin
 
 # Copy the rest of the application code to the working directory
 COPY . .
