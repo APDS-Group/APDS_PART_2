@@ -64,8 +64,11 @@ const signup = async (req, res) => {
     let result = await collection.insertOne(newUser);
 
     console.log("Registration successful for user:", email);
-    res.status(201).json({ message: "Registration successful", success: true });
-
+    res.status(201).json({ 
+      message: "Registration successful", 
+      success: true,
+      userId: result.insertedId // Use the insertedId from the result
+    });
   } catch (error) {
     console.log("Error during registration:", error);
     res.status(500).json({ message: "Internal Server Error", success: false });
@@ -141,8 +144,11 @@ const preRegister = async (req, res) => {
     let result = await collection.insertOne(newEmployee);
 
     console.log("Registration successful for employee:", username);
-    res.status(201).json({ message: "Registration successful", success: true });
-
+    res.status(201).json({ 
+      message: "Registration successful", 
+      success: true,
+      userId: result.insertedId // Use the insertedId from the result
+    });
   } catch (error) {
     console.log("Error during registration:", error);
     res.status(500).json({ message: "Internal Server Error", success: false });
