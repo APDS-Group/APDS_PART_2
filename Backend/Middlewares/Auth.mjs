@@ -29,6 +29,8 @@ const ensureAuthentication = (req, res, next) => {
         // Call the next middleware function in the stack
         next();
     } catch (error) {
+        // Log the error for debugging purposes
+        console.error('JWT verification error:', error);        
         // If the token is invalid, return a 403 status with an error message
         return res.status(403).json({ message: 'Unauthorized: Invalid JWT Token' });
     }
