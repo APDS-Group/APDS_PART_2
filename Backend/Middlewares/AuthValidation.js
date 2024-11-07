@@ -1,3 +1,4 @@
+
 // Email validation function
 const checkEmail = (email) => {
     // Regular expression pattern to validate email addresses (Stribizew, 2018)(Ryan, 2024)
@@ -88,6 +89,7 @@ const loginValidation = (req, res, next) => {
     // Call the next middleware function in the stack
     next();
 };
+
 // SWIFT code validation function
 const checkSwiftCode = (swiftCode) => {
     // Regular expression pattern to validate SWIFT codes
@@ -103,6 +105,7 @@ const checkSwiftCode = (swiftCode) => {
     return null;
 };
 
-// Export the functions
-export { signupValidation, loginValidation, checkEmail, checkPassword, checkString, checkSwiftCode };
+// Export the signupValidation and loginValidation middleware functions
+export { signupValidation, loginValidation, checkEmail, checkPassword, checkString , checkSwiftCode };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
+

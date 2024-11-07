@@ -1,4 +1,4 @@
-import { checkEmail, checkPassword, checkString, loginValidation, signupValidation } from '../Backend/Middlewares/AuthValidation.js';
+import { checkEmail, checkPassword, checkString, loginValidation, signupValidation } from '../Backend/Middlewares/AuthValidation.mjs';
 
 
 describe('Validation Functions', () => {

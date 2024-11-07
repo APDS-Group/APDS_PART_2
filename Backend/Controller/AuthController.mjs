@@ -29,6 +29,52 @@ dotenv.config();
 // Define the signup controller function
 const signup = async (req, res) => {
   try {
+
+    const { firstname, lastname, username, email, password, accountNumber, idNumber } = req.body;
+
+    console.log("Received signup request with data:", { firstname, lastname, username, email, accountNumber, idNumber });
+
+    let collection = db.collection("users");
+
+    console.log("Checking if user already exists with email, username, or account number");
+    const user = await collection.findOne({
+      $or: [
+        { email: email },
+        { username: username },
+        { accountNumber: accountNumber }
+      ]
+    });
+
+    if (user) {
+      let errorMessage = "User already exists with ";
+      if (user.email === email) errorMessage += "email";
+      if (user.username === username) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "username";
+      if (user.accountNumber === accountNumber) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "account number";
+      console.log(errorMessage);
+      return res.status(400).json({ message: errorMessage, success: false });
+    }
+
+     // Create a new user instance with the provided name, email, and password
+    const newUser = new User({ firstname, lastname, username, email, password, accountNumber, idNumber });
+    newUser.password = await bcrypt.hash(req.body.password, 10);
+
+    console.log("Inserting new user into the database");
+    let result = await collection.insertOne(newUser);
+
+    console.log("Registration successful for user:", email);
+    res.status(201).json({ 
+      message: "Registration successful", 
+      success: true,
+      userId: result.insertedId // Use the insertedId from the result
+    });
+  } catch (error) {
+    console.log("Error during registration:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
+};
+/*const signup = async (req, res) => {
+  try {
+
     // Extract name, email, and password from the request body
     const { name, email, password } = req.body;
 
@@ -57,6 +103,55 @@ const signup = async (req, res) => {
 
   } catch (error) {
     // If an error occurs, return a 500 status with an error message
+
+    res.status(500).json({ message: "Internal Serveer Error", success: false });
+    console.log(error)
+  }
+};
+*/
+// Define the pre-register controller function
+const preRegister = async (req, res) => {
+  try {
+    const { firstname, lastname, username, password, empNum, idNumber } = req.body;
+
+    console.log("Received signup request with data:", { firstname, lastname, username,password, empNum, idNumber });
+
+    const db = await connectToDatabase();
+    let collection = db.collection("employees");
+
+    console.log("Checking if employee user already exists with username, or employee number");
+    const employee = await collection.findOne({
+      $or: [
+        { username: username },
+        { empNum: empNum }
+      ]
+    });
+
+    if (employee) {
+      let errorMessage = "User already exists with ";
+      if (employee.username === username) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "username";
+      if (employee.empNum === empNum) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "employee number";
+      console.log(errorMessage);
+      return res.status(400).json({ message: errorMessage, success: false });
+    }
+
+    // Create a new employee instance with the provided data
+    const newEmployee = new Employee({ firstname, lastname, username, password, empNum, idNumber });
+    newEmployee.password = await bcrypt.hash(req.body.password, 10);
+
+    console.log("Inserting new employee user into the database");
+   // await newEmployee.save();    
+    let result = await collection.insertOne(newEmployee);
+
+    console.log("Registration successful for employee:", username);
+    res.status(201).json({ 
+      message: "Registration successful", 
+      success: true,
+      userId: result.insertedId // Use the insertedId from the result
+    });
+  } catch (error) {
+    console.log("Error during registration:", error);
+
     res.status(500).json({ message: "Internal Server Error", success: false });
     console.log(error)
   }
