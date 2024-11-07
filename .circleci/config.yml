@@ -1,0 +1,42 @@
+version: 2.1
+
+jobs:
+  build_test:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run:
+          name: Install npm dependencies
+          command: npm install
+          working_directory: Backend
+      - run:
+          name: Run tests
+          command: npm test
+          working_directory: Backend
+
+  build_docker_image:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build Docker image
+          command: docker build -t hxrm/apdsp3:latest -f Backend/MyDockerfile Backend
+      - run:
+          name: Login to Docker Hub
+          command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
+      - run:
+          name: Push Docker image
+          command: docker push hxrm/apdsp3:latest
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build_test
+      - build_docker_image:
+          requires:
+            - build_test
