@@ -1,5 +1,5 @@
 version: 2.1
-#public orb so had to change security
+
 orbs:
   sonarscanner: psl/sonarscanner@0.0.4
 
@@ -17,6 +17,36 @@ jobs:
           name: Run tests
           command: npm test
           working_directory: Backend
+
+  sonarqube_scan:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    working_directory: /tmp/workspace
+    environment:
+      ENV_FILE: /tmp/workspace/.circleenv
+      DOCKER_BUILDKIT: "1"
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Install SonarQube Scanner
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y openjdk-11-jdk
+            wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip sonar-scanner.zip
+            rm sonar-scanner.zip
+      - run:
+          name: Run SonarScanner
+          command: |
+            export PATH="$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin"
+            sonar-scanner \
+              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
+              -Dsonar.host.url=$SONAR_HOST_URL \
+              -Dsonar.login=$SONARQUBE_TOKEN \
+              -Dsonar.sources="Backend"
 
   build_docker_image:
     docker:
@@ -36,17 +66,13 @@ jobs:
           command: docker push hxrm/apdsp3:latest
 
 workflows:
+  version: 2
   build_and_deploy:
     jobs:
       - build_test
-      - sonarscanner/scan:
+      - sonarqube_scan:
           requires:
             - build_test
-          context: sonarqube
-          sonar-url: $SONAR_HOST_URL
-          sonar-login: $SONARQUBE_TOKEN
-          sonar-project-key: $SONAR_PROJECT_KEY
-          sonar-sources: Backend
       - build_docker_image:
           requires:
-            - sonarscanner/scan
+            - sonarqube_scan
