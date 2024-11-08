@@ -1,10 +1,10 @@
-# Use the official OpenJDK 17 image as the base image
-FROM openjdk:17-jdk-alpine
+# Use the official Node.js 18.x Alpine image as the base image
+FROM node:18-alpine
 
-# Install necessary packages
-RUN apk add --no-cache curl git openssh-client
+# Install necessary packages (curl, git, openssh-client, bash, unzip, and OpenJDK)
+RUN apk add --no-cache curl git openssh-client bash unzip openjdk17
 
-# Install Node.js and npm
+# Install Node.js and npm (already part of the base image)
 RUN apk add --no-cache nodejs npm
 
 # Install nodemon and bcrypt globally
@@ -18,6 +18,8 @@ RUN curl -Lo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distrib
 
 # Set environment variables
 ENV PATH="/opt/sonar-scanner-4.6.2.2472/bin:${PATH}"
+ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # Verify installation
-RUN sonar-scanner --version
+RUN node -v && npm -v && java -version && sonar-scanner --version
