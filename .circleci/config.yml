@@ -29,6 +29,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name:  Verify Backend Directory
+          command: ls -R Backend
+      - run:
           name: Run SonarScanner
           command: |
             sonar-scanner -X \
@@ -36,10 +39,7 @@ jobs:
               -Dsonar.organization=$SONAR_ORG \
               -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.login=$SONAR_TOKEN \
-              -Dsonar.sources="Backend"  # Set to scan your backend source folder \
-              -Dsonar.c.file.suffixes=- \
-              -Dsonar.cpp.file.suffixes=- \
-              -Dsonar.objc.file.suffixes=-
+              -Dproject.settings=Backend/sonar-project.properties
 
   # Job for building and pushing Docker image
   build_docker_image:
