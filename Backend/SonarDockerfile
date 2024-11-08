@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-alpine
 # Install necessary packages
 RUN apk add --no-cache curl git openssh-client
 
-# Install Node.js and npm
+# Install the latest Node.js LTS version
 RUN apk add --no-cache nodejs npm
 
 # Install nodemon and bcrypt globally
@@ -19,5 +19,6 @@ RUN curl -Lo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distrib
 # Set environment variables
 ENV PATH="/opt/sonar-scanner-4.6.2.2472/bin:${PATH}"
 
-# Verify installation
+# Verify installations
 RUN sonar-scanner --version
+RUN node -v && npm -v
