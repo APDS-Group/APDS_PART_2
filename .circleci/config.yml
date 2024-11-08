@@ -32,10 +32,10 @@ jobs:
           name: Run SonarScanner
           command: |
             sonar-scanner -X \
-              -Dsonar.projectKey=$APDS-Group_APDS_PART_2 \
-              -Dsonar.organization=$apds-group \
-              -Dsonar.host.url=$https://sonarcloud.io \
-              -Dsonar.login=$3d60ab3595451cd7b3421eb3bc0dfa4adc0763f1 \
+              -Dsonar.projectKey="$APDS-Group_APDS_PART_2" \
+              -Dsonar.organization="$apds-group" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login="$SONAR_TOK"\
               -Dproject.settings=Backend/sonar-project.properties
 # Define the workflow that runs these jobs in order
 workflows:
