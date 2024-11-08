@@ -28,10 +28,6 @@ jobs:
       SONAR_TOKEN: "3d60ab3595451cd7b3421eb3bc0dfa4adc0763f1"  # Reference the environment variable set in CircleCI project settings
     steps:
       - checkout
-     # - run: |
-          # Install dependencies using apk (for Alpine-based image)
-      #    apk update
-      #    apk add --no-cache openssh-client git curl
       - run:
           name: Run SonarScanner
           command: |
