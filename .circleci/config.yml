@@ -38,11 +38,12 @@ jobs:
           command: |
             echo "Waiting for SonarQube to start..."
             retries=0
-            max_retries=30
+            max_retries=60  # Increase the number of retries to allow more time for SonarQube to start
             until curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
               retries=$((retries + 1))
               if [ $retries -ge $max_retries ]; then
                 echo "SonarQube did not start in time."
+                docker logs sonarqube  # Print SonarQube logs for debugging
                 exit 1
               fi
               sleep 10
