@@ -28,8 +28,27 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - checkout
-      - attach_workspace:
-          at: /tmp/workspace
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Start SonarQube
+          command: |
+            docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
+      - run:
+          name: Wait for SonarQube to be ready
+          command: |
+            echo "Waiting for SonarQube to start..."
+            retries=0
+            max_retries=30
+            until curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
+              retries=$((retries + 1))
+              if [ $retries -ge $max_retries ]; then
+                echo "SonarQube did not start in time."
+                exit 1
+              fi
+              sleep 10
+            done
+            echo "SonarQube is up and running."
       - run:
           name: Install SonarQube Scanner
           command: |
@@ -42,8 +61,8 @@ jobs:
             export PATH="$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin"
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONARQUBE_TOKEN \
+              -Dsonar.host.url=http://localhost:9000 \
+              -Dsonar.login=$SONAR_TOKEN \
               -Dsonar.sources="Backend"
 
   build_docker_image:
