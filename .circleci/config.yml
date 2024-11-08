@@ -19,7 +19,7 @@ jobs:
   # Job for running SonarQube scan using the SonarScanner CLI
   sonarqube_scan:
     docker:
-      - image: hxrm/sonar-scanner-cli:4.6-jdk17  # SonarScanner image for Node.js project scan
+      - image: hxrm/sonar-scanner-cli:4.6-jdk17  # Custom Docker image with Java 17, Node.js, and SonarScanner
     environment:
       # Set up the SonarQube environment variables for authentication
       SONAR_PROJECT_KEY: "APDS-Group_APDS_PART_2"  # Reference the environment variable set in CircleCI project settings
@@ -40,6 +40,7 @@ jobs:
               -Dsonar.c.file.suffixes=- \
               -Dsonar.cpp.file.suffixes=- \
               -Dsonar.objc.file.suffixes=-
+
   # Job for building and pushing Docker image
   build_docker_image:
     docker:
