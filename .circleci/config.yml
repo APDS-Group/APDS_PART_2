@@ -42,6 +42,7 @@ jobs:
           command: |
             docker run -d --name sonarqube -p 9000:9000 \
               --link sonarqube-db:db \
+              --sysctl vm.max_map_count=262144 \
               -e SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonarqube \
               -e SONAR_JDBC_USERNAME=$PGUser \
               -e SONAR_JDBC_PASSWORD=$PGPass \
