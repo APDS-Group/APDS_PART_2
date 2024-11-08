@@ -62,7 +62,7 @@ jobs:
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONARQUBE_TOKEN \
+              -Dsonar.login=$SONAR_TOKEN \
               -Dsonar.sources="Backend"
 
   build_docker_image:
