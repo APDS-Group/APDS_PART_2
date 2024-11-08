@@ -1,3 +1,4 @@
+#the issue is because it doesnt find the sonarqube
 version: 2.1
 
 orbs:
@@ -37,7 +38,18 @@ jobs:
           name: Wait for SonarQube to be ready
           command: |
             echo "Waiting for SonarQube to start..."
-            sleep 400  # Wait (temp fix - just tryna see if itll work)
+            retries=0
+            max_retries=60  # Increase the number of retries to allow more time for SonarQube to start
+            while ! curl -s http://localhost:9000/api/system/status | grep -q "\"status\":\"UP\""; do
+              retries=$((retries + 1))
+              if [ $retries -ge $max_retries ]; then
+                echo "SonarQube did not start in time."
+                docker logs sonarqube  # Print SonarQube logs for debugging
+                exit 1
+              fi
+              sleep 10
+            done
+            echo "SonarQube is up and running."
       - run:
           name: Install SonarQube Scanner
           command: |
@@ -51,7 +63,7 @@ jobs:
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.login=$SONARQUBE_TOKEN \
               -Dsonar.sources="Backend"
 
   build_docker_image:
