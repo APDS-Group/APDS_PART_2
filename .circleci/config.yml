@@ -25,9 +25,10 @@ jobs:
       - run:
           name: Run SonarScanner
           command: |
+            echo "Project Key: $SONAR_PROJECT_KEY"
             sonar-scanner -X \
-              -Dsonar.projectKey="$APDS-Group_APDS_PART_2" \
-              -Dsonar.organization="$apds-group" \
+              -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
+              -Dsonar.organization="$SONAR_ORG" \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login="$SONAR_TOK" \
               -Dsonar.branch.name="${CIRCLE_BRANCH}" \
