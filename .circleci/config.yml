@@ -25,19 +25,18 @@ jobs:
       SONAR_PROJECT_KEY: "APDS-Group_APDS_PART_2"  # Reference the environment variable set in CircleCI project settings
       SONAR_ORG: "apds-group"  # Reference the environment variable set in CircleCI project settings
       SONAR_HOST_URL: "https://sonarcloud.io"  # Reference the environment variable set in CircleCI project settings (optional)
-      SONAR_TOKEN: "SONAR_TOK"  # Reference the environment variable set in CircleCI project settings
+      SONAR_TOKEN: "3d60ab3595451cd7b3421eb3bc0dfa4adc0763f1"  # Reference the environment variable set in CircleCI project settings
     steps:
       - checkout
       - run:
           name: Run SonarScanner
           command: |
             sonar-scanner -X \
-              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.organization=$SONAR_ORG \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.projectKey=$APDS-Group_APDS_PART_2 \
+              -Dsonar.organization=$apds-group \
+              -Dsonar.host.url=$https://sonarcloud.io \
+              -Dsonar.login=$3d60ab3595451cd7b3421eb3bc0dfa4adc0763f1 \
               -Dproject.settings=Backend/sonar-project.properties
-
 # Define the workflow that runs these jobs in order
 workflows:
   version: 2
