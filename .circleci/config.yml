@@ -31,9 +31,13 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Setup SonarQube
+          command: |
+            docker run -d --name sonarqube-db -e POSTGRES_USER=$PGUser\ -e POSTGRES_PASSWORD=$PGPass\ -e POSTGRES_DB=sonarqube postgres:alpine
+      - run:
           name: Start SonarQube
           command: |
-            docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
+            docker run -d --name sonarqube -p 9000:9000 --link sonarqube-db:db -e SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonarqube -e SONAR_JDBC_USERNAME=$PGUser\ -e SONAR_JDBC_PASSWORD=$PGPass\ sonarqube
       - run:
           name: Wait for SonarQube to be ready
           command: |
@@ -62,8 +66,8 @@ jobs:
             export PATH="$PATH:$PWD/sonar-scanner-4.6.2.2472-linux/bin"
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONARQUBE_TOKEN \
+              -Dsonar.host.url=http://localhost:9000
+              -Dsonar.login=$SONAR_TOKEN \
               -Dsonar.sources="Backend"
 
   build_docker_image:
