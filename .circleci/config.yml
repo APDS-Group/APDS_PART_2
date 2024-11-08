@@ -20,7 +20,7 @@ jobs:
   sonarqube_scan:
     docker:
       - image: sonarsource/sonar-scanner-cli  # SonarScanner image for Node.js project scan
-    context: APDS_POE_CONTEXT  # Make sure the context is correctly defined
+    resource_class: small  # Optional: set resource class for the job
     steps:
       - checkout
       - run: apk --no-cache add --update openssh git curl  # Install required dependencies for the scan
@@ -64,3 +64,5 @@ workflows:
       - build_docker_image:
           requires:
             - sonarqube_scan  # Only build Docker image after SonarQube scan
+    contexts:
+      - APDS_POE_CONTEXT  # Add the context here for environment variables like SONAR_PROJECT_KEY, etc.
