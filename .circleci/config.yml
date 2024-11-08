@@ -19,7 +19,7 @@ jobs:
   # Job for running SonarQube scan using the SonarScanner CLI
   sonarqube_scan:
     docker:
-      - image: sonarsource/sonar-scanner-cli:latest-alpine  # SonarScanner image for Node.js project scan
+      - image: sonarsource/sonar-scanner-cli:4.6  # SonarScanner image for Node.js project scan
     environment:
       # Set up the SonarQube environment variables for authentication
       SONAR_PROJECT_KEY: "$SONAR_PROJECT_KEY"  # Reference the environment variable set in CircleCI project settings
