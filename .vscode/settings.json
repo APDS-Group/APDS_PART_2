@@ -1,2 +1,5 @@
 {
+    "circleci.persistedProjectSelection": [
+        "gh/APDS-Group/APDS_PART_2"
+    ]
 }
