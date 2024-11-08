@@ -37,7 +37,7 @@ jobs:
           name: Wait for SonarQube to be ready
           command: |
             echo "Waiting for SonarQube to start..."
-            sleep 600  # Wait for 10 minutes (temp fix - just tryna see if itll work)
+            sleep 400  # Wait (temp fix - just tryna see if itll work)
       - run:
           name: Install SonarQube Scanner
           command: |
