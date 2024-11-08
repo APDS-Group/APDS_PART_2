@@ -1,11 +1,26 @@
 version: 2.1
 
+# Define reusable jobs for your workflow
 jobs:
+  build_test:
+    docker:
+      - image: circleci/node:14  # Use a Node.js image suitable for your project
+    steps:
+      - checkout  # Check out your project repository
+      - run:
+          name: Install npm dependencies
+          command: npm install
+          working_directory: Backend  # Change to your specific project folder
+      - run:
+          name: Run tests
+          command: npm test
+          working_directory: Backend
+
   # Job for running SonarQube scan using the SonarScanner CLI
   sonarqube_scan:
     docker:
       - image: sonarsource/sonar-scanner-cli  # SonarScanner image for Node.js project scan
-    context: APDS_POE_CONTEXT
+    context: APDS_POE_CONTEXT  # Make sure the context is correctly defined
     steps:
       - checkout
       - run: apk --no-cache add --update openssh git curl  # Install required dependencies for the scan
@@ -20,23 +35,32 @@ jobs:
               -Dsonar.sources="Backend"  # Set to scan your backend source folder
 
   # Job for building and pushing Docker image
-  build_and_push:
+  build_docker_image:
     docker:
-      - image: docker:stable
+      - image: circleci/node:14  # Node.js Docker image to build your project image
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.7
+          docker_layer_caching: false
       - run:
           name: Build Docker image
-          command: docker build -t your-image-name .
+          command: docker build -t hxrm/apdsp3:latest -f Backend/MyDockerfile Backend
+      - run:
+          name: Login to Docker Hub
+          command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
       - run:
           name: Push Docker image
-          command: docker push your-image-name
+          command: docker push hxrm/apdsp3:latest
 
+# Define the workflow that runs these jobs in order
 workflows:
   version: 2
-  build_and_scan:
+  build_and_deploy:
     jobs:
-      - sonarqube_scan
-      - build_and_push
+      - build_test
+      - sonarqube_scan:
+          requires:
+            - build_test  # Only run SonarQube scan after tests pass
+      - build_docker_image:
+          requires:
+            - sonarqube_scan  # Only build Docker image after SonarQube scan
