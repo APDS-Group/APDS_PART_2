@@ -20,8 +20,12 @@ jobs:
   sonarqube_scan:
     docker:
       - image: sonarsource/sonar-scanner-cli  # SonarScanner image for Node.js project scan
-    resource_class: small  # Optional: set resource class for the job
-    context: APDS_POE_CONTEXT  # Reference context here to provide environment variables
+    environment:
+      # Set up the SonarQube environment variables for authentication
+      SONAR_PROJECT_KEY: "$SONAR_PROJECT_KEY"  # Reference the environment variable set in CircleCI project settings
+      SONAR_ORG: "$SONAR_ORG"  # Reference the environment variable set in CircleCI project settings
+      SONAR_HOST_URL: "$SONAR_HOST_URL"  # Reference the environment variable set in CircleCI project settings (optional)
+      SONAR_TOKEN: "$SONAR_TOKEN"  # Reference the environment variable set in CircleCI project settings
     steps:
       - checkout
       - run: apk --no-cache add --update openssh git curl  # Install required dependencies for the scan
