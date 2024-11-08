@@ -1,5 +1,5 @@
 # Use the official OpenJDK 17 image as the base image
-FROM openjdk:17-jdk-alpine
+FROM node:latest
 
 # Install necessary packages
 RUN apk add --no-cache curl git openssh-client
