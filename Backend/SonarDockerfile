@@ -4,6 +4,12 @@ FROM openjdk:17-jdk-alpine
 # Install necessary packages
 RUN apk add --no-cache curl git openssh-client
 
+# Install Node.js and npm
+RUN apk add --no-cache nodejs npm
+
+# Install nodemon and bcrypt globally
+RUN npm install -g nodemon bcrypt
+
 # Download and install SonarScanner
 RUN curl -Lo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472.zip && \
     unzip /tmp/sonar-scanner-cli.zip -d /opt && \
