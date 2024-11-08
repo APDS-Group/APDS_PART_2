@@ -29,9 +29,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name:  Verify Backend Directory
-          command: ls -R Backend
-      - run:
           name: Run SonarScanner
           command: |
             sonar-scanner -X \
@@ -40,24 +37,6 @@ jobs:
               -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.login=$SONAR_TOKEN \
               -Dproject.settings=Backend/sonar-project.properties
-
-  # Job for building and pushing Docker image
-  build_docker_image:
-    docker:
-      - image: circleci/node:14  # Node.js Docker image to build your project image
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
-      - run:
-          name: Build Docker image
-          command: docker build -t hxrm/apdsp3:latest -f Backend/MyDockerfile Backend
-      - run:
-          name: Login to Docker Hub
-          command: echo $DOCKER_PASSWORD | docker login -u hxrm --password-stdin
-      - run:
-          name: Push Docker image
-          command: docker push hxrm/apdsp3:latest
 
 # Define the workflow that runs these jobs in order
 workflows:
@@ -68,6 +47,3 @@ workflows:
       - sonarqube_scan:
           requires:
             - build_test  # Only run SonarQube scan after tests pass
-      - build_docker_image:
-          requires:
-            - sonarqube_scan  # Only build Docker image after SonarQube scan
