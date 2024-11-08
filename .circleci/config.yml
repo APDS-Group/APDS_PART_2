@@ -30,13 +30,12 @@ jobs:
       - checkout
       - run: |
           # Install dependencies using apk (for Alpine-based image)
-          echo "SONAR_HOST_URL is: $SONAR_HOST_URL"
           apk update
           apk add --no-cache openssh-client git curl
       - run:
           name: Run SonarScanner
           command: |
-            sonar-scanner \
+            sonar-scanner -X \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.organization=$SONAR_ORG \
               -Dsonar.host.url=$SONAR_HOST_URL \
