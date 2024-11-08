@@ -4,8 +4,11 @@ FROM openjdk:17-jdk-alpine
 # Install necessary packages
 RUN apk add --no-cache curl git openssh-client
 
-# Install the latest Node.js LTS version
-RUN apk add --no-cache nodejs npm
+# Install Node.js from NodeSource
+RUN apk add --no-cache --virtual .build-deps curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apk add --no-cache nodejs npm && \
+    apk del .build-deps
 
 # Install nodemon and bcrypt globally
 RUN npm install -g nodemon bcrypt
