@@ -34,22 +34,6 @@ jobs:
           command: |
             docker run -d --name sonarqube -p 9000:9000 sonarqube:latest
       - run:
-          name: Wait for SonarQube to be ready
-          command: |
-            echo "Waiting for SonarQube to start..."
-            retries=0
-            max_retries=60  # Increase the number of retries to allow more time for SonarQube to start
-            while ! curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
-              retries=$((retries + 1))
-              if [ $retries -ge $max_retries ]; then
-                echo "SonarQube did not start in time."
-                docker logs sonarqube  # Print SonarQube logs for debugging
-                exit 1
-              fi
-              sleep 10
-            done
-            echo "SonarQube is up and running."
-      - run:
           name: Install SonarQube Scanner
           command: |
             wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
