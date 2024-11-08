@@ -39,7 +39,7 @@ jobs:
             echo "Waiting for SonarQube to start..."
             retries=0
             max_retries=60  # Increase the number of retries to allow more time for SonarQube to start
-            until curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
+            while ! curl -s http://localhost:9000/api/system/status | grep -q "UP"; do
               retries=$((retries + 1))
               if [ $retries -ge $max_retries ]; then
                 echo "SonarQube did not start in time."
@@ -62,7 +62,7 @@ jobs:
             sonar-scanner \
               -Dsonar.projectKey=$SONAR_PROJECT_KEY \
               -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$SONAR_TOKEN \
+              -Dsonar.login=$SONARQUBE_TOKEN \
               -Dsonar.sources="Backend"
 
   build_docker_image:
