@@ -30,6 +30,7 @@ jobs:
       - checkout
       - run: |
           # Install dependencies using apk (for Alpine-based image)
+          echo "SONAR_HOST_URL is: $SONAR_HOST_URL"
           apk update
           apk add --no-cache openssh-client git curl
       - run:
