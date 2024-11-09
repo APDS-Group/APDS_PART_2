@@ -7,6 +7,7 @@ import fs from 'fs';
 import express from 'express'; 
 // Import the cors module for handling Cross-Origin Resource Sharing
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 // Import the routes
 
@@ -52,6 +53,7 @@ app.route("/home", home);
 
 app.use('/payment', payment);
 app.route('/payment', payment);
+
 
 
 // Add a simple test route

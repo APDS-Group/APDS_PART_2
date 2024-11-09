@@ -88,21 +88,7 @@ const loginValidation = (req, res, next) => {
     // Call the next middleware function in the stack
     next();
 };
-// SWIFT code validation function
-const checkSwiftCode = (swiftCode) => {
-    // Regular expression pattern to validate SWIFT codes
-    const swiftCodePattern = /^([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?$/;
-    
-    // Test the SWIFT code against the pattern
-    if (!swiftCodePattern.test(swiftCode)) {
-        // Return an error message if the SWIFT code is invalid
-        return "Please enter a valid SWIFT code.";
-    }
-    
-    // Return null if the SWIFT code is valid
-    return null;
-};
 
 // Export the functions
-export { signupValidation, loginValidation, checkEmail, checkPassword, checkString, checkSwiftCode };
+export { signupValidation, loginValidation, checkEmail, checkPassword, checkString };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
