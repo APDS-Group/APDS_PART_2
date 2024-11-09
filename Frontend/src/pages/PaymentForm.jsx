@@ -179,7 +179,6 @@ function PaymentForm() {
                         <option value="ZAR">ZAR</option>
                         <option value="EUR">EUR</option>
                         <option value="GBP">GBP</option>
-                        <option value="ZEN">ZEN</option>
                         <option value="JPY">JPY</option>
                         <option value="AUD">AUD</option>
                         <option value="CAD">CAD</option>
