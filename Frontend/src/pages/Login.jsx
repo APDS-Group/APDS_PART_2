@@ -1,135 +1,180 @@
-// Import necessary modules and hooks from React and react-router-dom
 import React, { useState } from 'react';
-import { handleError, handleSucess } from '../utils';
 import { useNavigate } from 'react-router-dom';
+import { handleError, handleSucess } from '../utils';
+import '../App.css'; // Import the CSS file
 
-function Login() {
+function Login({ setIsAuthenticated }) {
 
-    // Initialize the useNavigate hook for navigation
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-    // State to store login information (usernameOrAccountNumber and password)
-    const [loginInfo, setLoginInfo] = React.useState({
-        usernameOrAccountNumber: '',
-        password: ''
-    });
+  //const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
+  //const [errors, setErrors] = useState({});
 
-    // State to store error messages for usernameOrAccountNumber and password fields
-    const [errors, setErrors] = useState({       
-        usernameOrAccountNumber: '',
-        password: ''
-    });
+  // State to store login information (usernameOrAccountNumber and password)
+  const [loginInfo, setLoginInfo] = React.useState({
+    usernameOrAccountNumber: '',
+    password: ''
+  });
 
-    // Handle input changes and update the loginInfo state
-    const handleChange = (e) => {
-        const { name, value } = e.target;   
-        const newUserInfo = { ...loginInfo };
-        newUserInfo[name] = value;
-        setLoginInfo(newUserInfo);
+  // State to store error messages for usernameOrAccountNumber and password fields
+  const [errors, setErrors] = useState({
+    usernameOrAccountNumber: '',
+    password: ''
+  });
 
-        // Clear the error message for the changed field
-        setErrors((prevErrors) => ({
+  // Handle input changes and update the loginInfo state
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newUserInfo = { ...loginInfo };
+    newUserInfo[name] = value;
+    setLoginInfo(newUserInfo);
+
+    // Clear the error message for the changed field
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: ''
+    }));
+  };
+
+  // Handle form submission for login
+  /* const handleLogin = async (e) => {
+     e.preventDefault();
+    // const { email, password } = loginInfo;
+  const { usernameOrAccountNumber, password } = loginInfo;    
+     // Validate email and password fields
+     if (!email || !password) {
+       setErrors({
+         email: !email ? 'Email is required' : '',
+         password: !password ? 'Password is required' : ''
+       });
+       return handleError('Email and password are required');
+     }
+ 
+     try {
+       const url = "https://localhost:5050/user/login/";
+ 
+       // Send login request to the server
+       const response = await fetch(url, {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(loginInfo),
+       });
+       const data = await response.json();
+       if (data.success) {
+         // Save the token and user details to local storage
+         localStorage.setItem('authToken', data.token);
+         localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
+         setIsAuthenticated(true);
+         handleSucess('Login successful');
+         navigate('/');
+       } else {
+         handleError(data.message);
+       }
+     } catch (error) {
+       handleError('Login failed');
+     }
+   };
+ */
+  // Handle form submission for login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { usernameOrAccountNumber, password } = loginInfo;
+
+    // Validate usernameOrAccountNumber and password fields
+    if (!usernameOrAccountNumber || !password) {
+      setErrors({
+        usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
+        password: !password ? 'Password is required' : ''
+      });
+      return handleError('Username or Account Number and password are required');
+    }
+
+    try {
+      const url = "https://localhost:5050/user/login/";
+      // Disable SSL verification (for development purposes only)
+      //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+      // Send login request to the server
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginInfo),
+      });
+
+      const result = await response.json();
+      const { success, message, token, name, error } = result;
+
+      if (success) {
+        // Handle successful login
+        handleSucess(message);
+        localStorage.setItem('token', token);
+        localStorage.setItem('loggedInUser', name);
+        navigate('/home');
+      } else if (error) {
+        // Handle server-side validation errors
+        const details = error?.details[0]?.message || error;
+        handleError(details);
+      } else if (!success) {
+        // Handle specific error messages for non-existent user or invalid credentials
+        if (message === "User does not exist" || message === "Invalid credentials") {
+          setErrors((prevErrors) => ({
             ...prevErrors,
-            [name]: ''
-        }));
-    };
-
-    // Handle form submission for login
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        const { usernameOrAccountNumber, password } = loginInfo;    
-
-        // Validate usernameOrAccountNumber and password fields
-        if (!usernameOrAccountNumber || !password) {
-            setErrors({
-                usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
-                password: !password ? 'Password is required' : ''
-            });
-            return handleError('Username or Account Number and password are required');
+            usernameOrAccountNumber: message === "" ? message : '',
+            password: message === "Invalid credentials" ? message : ''
+          }));
+        } else {
+          handleError(message);
         }
+      }
+    } catch (error) {
+      // Handle network or other errors
+      handleError(error.message);
+    }
+  };
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1>Login</h1>
+        <form onSubmit={handleLogin}>
+        <div className="form-group">
+            <label htmlFor='usernameOrAccountNumber'>Username or Account Number</label>
+            <input
+              onChange={handleChange}
+              name="usernameOrAccountNumber"
+              autoFocus
+              required
+              placeholder="Enter your username or account number"
+              value={loginInfo.usernameOrAccountNumber || ''}
+            />
+            {errors.usernameOrAccountNumber && <div className="error">{errors.usernameOrAccountNumber}</div>}
+          </div>
+          <div className="form-group">
+            <label htmlFor='password'>Password</label>
+            <input
+              onChange={handleChange}
+              type="password"
+              name="password"
+              required
+              placeholder="Enter your password"
+              value={loginInfo.password || ''}
+            />
+            {errors.password && <div className="error">{errors.password}</div>}
+          </div>
+          <button type="submit" className="primary-button">Login</button>
+        
+        </form>
 
-        try {
-            const url = "https://localhost:5050/user/login/";
-            // Disable SSL verification (for development purposes only)
-          //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-            // Send login request to the server
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginInfo),
-            });
-
-            const result = await response.json();
-            const { success, message, token, name, error } = result;
-
-            if (success) {
-                // Handle successful login
-                handleSucess(message);
-                localStorage.setItem('token', token);
-                localStorage.setItem('loggedInUser', name);
-                navigate('/home'); 
-            } else if (error) {
-                // Handle server-side validation errors
-                const details = error?.details[0]?.message || error;
-                handleError(details);
-            } else if (!success) {
-                // Handle specific error messages for non-existent user or invalid credentials
-                if (message === "User does not exist" || message === "Invalid credentials") {
-                    setErrors((prevErrors) => ({
-                        ...prevErrors,
-                        usernameOrAccountNumber: message === "" ? message : '',
-                        password: message === "Invalid credentials" ? message : ''
-                    }));
-                } else {
-                    handleError(message);
-                }
-            }
-        } catch (error) {
-            // Handle network or other errors
-            handleError(error.message);
-        }
-    };
-    
-    return (
-        <div>
-            <div className='container'>
-                <h1>Login</h1>
-                <form onSubmit={handleLogin}>
-                    <div>
-                        <label htmlFor='usernameOrAccountNumber'>Username or Account Number</label>
-                        <input
-                            onChange={handleChange}
-                            name="usernameOrAccountNumber"
-                            autoFocus
-                            placeholder="Enter your username or account number"
-                            value={loginInfo.usernameOrAccountNumber || ''}
-                        />
-                        {errors.usernameOrAccountNumber && <div className="error">{errors.usernameOrAccountNumber}</div>}
-                    </div>
-                    <div>
-                        <label htmlFor='password'>Password</label>
-                        <input
-                            onChange={handleChange}
-                            type="password"
-                            name="password"
-                            placeholder="Enter your password"
-                            value={loginInfo.password || ''}
-                        />
-                        {errors.password && <div className="error">{errors.password}</div>}
-                    </div>
-                    <button type="submit">Login</button>
-                    <div className="center-text">
-                        <span>Don't have an account? <a href="/register">Register</a></span>
-                    </div>
-                </form>          
-            </div>      
+        <div className="center-text">
+          <span>Don't have an account? <a href="/register">Register</a></span>
         </div>
-    );
+
+      </div>
+    </div>
+  );
 }
 
 export default Login;
-
-// (Shaikh, 2024) ---------------------.ooo END OF FILE ooo.---------------------\
