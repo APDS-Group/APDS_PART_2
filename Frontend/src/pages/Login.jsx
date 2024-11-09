@@ -8,15 +8,15 @@ function Login() {
     // Initialize the useNavigate hook for navigation
     const navigate = useNavigate(); 
 
-    // State to store login information (email and password)
+    // State to store login information (usernameOrAccountNumber and password)
     const [loginInfo, setLoginInfo] = React.useState({
-        email: '',
+        usernameOrAccountNumber: '',
         password: ''
     });
 
-    // State to store error messages for email and password fields
+    // State to store error messages for usernameOrAccountNumber and password fields
     const [errors, setErrors] = useState({       
-        email: '',
+        usernameOrAccountNumber: '',
         password: ''
     });
 
@@ -37,15 +37,15 @@ function Login() {
     // Handle form submission for login
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { email, password } = loginInfo;      
+        const { usernameOrAccountNumber, password } = loginInfo;      
 
-        // Validate email and password fields
-        if (!email || !password) {
+        // Validate usernameOrAccountNumber and password fields
+        if (!usernameOrAccountNumber || !password) {
             setErrors({
-                email: !email ? 'Email is required' : '',
+                usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
                 password: !password ? 'Password is required' : ''
             });
-            return handleError('Email and password are required');
+            return handleError('Username or Account Number and password are required');
         }
 
         try {
@@ -78,7 +78,7 @@ function Login() {
                 if (message === "User does not exist" || message === "Invalid credentials") {
                     setErrors((prevErrors) => ({
                         ...prevErrors,
-                        email: message === "User does not exist" ? message : '',
+                        usernameOrAccountNumber: message === "User does not exist" ? message : '',
                         password: message === "Invalid credentials" ? message : ''
                     }));
                 } else {
@@ -97,16 +97,15 @@ function Login() {
                 <h1>Login</h1>
                 <form onSubmit={handleLogin}>
                     <div>
-                        <label htmlFor='email'>Email</label>
+                        <label htmlFor='usernameOrAccountNumber'>Username or Account Number</label>
                         <input
                             onChange={handleChange}
-                            type="email"
-                            name="email"
+                            name="usernameOrAccountNumber"
                             autoFocus
-                            placeholder="Enter your email"
-                            value={loginInfo.email}
+                            placeholder="Enter your username or account number"
+                            value={loginInfo.usernameOrAccountNumber || ''}
                         />
-                        {errors.email && <div className="error">{errors.email}</div>}
+                        {errors.usernameOrAccountNumber && <div className="error">{errors.usernameOrAccountNumber}</div>}
                     </div>
                     <div>
                         <label htmlFor='password'>Password</label>
@@ -114,9 +113,8 @@ function Login() {
                             onChange={handleChange}
                             type="password"
                             name="password"
-                            autoFocus
                             placeholder="Enter your password"
-                            value={loginInfo.password}
+                            value={loginInfo.password || ''}
                         />
                         {errors.password && <div className="error">{errors.password}</div>}
                     </div>
@@ -132,4 +130,4 @@ function Login() {
 
 export default Login;
 
-// (Shaikh, 2024) __---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\
+// (Shaikh, 2024) ---------------------.ooo END OF FILE ooo.---------------------\

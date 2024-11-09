@@ -7,7 +7,8 @@
     "start": "node server.mjs",
     "dev": "nodemon server.mjs",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+   "debug": "nodemon --inspect server.mjs"
   },
   "keywords": [],
   "author": "",
