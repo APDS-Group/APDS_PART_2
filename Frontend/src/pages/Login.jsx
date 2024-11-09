@@ -110,10 +110,16 @@ function Login({ setIsAuthenticated }) {
 
       if (success) {
         // Handle successful login
-        handleSucess(message);
-        localStorage.setItem('token', token);
-        localStorage.setItem('loggedInUser', name);
-        navigate('/home');
+       // localStorage.setItem('token', token);
+       // localStorage.setItem('loggedInUser', name);
+       // handleSucess(message);
+       // navigate('/home');
+       localStorage.setItem('authToken', data.token);
+       localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
+       setIsAuthenticated(true);
+       handleSucess(message);
+       navigate('/');
+
       } else if (error) {
         // Handle server-side validation errors
         const details = error?.details[0]?.message || error;
