@@ -15,6 +15,11 @@ router.get("/", ensureAuthentication, (req, res) => {
     res.send(`Welcome to your profile, ${req.user.name}`);
 });
 
+router.get("/employee", ensureAuthentication, (req, res) => {
+    // Send a response with a welcome message that includes the user's name
+    res.send(`Welcome to your employee dashboard, ${req.user.name}`);
+});
+
 // Export the router instance as the default export of this module
 export default router;
 //  (The Independent Institute of Education, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\

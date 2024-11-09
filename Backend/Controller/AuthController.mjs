@@ -43,18 +43,21 @@ const signup = async (req, res) => {
       $or: [
         { email: email },
         { username: username },
-        { accountNumber: accountNumber }
+        { accountNumber: accountNumber },
+        { idNumber: idNumber }
       ]
     });
 
     if (user) {
-      let errorMessage = "User already exists with ";
-      if (user.email === email) errorMessage += "email";
-      if (user.username === username) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "username";
-      if (user.accountNumber === accountNumber) errorMessage += (errorMessage.endsWith(" ") ? "" : ", ") + "account number";
-      console.log(errorMessage);
-      return res.status(400).json({ message: errorMessage, success: false });
+      let errors = {};
+      if (user.email === email) errors.email = "Email already exists";
+      if (user.username === username) errors.username = "Username already exists";
+      if (user.accountNumber === accountNumber) errors.accountNumber = "Account number already exists";
+      if (user.idNumber === idNumber) errors.idNumber = "ID number already exists";
+      console.log(errors);
+      return res.status(400).json({ message: "User already exists", success: false, errors });
     }
+
 
      // Create a new user instance with the provided name, email, and password
     const newUser = new User({ firstname, lastname, username, email, password, accountNumber, idNumber });

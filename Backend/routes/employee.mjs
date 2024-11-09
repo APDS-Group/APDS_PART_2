@@ -7,6 +7,12 @@ import { preRegister, employeeLogin } from '../Controller/AuthController.mjs';
 // Import the signupValidation and loginValidation middleware functions from the AuthValidation module
 import { preRegisterValidation, employeeValidation} from '../Middlewares/AuthValidation.mjs';
 
+// Import the verification controller function from the EmployeeController module
+import { verification } from '../Controller/EmployeeController.mjs';
+
+//import verification validation
+import { verificationValidation } from '../Middlewares/Validation.mjs';
+
 // Import ExpressBrute for brute force protection
 import ExpressBrute from 'express-brute';
 
@@ -29,6 +35,8 @@ router.post("/preregistration", preRegisterValidation, preRegister);
 // The loginValidation middleware is used to validate the request data
 // If the validation passes, the login controller function is called to handle the request
 router.post("/login", bruteforce.prevent, employeeValidation, employeeLogin);
+
+router.post("/verification", bruteforce.prevent, verificationValidation, verification);
 
 // Define a GET route for the root path ("/")
 // This route sends a simple response indicating that it is the employee route

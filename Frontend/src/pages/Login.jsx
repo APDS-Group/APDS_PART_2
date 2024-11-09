@@ -37,7 +37,7 @@ function Login() {
     // Handle form submission for login
     const handleLogin = async (e) => {
         e.preventDefault();
-        const { usernameOrAccountNumber, password } = loginInfo;      
+        const { usernameOrAccountNumber, password } = loginInfo;    
 
         // Validate usernameOrAccountNumber and password fields
         if (!usernameOrAccountNumber || !password) {
@@ -50,7 +50,9 @@ function Login() {
 
         try {
             const url = "https://localhost:5050/user/login/";
-           
+            // Disable SSL verification (for development purposes only)
+          //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
             // Send login request to the server
             const response = await fetch(url, {
                 method: 'POST',
@@ -78,7 +80,7 @@ function Login() {
                 if (message === "User does not exist" || message === "Invalid credentials") {
                     setErrors((prevErrors) => ({
                         ...prevErrors,
-                        usernameOrAccountNumber: message === "User does not exist" ? message : '',
+                        usernameOrAccountNumber: message === "" ? message : '',
                         password: message === "Invalid credentials" ? message : ''
                     }));
                 } else {

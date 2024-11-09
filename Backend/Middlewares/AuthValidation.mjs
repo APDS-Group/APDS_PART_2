@@ -106,6 +106,7 @@ const signupValidation = (req, res, next) => {
     // If any validation errors exist, return a 400 status with the errors
     if (firstnameError || lastnameError || usernameError || emailError || passwordError || accountNumberError || idNumberError) {
         return res.status(400).json({
+            success: false,
             message: "Bad request",
             errors: {
                 firstname: firstnameError,
@@ -118,7 +119,6 @@ const signupValidation = (req, res, next) => {
             }
         });
     }
-
     // If no validation errors, proceed to the next middleware
     next();
 };
@@ -159,9 +159,9 @@ const preRegisterValidation = (req, res, next) => {
 const loginValidation = (req, res, next) => {
     const { usernameOrAccountNumber, password } = req.body;
 
-    const usernameError = checkUsername(usernameOrAccountNumber);
-    const accountNumberError = checkAccountNumber(usernameOrAccountNumber);
-    const passwordError = checkPassword(password);
+    const usernameError = checkString(usernameOrAccountNumber);
+    const accountNumberError = checkString(usernameOrAccountNumber);
+    const passwordError = checkString(password);
 
     if ((usernameError && accountNumberError) || passwordError) {
         return res.status(400).json({

@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import React from 'react';
-import { Helmet } from 'react-helmet'; 
+import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
@@ -15,12 +15,13 @@ function App() {
         <meta
           httpEquiv="Content-Security-Policy"
           content={`
-            default-src 'self';
-            connect-src 'self' https://localhost:5050;
-            script-src 'self';
-            img-src https://*.my-s3-endpoint.com;
-            media-src https://*.my-s3-endpoint.com;
-                `}
+    default-src 'self';
+    connect-src 'self' https://localhost:5050;
+    script-src 'self';
+    img-src https://*.my-s3-endpoint.com;
+    media-src https://*.my-s3-endpoint.com;
+    frame-ancestors 'self';  // Only allow the current site to frame this content
+  `}
         ></meta>
       </Helmet>
       <Router>
