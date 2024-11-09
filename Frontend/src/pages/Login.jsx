@@ -4,10 +4,25 @@ import { handleError, handleSucess } from '../utils';
 import '../App.css'; // Import the CSS file
 
 function Login({ setIsAuthenticated }) {
-  const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
 
+  //const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
+  //const [errors, setErrors] = useState({});
+
+  // State to store login information (usernameOrAccountNumber and password)
+  const [loginInfo, setLoginInfo] = React.useState({
+    usernameOrAccountNumber: '',
+    password: ''
+  });
+
+  // State to store error messages for usernameOrAccountNumber and password fields
+  const [errors, setErrors] = useState({
+    usernameOrAccountNumber: '',
+    password: ''
+  });
+
+  // Handle input changes and update the loginInfo state
   const handleChange = (e) => {
     const { name, value } = e.target;
     const newUserInfo = { ...loginInfo };
@@ -22,21 +37,64 @@ function Login({ setIsAuthenticated }) {
   };
 
   // Handle form submission for login
+  /* const handleLogin = async (e) => {
+     e.preventDefault();
+    // const { email, password } = loginInfo;
+  const { usernameOrAccountNumber, password } = loginInfo;    
+     // Validate email and password fields
+     if (!email || !password) {
+       setErrors({
+         email: !email ? 'Email is required' : '',
+         password: !password ? 'Password is required' : ''
+       });
+       return handleError('Email and password are required');
+     }
+ 
+     try {
+       const url = "https://localhost:5050/user/login/";
+ 
+       // Send login request to the server
+       const response = await fetch(url, {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(loginInfo),
+       });
+       const data = await response.json();
+       if (data.success) {
+         // Save the token and user details to local storage
+         localStorage.setItem('authToken', data.token);
+         localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
+         setIsAuthenticated(true);
+         handleSucess('Login successful');
+         navigate('/');
+       } else {
+         handleError(data.message);
+       }
+     } catch (error) {
+       handleError('Login failed');
+     }
+   };
+ */
+  // Handle form submission for login
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { email, password } = loginInfo;
+    const { usernameOrAccountNumber, password } = loginInfo;
 
-    // Validate email and password fields
-    if (!email || !password) {
+    // Validate usernameOrAccountNumber and password fields
+    if (!usernameOrAccountNumber || !password) {
       setErrors({
-        email: !email ? 'Email is required' : '',
+        usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
         password: !password ? 'Password is required' : ''
       });
-      return handleError('Email and password are required');
+      return handleError('Username or Account Number and password are required');
     }
 
     try {
       const url = "https://localhost:5050/user/login/";
+      // Disable SSL verification (for development purposes only)
+      //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
       // Send login request to the server
       const response = await fetch(url, {
@@ -46,54 +104,74 @@ function Login({ setIsAuthenticated }) {
         },
         body: JSON.stringify(loginInfo),
       });
-      const data = await response.json();
-      if (data.success) {
-        // Save the token and user details to local storage
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
-        setIsAuthenticated(true);
-        handleSucess('Login successful');
-        navigate('/');
-      } else {
-        handleError(data.message);
+
+      const result = await response.json();
+      const { success, message, token, name, error } = result;
+
+      if (success) {
+        // Handle successful login
+        handleSucess(message);
+        localStorage.setItem('token', token);
+        localStorage.setItem('loggedInUser', name);
+        navigate('/home');
+      } else if (error) {
+        // Handle server-side validation errors
+        const details = error?.details[0]?.message || error;
+        handleError(details);
+      } else if (!success) {
+        // Handle specific error messages for non-existent user or invalid credentials
+        if (message === "User does not exist" || message === "Invalid credentials") {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            usernameOrAccountNumber: message === "" ? message : '',
+            password: message === "Invalid credentials" ? message : ''
+          }));
+        } else {
+          handleError(message);
+        }
       }
     } catch (error) {
-      handleError('Login failed');
+      // Handle network or other errors
+      handleError(error.message);
     }
   };
-
   return (
     <div className="auth-container">
       <div className="auth-card">
         <h1>Login</h1>
         <form onSubmit={handleLogin}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+        <div className="form-group">
+            <label htmlFor='usernameOrAccountNumber'>Username or Account Number</label>
             <input
-              type="email"
-              name="email"
-              value={loginInfo.email}
               onChange={handleChange}
+              name="usernameOrAccountNumber"
+              autoFocus
               required
+              placeholder="Enter your username or account number"
+              value={loginInfo.usernameOrAccountNumber || ''}
             />
-            {errors.email && <div className="error">{errors.email}</div>}
+            {errors.usernameOrAccountNumber && <div className="error">{errors.usernameOrAccountNumber}</div>}
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor='password'>Password</label>
             <input
+              onChange={handleChange}
               type="password"
               name="password"
-              value={loginInfo.password}
-              onChange={handleChange}
               required
+              placeholder="Enter your password"
+              value={loginInfo.password || ''}
             />
             {errors.password && <div className="error">{errors.password}</div>}
           </div>
           <button type="submit" className="primary-button">Login</button>
+        
         </form>
+
         <div className="center-text">
           <span>Don't have an account? <a href="/register">Register</a></span>
         </div>
+
       </div>
     </div>
   );
