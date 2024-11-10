@@ -121,4 +121,4 @@ const getPaymentById = async (req, res) => {
 };
 
 
-export { processPayment, pendingPayments, startVerification, verifyPaymentField, finalizeVerification, getPaymentById };
+export { processPayment, pendingPayments,finalizeVerification, getPaymentById };

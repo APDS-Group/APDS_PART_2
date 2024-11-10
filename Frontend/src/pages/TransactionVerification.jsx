@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './NavBar';
-import '../App.css'; 
+import '../App.css'; // Import the CSS file
 
 function TransactionVerification() {
   const navigate = useNavigate();
@@ -12,7 +12,12 @@ function TransactionVerification() {
     amount: '',
     swiftCode: '',
     currency: '',
-    verified: false,
+    recipientNameVerified: false,
+    recipientBankVerified: false,
+    accountNumberVerified: false,
+    amountVerified: false,
+    swiftCodeVerified: false,
+    currencyVerified: false,
   });
 
   useEffect(() => {
@@ -55,7 +60,12 @@ function TransactionVerification() {
         amount: payment.transferAmount || payment.transfer_amount,
         swiftCode: payment.swiftCode || payment.swift_code,
         currency: payment.currency,
-        verified: payment.verified || false,
+        recipientNameVerified: false,
+        recipientBankVerified: false,
+        accountNumberVerified: false,
+        amountVerified: false,
+        swiftCodeVerified: false,
+        currencyVerified: false,
       });
 
     } catch (error) {
@@ -63,11 +73,10 @@ function TransactionVerification() {
     }
   };
 
-  
   const handleVerify = (field) => {
     setTransaction((prevTransaction) => ({
       ...prevTransaction,
-      [field]: true,
+      [field]: !prevTransaction[field],
     }));
   };
 
@@ -78,9 +87,33 @@ function TransactionVerification() {
     }));
   };
 
-  const handleSubmit = () => {
-    // Handle submit logic here
-    console.log('Transaction submitted:', transaction);
+  const handleSubmit = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://localhost:5050/employee/finalize-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ paymentId: localStorage.getItem('paymentId') })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to finalize verification');
+      }
+
+      const data = await response.json();
+      console.log('Verification finalized:', data);
+      navigate('/home'); // Redirect to home after successful submission
+    } catch (error) {
+      console.error('Error finalizing verification:', error);
+    }
   };
 
   return (
@@ -101,9 +134,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('recipientNameVerified')}
-                disabled={transaction.recipientNameVerified}
               >
-                {transaction.recipientNameVerified ? 'Verified' : 'Verify'}
+                {transaction.recipientNameVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
             <label>Recipient's Bank</label>
@@ -117,9 +149,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('recipientBankVerified')}
-                disabled={transaction.recipientBankVerified}
               >
-                {transaction.recipientBankVerified ? 'Verified' : 'Verify'}
+                {transaction.recipientBankVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
             <label>Recipient's Account Number</label>
@@ -133,9 +164,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('accountNumberVerified')}
-                disabled={transaction.accountNumberVerified}
               >
-                {transaction.accountNumberVerified ? 'Verified' : 'Verify'}
+                {transaction.accountNumberVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
             <label>The Amount You Want to Pay</label>
@@ -149,9 +179,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('amountVerified')}
-                disabled={transaction.amountVerified}
               >
-                {transaction.amountVerified ? 'Verified' : 'Verify'}
+                {transaction.amountVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
             <label>Bank SWIFT Code</label>
@@ -165,9 +194,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('swiftCodeVerified')}
-                disabled={transaction.swiftCodeVerified}
               >
-                {transaction.swiftCodeVerified ? 'Verified' : 'Verify'}
+                {transaction.swiftCodeVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
             <label>Currency</label>
@@ -181,9 +209,8 @@ function TransactionVerification() {
               <button
                 className="verify-button"
                 onClick={() => handleVerify('currencyVerified')}
-                disabled={transaction.currencyVerified}
               >
-                {transaction.currencyVerified ? 'Verified' : 'Verify'}
+                {transaction.currencyVerified ? 'Unverify' : 'Verify'}
               </button>
             </div>
           </div>
