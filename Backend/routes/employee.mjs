@@ -9,6 +9,7 @@ import { preRegisterValidation, employeeValidation} from '../Middlewares/AuthVal
 
 // Import the verification controller function from the EmployeeController module
 import { verification } from '../Controller/EmployeeController.mjs';
+import { pendingPayments,  finalizeVerification, getPaymentById} from '../Controller/PaymentController.mjs';
 
 //import verification validation
 import { verificationValidation } from '../Middlewares/Validation.mjs';
@@ -37,6 +38,13 @@ router.post("/preregistration", preRegisterValidation, preRegister);
 router.post("/login", bruteforce.prevent, employeeValidation, employeeLogin);
 
 router.post("/verification", bruteforce.prevent, verificationValidation, verification);
+
+router.get("/pending", pendingPayments);
+
+router.get("/payment/:paymentId", getPaymentById);
+
+router.post("/finalize-verification", finalizeVerification); // Define the route for finalizing verification
+
 
 // Define a GET route for the root path ("/")
 // This route sends a simple response indicating that it is the employee route

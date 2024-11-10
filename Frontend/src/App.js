@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Transaction from './pages/TransactionVerification';
+import EmployeeLogin from './pages/EmployeeLogin';
 import Logout from './pages/Logout';
-import Transaction from './pages/TransactionVerification'; // Import the Transaction page
+import EmployeeHome from './pages/EmployeeHome';
+import LoginPage from './pages/LoginPage'; 
+import PaymentForm from './pages/PaymentForm';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     // Check if the user is authenticated (e.g., check for a token in local storage)
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (token) {
       setIsAuthenticated(true);
     }
@@ -38,8 +42,9 @@ function App() {
             script-src 'self';
             img-src https://*.my-s3-endpoint.com;
             media-src https://*.my-s3-endpoint.com;
-                `}
-        ></meta>
+            frame-ancestors 'self';
+          `}
+        />
       </Helmet>
       <Router>
         <Routes>
@@ -49,7 +54,12 @@ function App() {
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           <Route path="/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/transactions" element={isAuthenticated ? <Transaction /> : <Navigate to="/login" />} /> {/* Add the Transaction route */}
+          <Route path="/transactions" element={isAuthenticated ? <Transaction /> : <Navigate to="/login" />} />
+          <Route path="/transactions/:paymentId" element={isAuthenticated ? <Transaction /> : <Navigate to="/login" />} />
+          <Route path="/home" element={isAuthenticated ? <EmployeeHome /> : <Navigate to="/employee" />} />
+          <Route path="/employee" element={<EmployeeLogin setIsAuthenticated={setIsAuthenticated}  />} />
+          <Route path="/login-page" element={<LoginPage />} /> 
+          <Route path="/payment" element={isAuthenticated ? <PaymentForm /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
     </div>

@@ -12,7 +12,7 @@ import cors from 'cors';
 import employees from './routes/employee.mjs';
 import users from './routes/user.mjs';
 import home from './routes/home.mjs';
-
+import payment from './routes/payment.mjs';
 
 const PORT = 5050; 
 // Create an instance of an Express application
@@ -51,6 +51,9 @@ app.route("/user", users);
 
 app.use("/home", home);
 app.route("/home", home);
+
+app.use('/payment', payment);
+app.route('/payment', payment);
 
 
 

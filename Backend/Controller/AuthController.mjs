@@ -19,7 +19,7 @@ import jwt from 'jsonwebtoken';
 const db = await connectToDatabase();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore(); 
+var store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
 var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
@@ -59,7 +59,7 @@ const signup = async (req, res) => {
     }
 
 
-     // Create a new user instance with the provided name, email, and password
+    // Create a new user instance with the provided name, email, and password
     const newUser = new User({ firstname, lastname, username, email, password, accountNumber, idNumber });
     newUser.password = await bcrypt.hash(req.body.password, 10);
 
@@ -67,8 +67,8 @@ const signup = async (req, res) => {
     let result = await collection.insertOne(newUser);
 
     console.log("Registration successful for user:", email);
-    res.status(201).json({ 
-      message: "Registration successful", 
+    res.status(201).json({
+      message: "Registration successful",
       success: true,
       userId: result.insertedId // Use the insertedId from the result
     });
@@ -77,47 +77,12 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
-/*const signup = async (req, res) => {
-  try {
-    // Extract name, email, and password from the request body
-    const { name, email, password } = req.body;
-   
-    // Get the users collection from the database
-    let collection = db.collection("users");
-
-    // Check if a user with the given email already exists
-    const user = await collection.findOne({ email });
-
-    // If the user already exists, return a 400 status with an error message
-    if (user) {
-      return res.status(400).json({ message: "User already exists", success: false });
-    }    
-
-    // Create a new user instance with the provided name, email, and password   
-    const newUser = new User({ name, email, password });
-
-    // Hash the user's password before saving it to the database
-    newUser.password = await bcrypt.hash(req.body.password, 10);
-
-    // Insert the new user into the users collection
-    let result = await collection.insertOne(newUser); // eslint-disable-line no-unused-vars
-
-    // Return a 201 status with a success message
-    res.status(201).json({ message: "Registration successful", success: true });
-
-  } catch (error) {
-    // If an error occurs, return a 500 status with an error message
-    res.status(500).json({ message: "Internal Serveer Error", success: false });
-    console.log(error)
-  }
-};
-*/
 // Define the pre-register controller function
 const preRegister = async (req, res) => {
   try {
     const { firstname, lastname, username, password, empNum, idNumber } = req.body;
 
-    console.log("Received signup request with data:", { firstname, lastname, username,password, empNum, idNumber });
+    console.log("Received signup request with data:", { firstname, lastname, username, password, empNum, idNumber });
 
     const db = await connectToDatabase();
     let collection = db.collection("employees");
@@ -143,12 +108,12 @@ const preRegister = async (req, res) => {
     newEmployee.password = await bcrypt.hash(req.body.password, 10);
 
     console.log("Inserting new employee user into the database");
-   // await newEmployee.save();    
+    // await newEmployee.save();    
     let result = await collection.insertOne(newEmployee);
 
     console.log("Registration successful for employee:", username);
-    res.status(201).json({ 
-      message: "Registration successful", 
+    res.status(201).json({
+      message: "Registration successful",
       success: true,
       userId: result.insertedId // Use the insertedId from the result
     });
@@ -181,6 +146,12 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+    // Set req.user
+    req.user = {
+      _id: user._id,
+      email: user.email,
+      name: `${user.firstname} ${user.lastname}`
+    };
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -196,47 +167,7 @@ const login = async (req, res) => {
     });
   }
 };
-/*const login = async (req, res) => {
-  try {
-    // Extract email and password from the request body
-    const { email, password } = req.body;
-    // Find a user with the given email in the users collection
-    const user = await db.collection("users").findOne({ email });
 
-    // If the user is not found, return a 403 status with an error message
-    if (!user) {
-      return res.status(403).json({ message: "User does not exist", success: false });
-    }
-
-    // Compare the provided password with the hashed password in the database
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    // If the password does not match, return a 403 status with an error message
-    if (!isMatch) {
-      return res.status(403).json({ message: "Invalid credentials", success: false });
-    }
-
-    // Generate a JWT token with the user's email and ID, and set it to expire in 1 hour
-    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-
-    // Return a 200 status with a success message, token, email, and name
-    res.status(200).json({
-      message: "Login successful",
-      success: true,
-      token: token,
-      email: email,
-      name: user.name
-    });
-  } catch (error) {
-    // If an error occurs, return a 500 status with an error message
-    res.status(500).json({
-      message: "Internal Server Error",
-      success: false,
-      error: error.message
-    });
-  }
-};
-*/
 // Define the employee login controller function
 const employeeLogin = async (req, res) => {
   try {
@@ -261,6 +192,13 @@ const employeeLogin = async (req, res) => {
     }
 
     const token = jwt.sign({ username: employee.username, _id: employee._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    // Set req.user
+    req.user = {
+      _id: employee._id,
+      username: employee.username,
+      name: `${employee.firstname} ${employee.lastname}`
+    };
+
 
     res.status(200).json({
       message: "Login successful",

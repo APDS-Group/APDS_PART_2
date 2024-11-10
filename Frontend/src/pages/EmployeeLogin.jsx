@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { handleError, handleSucess } from '../utils';
 
-function EmployeeLogin() {
+function EmployeeLogin({ setIsAuthenticated }) {
   const navigate = useNavigate();
+
   const [loginInfo, setLoginInfo] = useState({
     username: '',
     password: ''
@@ -53,8 +54,15 @@ function EmployeeLogin() {
 
       if (success) {
         handleSucess(message);
-        localStorage.setItem('token', token);
-        localStorage.setItem('loggedInUser', name);
+        localStorage.setItem('token',token);
+        localStorage.setItem('userDetails', JSON.stringify({
+          id: result.id, 
+          name: result.name,
+          email: result.email,
+          joined: 'January 1, 2020',
+        }));
+        setIsAuthenticated(true);
+        handleSucess(message);
         navigate('/home');
       } else if (error) {
         const details = error?.details[0]?.message || error;
@@ -105,7 +113,7 @@ function EmployeeLogin() {
           </div>
           <button type="submit">Login</button>
           <div className="center-text">
-            <span>Don't have an account? <a href="/register">Register</a></span>
+            <span>Not an employee? <a href="/login">User Login</a></span>
           </div>
         </form>
       </div>

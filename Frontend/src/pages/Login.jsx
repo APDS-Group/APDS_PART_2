@@ -6,10 +6,6 @@ import '../App.css'; // Import the CSS file
 function Login({ setIsAuthenticated }) {
 
   const navigate = useNavigate();
-
-  //const [loginInfo, setLoginInfo] = useState({ email: '', password: '' });
-  //const [errors, setErrors] = useState({});
-
   // State to store login information (usernameOrAccountNumber and password)
   const [loginInfo, setLoginInfo] = React.useState({
     usernameOrAccountNumber: '',
@@ -35,48 +31,6 @@ function Login({ setIsAuthenticated }) {
       [name]: ''
     }));
   };
-
-  // Handle form submission for login
-  /* const handleLogin = async (e) => {
-     e.preventDefault();
-    // const { email, password } = loginInfo;
-  const { usernameOrAccountNumber, password } = loginInfo;    
-     // Validate email and password fields
-     if (!email || !password) {
-       setErrors({
-         email: !email ? 'Email is required' : '',
-         password: !password ? 'Password is required' : ''
-       });
-       return handleError('Email and password are required');
-     }
- 
-     try {
-       const url = "https://localhost:5050/user/login/";
- 
-       // Send login request to the server
-       const response = await fetch(url, {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(loginInfo),
-       });
-       const data = await response.json();
-       if (data.success) {
-         // Save the token and user details to local storage
-         localStorage.setItem('authToken', data.token);
-         localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
-         setIsAuthenticated(true);
-         handleSucess('Login successful');
-         navigate('/');
-       } else {
-         handleError(data.message);
-       }
-     } catch (error) {
-       handleError('Login failed');
-     }
-   };
- */
   // Handle form submission for login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -114,8 +68,8 @@ function Login({ setIsAuthenticated }) {
        // localStorage.setItem('loggedInUser', name);
        // handleSucess(message);
        // navigate('/home');
-       localStorage.setItem('authToken', data.token);
-       localStorage.setItem('userDetails', JSON.stringify({ name: data.name, email: data.email, joined: 'January 1, 2020' }));
+       localStorage.setItem('token',token);
+       localStorage.setItem('userDetails', JSON.stringify({ name: name, email: result.email, joined: 'January 1, 2020' }));
        setIsAuthenticated(true);
        handleSucess(message);
        navigate('/');

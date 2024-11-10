@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // Middleware function to ensure authentication using JWT tokens
 const ensureAuthentication = (req, res, next) => {
-    // Get the 'authorization' header from the request
+    
     const authHeader = req.headers['authorization'];
     
     // If the 'authorization' header is not present, return a 403 status with an error message
@@ -28,11 +28,11 @@ const ensureAuthentication = (req, res, next) => {
         
         // Call the next middleware function in the stack
         next();
-    } catch (error) {
-        // Log the error for debugging purposes
-        console.error('JWT verification error:', error);        
-        // If the token is invalid, return a 403 status with an error message
-        return res.status(403).json({ message: 'Unauthorized: Invalid JWT Token' });
+    }catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired. Please log in again.' });
+        }
+        res.status(401).json({ message: 'Invalid authentication token' });
     }
 };
 
