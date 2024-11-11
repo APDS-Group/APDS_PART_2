@@ -94,7 +94,7 @@ function EmployeeLogin({ setIsAuthenticated }) {
    <NavbarPublic />
     <div className='body-container'>
       <div className='container'>
-        <h1>Employee Login</h1>
+        <h1>Employee <span className="brand-name">Login</span></h1>
         <form onSubmit={handleLogin}>
           <div>
             <label htmlFor='username'>Username</label>

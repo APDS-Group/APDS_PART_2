@@ -193,7 +193,27 @@ body.dark .center-text {
   border-bottom: 1px solid #E0E0E0;
   color: #221717df;
 }
+.brand-name {
+  color: #1E2772;
+  font-weight: bold;
+}
 
+h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #333;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px; 
+  font-size: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+}
 .container input::placeholder {
   font-size: 18px;
   color: #251a1a7e;
@@ -236,14 +256,7 @@ button {
   margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #333;
-  padding: 20px;
-  text-align: center;
-  margin-top: 20px; 
-}
+
 
 .button-container {
   display: flex;

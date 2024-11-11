@@ -104,7 +104,7 @@ function Register() {
             <NavbarPublic />
             <div className="body-container2">
                 <div className="container-reg">
-                    <h1>Register</h1>
+                    <h1>User <span className="brand-name">Register</span></h1>
                     <form onSubmit={handleRegister} style={{ margin: '0px 20px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
                         <div className="register-form">

@@ -116,14 +116,14 @@ function PaymentForm() {
         <>
             <NavBar />
             <div className='page-header'>
-                <h1>International Payment</h1>
+                <h1>International <span className="brand-name">Payment</span></h1>
             </div>
             <div className='page'>
                 <div className='container-payment'>
                     <form onSubmit={handlePayment} className="centered-form">
                         <div>
                             <label htmlFor='recipientName'>Recipient Name</label>
-                            <div className="input-group">
+                            <div className="input-group2">
                                 <input className="input-field"
                                     onChange={handleChange}
                                     type="text"
@@ -136,7 +136,7 @@ function PaymentForm() {
                         </div>
                         <div>
                             <label htmlFor='bank'>Bank</label>
-                            <div className="input-group">
+                            <div className="input-group2">
                                 <input className="input-field"
                                     onChange={handleChange}
                                     type="text"
@@ -149,7 +149,7 @@ function PaymentForm() {
                         </div>
                         <div>
                             <label htmlFor='accountNumber'>Account Number</label>
-                            <div className="input-group">
+                            <div className="input-group2">
                                 <input className="input-field"
                                     onChange={handleChange}
                                     type="text"
@@ -162,7 +162,7 @@ function PaymentForm() {
                         </div>
                         <div>
                             <label htmlFor='transferAmount'>Transfer Amount</label>
-                            <div className="input-group">
+                            <div className="input-group2">
                                 <input className="input-field"
                                     onChange={handleChange}
                                     type="number"
@@ -175,7 +175,7 @@ function PaymentForm() {
                         </div>
                         <div>
                             <label htmlFor='swiftCode'>SWIFT Code</label>
-                            <div className="input-group">
+                            <div className="input-group2">
                                 <input className="input-field"
                                     onChange={handleChange}
                                     type="text"
@@ -188,7 +188,7 @@ function PaymentForm() {
                         </div>
                         <div>
                             <label htmlFor='currency'>Currency</label>
-                            <div className="input-group">
+                            <div className="input-group2">
 
                                 <select className="input-field"
                                     onChange={handleChange}
