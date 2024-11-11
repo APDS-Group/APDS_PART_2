@@ -19,10 +19,10 @@ import jwt from 'jsonwebtoken';
 const db = await connectToDatabase();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore();
+const store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
+//var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
 
 // Import the dotenv package to load environment variables from a .env file
 import dotenv from "dotenv";
@@ -36,7 +36,7 @@ const signup = async (req, res) => {
 
     console.log("Received signup request with data:", { firstname, lastname, username, email, accountNumber, idNumber });
 
-    let collection = db.collection("users");
+    const collection = db.collection("users");
 
     console.log("Checking if user already exists with email, username, or account number");
     const user = await collection.findOne({
@@ -64,7 +64,7 @@ const signup = async (req, res) => {
     newUser.password = await bcrypt.hash(req.body.password, 10);
 
     console.log("Inserting new user into the database");
-    let result = await collection.insertOne(newUser);
+    const result = await collection.insertOne(newUser);
 
     console.log("Registration successful for user:", email);
     res.status(201).json({
@@ -85,7 +85,7 @@ const preRegister = async (req, res) => {
     console.log("Received signup request with data:", { firstname, lastname, username, password, empNum, idNumber });
 
     const db = await connectToDatabase();
-    let collection = db.collection("employees");
+    const collection = db.collection("employees");
 
     console.log("Checking if employee user already exists with username, or employee number");
     const employee = await collection.findOne({
@@ -109,7 +109,7 @@ const preRegister = async (req, res) => {
 
     console.log("Inserting new employee user into the database");
     // await newEmployee.save();    
-    let result = await collection.insertOne(newEmployee);
+    const result = await collection.insertOne(newEmployee);
 
     console.log("Registration successful for employee:", username);
     res.status(201).json({
@@ -175,19 +175,23 @@ const employeeLogin = async (req, res) => {
 
     console.log("Login attempt with username:", username);
 
-    const db = await connectToDatabase();
-    let collection = db.collection("employees");
+     // Sanitize user inputs
+     const sanitizedUsername = username.toString();
+     const sanitizedPassword = password.toString();
 
-    const employee = await collection.findOne({ username: username });
+    const db = await connectToDatabase();
+    const collection = db.collection("employees");
+
+    const employee = await collection.findOne({ username: sanitizedUsername });
 
     if (!employee) {
-      console.log("Employee not found with username:", username);
+      console.log("Employee not found with username:",sanitizedUsername);
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
-    const isMatch = await bcrypt.compare(password, employee.password);
+    const isMatch = await bcrypt.compare(sanitizedPassword, employee.password);
     if (!isMatch) {
-      console.log("Invalid password for username:", username);
+      console.log("Invalid password for username:",sanitizedUsername);
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
