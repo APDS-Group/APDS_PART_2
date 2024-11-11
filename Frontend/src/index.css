@@ -132,7 +132,6 @@ body.dark .center-text {
   align-items: center; 
 }
 .container-reg {  
-  background-color: #fff; 
   border-radius: 10px;
   width: 1000px;
     padding: 10px;
@@ -204,11 +203,9 @@ h2 {
   text-align: center;
 }
 h1 {
-  font-size: 2.5em;
   font-weight: bold;
   color: #333;
   padding: 20px;
-  text-align: center;
   margin-top: 20px; 
   font-size: 30px;
   margin-bottom: 20px;
@@ -265,9 +262,7 @@ button {
 }
 
 .home-page {
-  background-color: #FFFFFF;
   color: rgb(20, 15, 17);
-
   flex: 1;
   display: flex;
   flex-direction: column;
