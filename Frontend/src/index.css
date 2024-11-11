@@ -126,6 +126,7 @@ body.dark .center-text {
   justify-content: center; 
   align-items: center; 
 }
+/* Register Styles */
 .body-container2 {
   display: flex;
   margin-top: 20px;
@@ -142,6 +143,12 @@ body.dark .center-text {
 }
 
 /* Container Styles */
+.button-container {
+  display: flex;
+  gap: 30px; /* Space between buttons */
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically */
+}
 .container {  
   background-color: #fff; /* Optional: Add a background color */
   padding: 10px;
@@ -249,11 +256,18 @@ h1 {
   margin-top: 20px;
 }
 
-.home-container {
-  width: 700px;
-  height: 400px;
+.home-page {
   background-color: #FFFFFF;
   color: rgb(20, 15, 17);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .home-container h1,

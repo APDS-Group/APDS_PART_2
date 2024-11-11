@@ -36,7 +36,7 @@ const paymentVerificationSchema = new schema({
     },
     overall_status: {
         type: String,
-        enum: ['In Progress', 'Partially Verified', 'Verified'],
+        enum: ['In Progress', 'Partially Verified','Rejected', 'Verified'],
         default: 'In Progress',
     },
     started_at: {

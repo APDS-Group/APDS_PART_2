@@ -70,25 +70,24 @@ const processPayment = async (req, res) => {
         });
     }
 };
-// Define the controller function to get all pending payments
+// Define the controller function to get all pending or partially verified payments
 const pendingPayments = async (req, res) => {
     try {
         const collection = db.collection("payments");
-        const pendingPayments = await collection.find({ status: 'Pending' }).toArray();
+        const pendingPayments = await collection.find({ status: { $in: ['Pending', 'Partially Verified'] } }).toArray();
         return res.status(200).json({
             success: true,
-            message: 'Pending payments retrieved successfully',
+            message: 'Pending or Partially Verified payments retrieved successfully',
             pendingPayments
         });
     } catch (error) {
-        console.error('Error retrieving pending payments:', error);
+        console.error('Error retrieving pending or partially verified payments:', error);
         return res.status(500).json({
             success: false,
             message: 'Internal server error'
         });
     }
 };
-
 
 const finalizeVerification = async (req, res) => {
     const { paymentId, employeeId, verifications, overall_status } = req.body;
@@ -117,6 +116,13 @@ const finalizeVerification = async (req, res) => {
             await db.collection("payments").updateOne(
                 { _id: new mongoose.Types.ObjectId(paymentId) },
                 { $set: { status: 'Verified' } }
+            );
+            console.log('Payment status updated to Verified');
+        }
+        if (overall_status === 'Rejected') {
+            await db.collection("payments").updateOne(
+                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { $set: { status: 'Rejected' } }
             );
             console.log('Payment status updated to Verified');
         }

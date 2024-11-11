@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbars/NavBar';
 import '../App.css'; // Import the CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Import Font Awesome icons
+import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // Import Font Awesome icons
 
 function Home() {
   const [user, setUser] = useState({});
@@ -97,13 +97,15 @@ function Home() {
      }
 
   return (
+<>
+    <Navbar />
     <div className="home-container">
-      <Navbar />
+
       <div className="dashboard">
         <div className="sidebar">
           <ul>
             <li className="sidebar-item" onClick={() => handleButtonClick('/profile')}>
-              <FontAwesomeIcon icon={faUser} size="sm"/> Profile
+              <FontAwesomeIcon icon={faUserFriends} size="sm"/> Profile
             </li>
             <li className="sidebar-item" onClick={() => handleButtonClick('/transactions')}>
               <FontAwesomeIcon icon={faExchangeAlt} size="sm"/> Transaction Verification
@@ -128,6 +130,7 @@ function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
