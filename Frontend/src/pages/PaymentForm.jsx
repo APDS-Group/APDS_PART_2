@@ -3,6 +3,7 @@ import { handleError, handleSucess } from '../utils'; // Correct the import stat
 import { useNavigate } from 'react-router-dom';
 import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation.jsx'; // Adjust the import path as necessary
 import '../styles/EmployeeHome.css';
+import NavBar from './Navbars/NavBar.jsx';
 function PaymentForm() {
     const navigate = useNavigate();
     const [paymentInfo, setPaymentInfo] = useState({
@@ -112,6 +113,8 @@ function PaymentForm() {
     };
 
     return (
+        <>
+        <NavBar/>
         <div className='container'>
             <h1>International Payment</h1>
             <form onSubmit={handlePayment}>
@@ -195,6 +198,7 @@ function PaymentForm() {
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
         </div>
+        </>
     );
 }
 

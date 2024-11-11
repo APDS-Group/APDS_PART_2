@@ -7,8 +7,8 @@ function NavBar() {
     <nav className="navbar">
       <div className="navbar-links-container">
         <Link to="/" className="nav-link">Home</Link>
-        <Link to="/login" className="nav-link">Login</Link>
-        <Link to="/register" className="nav-link">Register</Link>
+        <Link to="/profile" className="nav-link">Profile</Link>
+        <Link to="/logout" className="nav-link">Logout</Link>
       </div>
     </nav>
   );

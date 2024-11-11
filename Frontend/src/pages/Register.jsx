@@ -103,115 +103,115 @@ function Register() {
         <>
             <NavbarPublic />
             <div className="body-container2">
-        <div className="container-reg">
-            <h1>Register</h1>
-                  <form onSubmit={handleRegister} style={{ margin: '0px 20px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="container-reg">
+                    <h1>Register</h1>
+                    <form onSubmit={handleRegister} style={{ margin: '0px 20px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-                <div className="register-form">
-                     {/* Input Fields 1 */}
-                    <div className="form-column">
-                        <div className="form-group">
-                            <label htmlFor='firstname'>First Name</label>
-                            <input
-                                onChange={handleChange}
-                                type="text"
-                                name="firstname"
-                                placeholder="Enter your first name"
-                                value={registerInfo.firstname}
-                            />
-                            {errors.firstname && <div className="error">{errors.firstname}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='lastname'>Last Name</label>
-                            <input
-                                onChange={handleChange}
-                                type="text"
-                                name="lastname"
-                                placeholder="Enter your last name"
-                                value={registerInfo.lastname}
-                            />
-                            {errors.lastname && <div className="error">{errors.lastname}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='username'>Username</label>
-                            <input
-                                onChange={handleChange}
-                                type="text"
-                                name="username"
-                                placeholder="Enter your username"
-                                value={registerInfo.username}
-                            />
-                            {errors.username && <div className="error">{errors.username}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='email'>Email</label>
-                            <input
-                                onChange={handleChange}
-                                type="email"
-                                name="email"
-                                placeholder="Enter your email"
-                                value={registerInfo.email}
-                            />
-                            {errors.email && <div className="error">{errors.email}</div>}
-                        </div>
-                    </div>
-                     {/* Input Fields 2 */}
-                    <div className="form-column">
-                        <div className="form-group">
-                            <label htmlFor='password'>Password</label>
-                            <input
-                                onChange={handleChange}
-                                type="password"
-                                name="password"
-                                placeholder="Enter your password"
-                                value={registerInfo.password}
-                            />
-                            {errors.password && <div className="error">{errors.password}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='confirmPassword'>Confirm Password</label>
-                            <input
-                                onChange={handleChange}
-                                type="password"
-                                name="confirmPassword"
-                                placeholder="Confirm your password"
-                                value={registerInfo.confirmPassword}
-                            />
-                            {errors.confirmPassword && <div className="error">{errors.confirmPassword}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='accountNumber'>Account Number</label>
-                            <input
-                                onChange={handleChange}
-                                type="text"
-                                name="accountNumber"
-                                placeholder="Enter your account number"
-                                value={registerInfo.accountNumber}
-                            />
-                            {errors.accountNumber && <div className="error">{errors.accountNumber}</div>}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor='idNumber'>ID Number</label>
-                            <input
-                                onChange={handleChange}
-                                type="text"
-                                name="idNumber"
-                                placeholder="Enter your ID number"
-                                value={registerInfo.idNumber}
-                            />
-                            {errors.idNumber && <div className="error">{errors.idNumber}</div>}
-                        </div>
-                        
-                    </div>
-                </div>
+                        <div className="register-form">
+                            {/* Input Fields 1 */}
+                            <div className="form-column">
+                                <div className="form-group">
+                                    <label htmlFor='firstname'>First Name</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="text"
+                                        name="firstname"
+                                        placeholder="Enter your first name"
+                                        value={registerInfo.firstname}
+                                    />
+                                    {errors.firstname && <div className="error">{errors.firstname}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='lastname'>Last Name</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="text"
+                                        name="lastname"
+                                        placeholder="Enter your last name"
+                                        value={registerInfo.lastname}
+                                    />
+                                    {errors.lastname && <div className="error">{errors.lastname}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='username'>Username</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="text"
+                                        name="username"
+                                        placeholder="Enter your username"
+                                        value={registerInfo.username}
+                                    />
+                                    {errors.username && <div className="error">{errors.username}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='email'>Email</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="email"
+                                        name="email"
+                                        placeholder="Enter your email"
+                                        value={registerInfo.email}
+                                    />
+                                    {errors.email && <div className="error">{errors.email}</div>}
+                                </div>
+                            </div>
+                            {/* Input Fields 2 */}
+                            <div className="form-column">
+                                <div className="form-group">
+                                    <label htmlFor='password'>Password</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="password"
+                                        name="password"
+                                        placeholder="Enter your password"
+                                        value={registerInfo.password}
+                                    />
+                                    {errors.password && <div className="error">{errors.password}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='confirmPassword'>Confirm Password</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="password"
+                                        name="confirmPassword"
+                                        placeholder="Confirm your password"
+                                        value={registerInfo.confirmPassword}
+                                    />
+                                    {errors.confirmPassword && <div className="error">{errors.confirmPassword}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='accountNumber'>Account Number</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="text"
+                                        name="accountNumber"
+                                        placeholder="Enter your account number"
+                                        value={registerInfo.accountNumber}
+                                    />
+                                    {errors.accountNumber && <div className="error">{errors.accountNumber}</div>}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor='idNumber'>ID Number</label>
+                                    <input
+                                        onChange={handleChange}
+                                        type="text"
+                                        name="idNumber"
+                                        placeholder="Enter your ID number"
+                                        value={registerInfo.idNumber}
+                                    />
+                                    {errors.idNumber && <div className="error">{errors.idNumber}</div>}
+                                </div>
 
-                               <button type="submit" className="submit-btn" style={{ margin: '20px auto' }}>Register</button>
-                <div className="center-text">
-                    <span>Already have an account? <a href="/login">Login</a></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" className="submit-btn" style={{ margin: '20px auto' }}>Register</button>
+                        <div className="center-text">
+                            <span>Already have an account? <a href="/login">Login</a></span>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-        </div>
+            </div>
         </>
     );
 }
