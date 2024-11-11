@@ -19,12 +19,13 @@ import ExpressBrute from 'express-brute';
 
 // Create a new router instance using express.Router()
 const router = express.Router();
-
+const store = new ExpressBrute.MemoryStore(); // Use const instead of var
+const bruteforce = new ExpressBrute(store);
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore();
+//var store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store);
+//var bruteforce = new ExpressBrute(store);
 
 // Define a POST route for the "/preregistration" path
 // The preRegisterValidation middleware is used to validate the request data
