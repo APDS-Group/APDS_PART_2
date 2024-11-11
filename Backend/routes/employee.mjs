@@ -10,7 +10,6 @@ import { preRegisterValidation, employeeValidation} from '../Middlewares/AuthVal
 // Import the verification controller function from the EmployeeController module
 import { verification } from '../Controller/EmployeeController.mjs';
 import { pendingPayments,  finalizeVerification, getPaymentById} from '../Controller/PaymentController.mjs';
-
 //import verification validation
 import { verificationValidation } from '../Middlewares/Validation.mjs';
 
