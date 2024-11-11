@@ -5,7 +5,8 @@ import { connectToDatabase } from '../db/conn.mjs';
 import bcrypt from 'bcrypt';
 
 // Import ExpressBrute for brute force protection
-import ExpressBrute from 'express-brute'; // eslint-disable-line no-unused-vars
+//eslint-disable-next-line
+import ExpressBrute from 'express-brute'; // NOSONAR
 
 // Import the User model
 import { User } from '../Models/User.mjs';
