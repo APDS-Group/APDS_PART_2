@@ -41,7 +41,7 @@ function App() {
             default-src 'self';
             connect-src 'self' https://localhost:5050;
             script-src 'self';
-            img-src https://*.my-s3-endpoint.com;
+            img-src 'self' https://*.my-s3-endpoint.com data:;
             media-src https://*.my-s3-endpoint.com;
             frame-ancestors 'self';
           `}
