@@ -52,7 +52,7 @@ function TransactionVerification() {
 
       const data = await response.json();
       const payment = data.payment;
-      
+
       setTransaction({
         recipientName: payment.recipientName || payment.recipient_name,
         recipientBank: payment.bank,
@@ -143,11 +143,15 @@ function TransactionVerification() {
   return (
     <>
       <Navbar />
+      <div className='page-header'>
+        <h1>Transaction <span className="brand-name">Verification</span></h1>
+      </div>
       <div className="page">
+
         <div className="container">
-          <h1>Transaction Verification</h1>
-          <form onSubmit={handleSubmit} className="register-form">
-            <div className="register-form">
+
+          <form onSubmit={handleSubmit} className="trans-form">
+            <div className="trans-form">
               <div className="transaction-row">
                 <label>Recipient's Name</label>
                 <div className="input-group">
@@ -250,7 +254,7 @@ function TransactionVerification() {
               </div>
             </div>
             <div className="button-container" >
-              <button  type="submit" className="button-accept">
+              <button type="submit" className="button-accept">
                 Submit
               </button>
               <button type="submit" className="button-reject" onClick={handleReject}>
