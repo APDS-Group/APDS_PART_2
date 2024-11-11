@@ -17,7 +17,12 @@ const router = express.Router();
 var store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store);
+var bruteforce = new ExpressBrute(store, {
+  freeRetries: 4,
+  minWait: 5 * 60 * 1000, // 5 minutes
+  maxWait: 5 * 60 * 1000, // 5 minutes
+  lifetime: 5 * 60 // 5 minutes
+});
 
 // Define a POST route for the "/signup" path
 // The signupValidation middleware is used to validate the request data
@@ -27,7 +32,6 @@ router.post("/signup", signupValidation, signup);
 // Define a POST route for the "/login" path
 // The bruteforce middleware is used to protect against brute force attacks
 // The loginValidation middleware is used to validate the request data
-// If the validation passes, the login controller function is called to handle the request
 router.post("/login", bruteforce.prevent, loginValidation, login);
 
 // Define a GET route for the root path ("/")

@@ -1,4 +1,5 @@
-import { IpFilter, IpDeniedError } from 'express-ipfilter';
+import pkg from 'express-ipfilter';
+const { IpFilter, IpDeniedError } = pkg;
 
 // Define a list of blacklisted IPs
 const blacklistedIps = ['123.456.789.000', '111.222.333.444'];

@@ -20,8 +20,12 @@ const db = await connectToDatabase();
 var store = new ExpressBrute.MemoryStore(); 
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
-
+var bruteforce = new ExpressBrute(store, {
+  freeRetries: 4,
+  minWait: 5 * 60 * 1000, // 5 minutes
+  maxWait: 5 * 60 * 1000, // 5 minutes
+  lifetime: 5 * 60 // 5 minutes
+});
 // Import the dotenv package to load environment variables from a .env file
 import dotenv from "dotenv";
 dotenv.config();

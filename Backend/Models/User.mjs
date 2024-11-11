@@ -19,8 +19,17 @@ const userSchema = new schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    failedLoginAttempts: {
+        type: Number,
+        default: 0
+    },
+    lockoutUntil: {
+        type: Date,
+        default: null
     }
 });
 
 const User = mongoose.model('User', userSchema);
-export {User};
+
+export { User };
