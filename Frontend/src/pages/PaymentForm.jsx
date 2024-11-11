@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils'; // Correct the import statement
 import { useNavigate } from 'react-router-dom';
 import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation.jsx'; // Adjust the import path as necessary
-
+import '../styles/EmployeeHome.css';
 function PaymentForm() {
     const navigate = useNavigate();
     const [paymentInfo, setPaymentInfo] = useState({

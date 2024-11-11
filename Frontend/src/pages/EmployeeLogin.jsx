@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavbarPublic from '../pages/Navbars/NavbarPublic';
 import { handleError, handleSucess } from '../utils';
+import '../styles/Transaction.css';
 
 function EmployeeLogin({ setIsAuthenticated }) {
   const navigate = useNavigate();
@@ -84,7 +86,9 @@ function EmployeeLogin({ setIsAuthenticated }) {
   };
 
   return (
-    <div>
+    <>
+   <NavbarPublic />
+    <div className='body-container'>
       <div className='container'>
         <h1>Employee Login</h1>
         <form onSubmit={handleLogin}>
@@ -118,6 +122,7 @@ function EmployeeLogin({ setIsAuthenticated }) {
         </form>
       </div>
     </div>
+    ,</>
   );
 }
 

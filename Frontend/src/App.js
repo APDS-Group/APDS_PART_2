@@ -13,6 +13,7 @@ import EmployeeHome from './pages/EmployeeHome';
 import LoginPage from './pages/LoginPage'; 
 import PaymentForm from './pages/PaymentForm';
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -48,16 +49,16 @@ function App() {
       </Helmet>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/login-page" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           <Route path="/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/transactions" element={isAuthenticated ? <Transaction /> : <Navigate to="/employee" />} />
+          <Route path="/transactions" element={ <Transaction />} />
           <Route path="/home" element={isAuthenticated ? <EmployeeHome /> : <Navigate to="/employee" />} />
           <Route path="/employee" element={<EmployeeLogin setIsAuthenticated={setIsAuthenticated}  />} />
-          <Route path="/login-page" element={<LoginPage />} /> 
+          <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/payment" element={isAuthenticated ? <PaymentForm /> : <Navigate to="/login" />} />
         </Routes>
       </Router>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { handleError, handleSucess } from '../utils';
 import '../App.css'; // Import the CSS file
 
+
 function Login({ setIsAuthenticated }) {
 
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ function Login({ setIsAuthenticated }) {
         <h1>Login</h1>
         <form onSubmit={handleLogin}>
         <div className="form-group">
+
             <label htmlFor='usernameOrAccountNumber'>Username or Account Number</label>
             <input
               onChange={handleChange}
@@ -113,7 +115,9 @@ function Login({ setIsAuthenticated }) {
             {errors.usernameOrAccountNumber && <div className="error">{errors.usernameOrAccountNumber}</div>}
           </div>
           <div className="form-group">
+
             <label htmlFor='password'>Password</label>
+
             <input
               onChange={handleChange}
               type="password"

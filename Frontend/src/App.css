@@ -26,9 +26,6 @@ body.light .navbar .nav-link {
   color: #000;
 }
 
-body.light .navbar .nav-link:hover {
-  color: #007bff;
-}
 
 body.light .settings-card,
 body.light .profile-card,
@@ -194,25 +191,6 @@ body.dark .stat-box {
   margin-top: 20px;
 }
 
-/* Navbar Styles */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  height: 60px; /* Adjust the height of the navbar */
-}
-
-.navbar-links-container {
-  display: flex;
-  align-items: center;
-}
-
-.nav-link {
-  margin: 0 10px;
-  text-decoration: none;
-  transition: color 0.3s;
-}
 
 /* Auth Page Styles */
 .auth-container {

@@ -1,7 +1,8 @@
 /* Container Styles */
 .login-page {
+    margin-top: 20px;
     display: flex;
-    height: 100vh;
+    height: 90vh;
     font-family: Arial, sans-serif;
     max-width: 1400px;
     margin: auto;
@@ -10,19 +11,26 @@
 
 .image-container {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: inherit;
-    background-color: #f8f9fa;
+    margin: 10px;
+    align-items: baseline;
+    background-color: #1E2772;
 }
+
+.image {
+    margin-top: 20px;
+    background-color: #1E2772;
+}
+
 .input-field::placeholder {
     font-size: 14px; 
     color: #888; 
 }
 .login-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the container while maintaining aspect ratio */
+    width: 600px !important; 
+    height: auto; 
+    padding: auto;
+    object-fit: cover; 
+    max-width: 100%; 
 }
 /* Right Side - Login Form Container */
 .login-form-container {
@@ -54,7 +62,6 @@ h2 {
     color: #1e267261;
     
 }
-
 
 
 .divider {
@@ -105,6 +112,8 @@ button[type="submit"].login-btn {
     background-color: #1E2772;
     color: white;
     padding: 10px;
+    align-self: center;
+    width: 300px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -120,6 +129,7 @@ button[type="submit"]:hover {
 button[type="submit"].button-bordered {
     grid-column: 1 / span 2;
     padding: 10px;
+    width: 300px;
     font-size: 16px;
     background-color: white;
     color: #1E2772;
@@ -135,6 +145,8 @@ button[type="submit"].button-bordered:hover {
 .register-link {
     color: #666;
     font-size: 14px;
+    margin-left: 30px;
+    margin-right: 10px;
 }
 
 .register-link a {

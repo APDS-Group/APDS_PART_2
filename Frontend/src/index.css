@@ -27,7 +27,8 @@ code {
 }
 
 label {
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 /* Light Theme */
@@ -120,20 +121,42 @@ body.dark .center-text {
   color: #fff;
 }
 
-/* Container Styles */
-.container {
-  padding: 32px 48px;
+.body-container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+.body-container2 {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center; 
+  align-items: center; 
+}
+.container-reg {  
+  background-color: #fff; 
   border-radius: 10px;
-  width: 100%;
-  max-width: 600px;
+  width: 1000px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Container Styles */
+.container {  
+  background-color: #fff; /* Optional: Add a background color */
+  padding: 10px;
+  border-radius: 10px;
+  width: 400px;
   box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.5);
 }
 
 .container h1 {
   font-size: 35px;
-  margin-bottom: 20px;
-  margin-top: 40px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin-bottom: 30px;
+  margin-top: 20px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   text-align: center;
 }
 
@@ -209,6 +232,15 @@ button {
   font-weight: 400;
   text-align: center;
   margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #333;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px; 
 }
 
 .button-container {

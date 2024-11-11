@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './NavBar';
+import Navbar from '../pages/Navbars/NavBar';
 import '../styles/Transaction.css';
 
 function TransactionVerification() {
@@ -139,8 +139,9 @@ function TransactionVerification() {
   return (
     <>
       <Navbar />
+      <div className="page"> 
       <div className="container">      
-        <h1 className="transaction-header">Transaction Verification</h1>      
+        <h1>Transaction Verification</h1>      
         <form onSubmit={handleSubmit} className="register-form">
           <div className="register-form">
             <div className="transaction-row">
@@ -248,6 +249,7 @@ function TransactionVerification() {
             Submit
           </button>
         </form>
+      </div>
       </div>
     </>
   );

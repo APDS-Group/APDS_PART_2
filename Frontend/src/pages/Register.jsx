@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils';
 import { Navigate } from 'react-router-dom';
+import NavbarPublic from '../pages/Navbars/NavbarPublic';
+
 import '../styles/Register.css';
 
 function Register() {
@@ -98,9 +100,12 @@ function Register() {
     }
 
     return (
-        <div className="container">
+        <>
+            <NavbarPublic />
+            <div className="body-container2">
+        <div className="container-reg">
             <h1>Register</h1>
-            <form onSubmit={handleRegister} className="register-form">
+                  <form onSubmit={handleRegister} style={{ margin: '0px 20px 20px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
                 <div className="register-form">
                      {/* Input Fields 1 */}
@@ -200,12 +205,14 @@ function Register() {
                     </div>
                 </div>
 
-                <button type="submit" className="submit-btn">Register</button>
+                               <button type="submit" className="submit-btn" style={{ margin: '20px auto' }}>Register</button>
                 <div className="center-text">
                     <span>Already have an account? <a href="/login">Login</a></span>
                 </div>
             </form>
         </div>
+        </div>
+        </>
     );
 }
 

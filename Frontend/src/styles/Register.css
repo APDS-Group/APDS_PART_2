@@ -11,7 +11,7 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
   }
   .container {
-    max-width: 1400px;
+    max-width: 100px;
     margin: auto;
     height: 90vh;
     padding: 20px 50px; 
@@ -21,6 +21,7 @@ body, html {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    padding: 50px;
 }
 
 .form-column {
@@ -80,14 +81,4 @@ button[type="submit"]:hover {
     grid-column: span 2;
     text-align: center;
     margin-top: 10px;
-}
-h1 {
-    font-size: 2.5em;
-    font-weight: bold;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-    color: #333;
-    text-align: center;
-    margin-top: 10px; 
 }
