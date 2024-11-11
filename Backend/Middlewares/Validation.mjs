@@ -49,7 +49,7 @@ const checkUsername = (username) => {
 
 // ID number validation function
 const checkIdNumber = (idNumber) => {
-    const idNumberPattern = /^[0-9]{13}$/;
+    const idNumberPattern = /^\d{13}$/;
     if (!idNumberPattern.test(idNumber)) {
         return "Please enter a valid ID number with exactly 13 digits.";
     }
@@ -58,7 +58,7 @@ const checkIdNumber = (idNumber) => {
 
 // Account number validation function
 const checkAccountNumber = (accountNumber) => {
-    const accountNumberPattern = /^[0-9]{10}$/;
+    const accountNumberPattern = /^\d{10}$/;
     if (!accountNumberPattern.test(accountNumber)) {
         return "Please enter a valid account number with exactly 10 digits.";
     }

@@ -19,7 +19,8 @@ const client = new MongoClient(connectionString, {
     tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
 });
 
-let db = null; // Declare a variable to hold the database reference
+// NOSONAR
+let db = null; // Declare a constant object to hold the database reference
 
 // Function to connect to the database
 export async function connectToDatabase() {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { handleError, handleSucess } from '../utils';
 import NavbarPublic from '../pages/Navbars/NavbarPublic';
 import '../styles/LoginPage.css';
-import loginIllustration from '../Assets/images/login_screen.png'; // Ensure the correct path
+import loginIllustration from '../assets/images/login_screen.png'; // Ensure the correct path
 
 function LoginPage({ setIsAuthenticated }) { // NOSONAR
 

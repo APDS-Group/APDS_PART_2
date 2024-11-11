@@ -14,19 +14,23 @@ const processPayment = async (req, res) => {
     console.log('Received payment request:', req.body);
 
     // Validate that all fields are filled
-    if (!recipientName || !bank || !accountNumber || !transferAmount || !swiftCode || !currency) {
-        console.log('Validation failed: Missing fields');
+    const missingFields = [];
+    if (!recipientName) missingFields.push('recipientName');
+    if (!bank) missingFields.push('bank');
+    if (!accountNumber) missingFields.push('accountNumber');
+    if (!transferAmount) missingFields.push('transferAmount');
+    if (!swiftCode) missingFields.push('swiftCode');
+    if (!currency) missingFields.push('currency');
+
+    if (missingFields.length > 0) {
+        console.log('Validation failed: Missing fields', missingFields);
         return res.status(400).json({
             success: false,
             message: 'All fields are required',
-            errors: {
-                recipientName: !recipientName ? 'Recipient name is required' : '',
-                bank: !bank ? 'Bank is required' : '',
-                accountNumber: !accountNumber ? 'Account number is required' : '',
-                transferAmount: !transferAmount ? 'Transfer amount is required' : '',
-                swiftCode: !swiftCode ? 'SWIFT code is required' : '',
-                currency: !currency ? 'Currency is required' : ''
-            }
+            errors: missingFields.reduce((acc, field) => {
+                acc[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+                return acc;
+            }, {})
         });
     }
     // Validate the SWIFT code
@@ -114,14 +118,14 @@ const finalizeVerification = async (req, res) => {
         // Update the payment status if overall_status is 'Verified'
         if (overall_status === 'Verified') {
             await db.collection("payments").updateOne(
-                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { _id: mongoose.Types.ObjectId.createFromHexString(paymentId) },
                 { $set: { status: 'Verified' } }
             );
             console.log('Payment status updated to Verified');
         }
         if (overall_status === 'Rejected') {
             await db.collection("payments").updateOne(
-                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { _id: mongoose.Types.ObjectId.createFromHexString(paymentId) },
                 { $set: { status: 'Rejected' } }
             );
             console.log('Payment status updated to Verified');
@@ -145,7 +149,7 @@ const finalizeVerification = async (req, res) => {
 const getPaymentById = async (req, res) => {
     const { paymentId } = req.params;
     try {
-        const payment = await db.collection("payments").findOne({ _id: new mongoose.Types.ObjectId(paymentId) });
+        const payment = await db.collection("payments").findOne({ _id: mongoose.Types.ObjectId.createFromHexString(paymentId) });
 
         if (!payment) {
             return res.status(404).json({
