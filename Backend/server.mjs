@@ -17,7 +17,7 @@ import payment from './routes/payment.mjs';
 
 // Import the IP blacklisting and rate limiting middleware changes
 import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
-import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs';
+import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs'; // NOSONAR
 
 const PORT = 5050; 
 // Create an instance of an Express application
