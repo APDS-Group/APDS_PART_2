@@ -20,7 +20,7 @@ const client = new MongoClient(connectionString, {
 });
 
 // NOSONAR
-const db = { value: null }; // Declare a constant object to hold the database reference
+let db = null; // Declare a constant object to hold the database reference
 
 // Function to connect to the database
 export async function connectToDatabase() {
@@ -31,14 +31,14 @@ export async function connectToDatabase() {
             // Log a success message if the connection is established
             console.log('MongoDB is CONNECTED!!! :)');
             // Get a reference to the "users" database
-            db.value = client.db("apds");
+            db = client.db("apds");
         } catch (e) {
             // Log any errors that occur during the connection attempt
             console.error('Error connecting to MongoDB:', e);
             throw e; // Rethrow the error to be handled by the caller
         }
     }
-    return db.value; // Return the database reference
+    return db; // Return the database reference
 }
 
 // Export the database reference for use in other parts of the application

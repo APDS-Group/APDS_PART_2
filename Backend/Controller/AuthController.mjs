@@ -84,7 +84,6 @@ const preRegister = async (req, res) => {
 
     console.log("Received signup request with data:", { firstname, lastname, username, password, empNum, idNumber });
 
-    const db = await connectToDatabase();
     const collection = db.collection("employees");
 
     console.log("Checking if employee user already exists with username, or employee number");
