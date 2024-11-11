@@ -15,7 +15,7 @@ import users from './routes/user.mjs';
 import home from './routes/home.mjs';
 import payment from './routes/payment.mjs';
 
-// Import the IP blacklisting and rate limiting middleware
+// Import the IP blacklisting and rate limiting middleware changes
 import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
 import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs';
 
