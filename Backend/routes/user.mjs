@@ -19,9 +19,9 @@ var store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
 var bruteforce = new ExpressBrute(store, {
-    freeRetries: 3,
-    minWait: 5 * 60 * 1000, // 5 minutes
-    maxWait: 5 * 60 * 1000, // 1 hour
+    freeRetries: 5,
+    minWait: 0.5 * 60 * 1000, // 30 seconds
+    maxWait: 5 * 60 * 1000, // 5 minutes
     failCallback: function (req, res, next, nextValidRequestDate) {
         res.status(429).json({
             success: false,

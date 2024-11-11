@@ -84,10 +84,6 @@ function EmployeeHome() {
 
         fetchPendingPayments();
     }, [navigate]);
-
-    const handleButtonClick = (path) => { // NOSONAR
-      navigate(path, { state: { from: '/home' } });
-    };
     return (
         <>
         <Navbar />

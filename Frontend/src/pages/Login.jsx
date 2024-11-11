@@ -63,7 +63,7 @@ function Login({ setIsAuthenticated }) { // NOSONAR
                 ...prevErrors,
                 password: 'Too many requests timeout'
             }));
-            return handleError('Too many requests, please try again in 5 minutes.');
+            return handleError('Too many requests, please try again in 30 seconds.');
         }
 
         const result = await response.json();
