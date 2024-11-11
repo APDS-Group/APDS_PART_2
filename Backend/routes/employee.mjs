@@ -43,7 +43,7 @@ router.get("/pending", pendingPayments);
 
 router.get("/payment/:paymentId", getPaymentById);
 
-router.post("/finalize-verification", finalizeVerification); // Define the route for finalizing verification
+router.post("/finalize-verification", finalizeVerification); 
 
 
 // Define a GET route for the root path ("/")

@@ -54,8 +54,7 @@ function App() {
           <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
           <Route path="/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/transactions" element={isAuthenticated ? <Transaction /> : <Navigate to="/login" />} />
-          <Route path="/transactions/:paymentId" element={isAuthenticated ? <Transaction /> : <Navigate to="/login" />} />
+          <Route path="/transactions" element={isAuthenticated ? <Transaction /> : <Navigate to="/employee" />} />
           <Route path="/home" element={isAuthenticated ? <EmployeeHome /> : <Navigate to="/employee" />} />
           <Route path="/employee" element={<EmployeeLogin setIsAuthenticated={setIsAuthenticated}  />} />
           <Route path="/login-page" element={<LoginPage />} /> 

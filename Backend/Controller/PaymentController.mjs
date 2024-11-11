@@ -9,7 +9,7 @@ const db = await connectToDatabase();
 
 const processPayment = async (req, res) => {
     const { recipientName, bank, accountNumber, transferAmount, swiftCode, currency } = req.body;
-    const customerId = req.user._id; 
+    const customerId = req.user._id;
     let collection = db.collection("payments");
     console.log('Received payment request:', req.body);
 
@@ -48,8 +48,8 @@ const processPayment = async (req, res) => {
             transferAmount,
             swiftCode,
             currency,
-            customerId, 
-            status: 'Pending', 
+            customerId,
+            status: 'Pending',
             createdAt: new Date()
         });
 
@@ -91,7 +91,49 @@ const pendingPayments = async (req, res) => {
 
 
 const finalizeVerification = async (req, res) => {
-   
+    const { paymentId, employeeId, verifications, overall_status } = req.body;
+
+    try {
+        console.log('Starting payment verification finalization:', { paymentId, employeeId, verifications, overall_status });
+
+        const db = await connectToDatabase();
+        let collection = db.collection("paymentVerification");
+
+        // Create a new PaymentVerification object
+        const paymentVerification = new PaymentVerification({
+            payment_id: paymentId,
+            employee_id: employeeId,
+            verifications,
+            overall_status,
+            verified_at: new Date(),
+            submitted_by: employeeId
+        });
+
+        console.log("Inserting new payment verfication into the database");
+        let result = await collection.insertOne(paymentVerification)
+
+        // Update the payment status if overall_status is 'Verified'
+        if (overall_status === 'Verified') {
+            await db.collection("payments").updateOne(
+                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { $set: { status: 'Verified' } }
+            );
+            console.log('Payment status updated to Verified');
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Payment verification finalized successfully',
+            paymentVerification,
+            Id: result.insertedId // Add a comma before this line
+        });
+    } catch (error) {
+        console.error('Error finalizing payment verification:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
 };
 
 const getPaymentById = async (req, res) => {
@@ -121,4 +163,4 @@ const getPaymentById = async (req, res) => {
 };
 
 
-export { processPayment, pendingPayments,finalizeVerification, getPaymentById };
+export { processPayment, pendingPayments, finalizeVerification, getPaymentById };

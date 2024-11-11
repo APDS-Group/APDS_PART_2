@@ -50,15 +50,15 @@ function EmployeeLogin({ setIsAuthenticated }) {
       });
       const result = await response.json();
       console.log("Received response:", result); // Log the response
-      const { success, message, token, name, error } = result;
+      const { success, message, token, id, name, email, error } = result;
 
       if (success) {
         handleSucess(message);
         localStorage.setItem('token',token);
         localStorage.setItem('userDetails', JSON.stringify({
-          id: result.id, 
-          name: result.name,
-          email: result.email,
+          id, 
+          name,
+          email,
           joined: 'January 1, 2020',
         }));
         setIsAuthenticated(true);

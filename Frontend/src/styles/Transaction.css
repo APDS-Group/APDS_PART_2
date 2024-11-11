@@ -1,0 +1,184 @@
+/* General Styles */
+
+  body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    max-width: 1400px;
+    margin: auto;
+    height: 90vh;
+    padding: 20px 50px; 
+}
+
+.register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
+.submit-btn {
+    grid-column: span 2;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button[type="submit"] {
+    grid-column: 1 / span 2;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #1E2772;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #4049;
+}
+
+.center-text {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 10px;
+}
+h1 {
+    font-family: Arial, sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-top: 10px; 
+}
+
+  /* Transaction Verification Page Styles */
+  .transaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 20px;
+  }
+  
+  .transaction-card {
+   
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transaction-verification-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+  
+  .transaction-row {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .transaction-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .verify-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .verify-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .verified-button  {
+    background-color: #6c757d;
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: #218838;
+  }

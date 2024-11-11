@@ -199,13 +199,13 @@ const employeeLogin = async (req, res) => {
       name: `${employee.firstname} ${employee.lastname}`
     };
 
-
     res.status(200).json({
       message: "Login successful",
       success: true,
       token: token,
+      id: employee._id,
       username: employee.username,
-      name: `${employee.firstname} ${employee.lastname}`
+      name: `${employee.firstname} ${employee.lastname}`,     
     });
   } catch (error) {
     console.log("Error during login:", error);

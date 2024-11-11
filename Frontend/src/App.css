@@ -516,9 +516,8 @@ body.dark .stat-box {
   background-color: #0056b3;
 }
 
-.verify-button:disabled {
+.verified-button  {
   background-color: #6c757d;
-  cursor: not-allowed;
 }
 
 .submit-button {
