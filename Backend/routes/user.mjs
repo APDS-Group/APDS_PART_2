@@ -10,6 +10,9 @@ import { signupValidation, loginValidation } from '../Middlewares/AuthValidation
 // Import ExpressBrute for brute force protection
 import ExpressBrute from 'express-brute';
 
+// Import the login rate limiter
+import { loginRateLimiter } from '../Middlewares/RateLimiting.mjs';
+
 // Create a new router instance using express.Router()
 const router = express.Router();
 
@@ -27,8 +30,8 @@ router.post("/signup", signupValidation, signup);
 // Define a POST route for the "/login" path
 // The bruteforce middleware is used to protect against brute force attacks
 // The loginValidation middleware is used to validate the request data
-// If the validation passes, the login controller function is called to handle the request
-router.post("/login", bruteforce.prevent, loginValidation, login);
+// The loginRateLimiter middleware is used to limit login attempts
+router.post("/login", bruteforce.prevent, loginRateLimiter, loginValidation, login);
 
 // Define a GET route for the root path ("/")
 // This route sends a simple response indicating that it is the user route

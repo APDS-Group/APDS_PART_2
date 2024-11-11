@@ -19,7 +19,6 @@ function Home() {
 
     // Fetch stats from an API or define them here
     setStats([
-      { title: 'Current User', value: userDetails.name },
       { title: 'Current Balance', value: '$5,000' },
       { title: 'Bank Name', value: 'Bank of America' },
     ]);

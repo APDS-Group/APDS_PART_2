@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { handleError, handleSucess } from '../utils'; // Correct the import statement
+import { handleError, handleSucess } from '../utils';
 import { useNavigate } from 'react-router-dom';
-import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation.jsx'; // Adjust the import path as necessary
+import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation';
+import DOMPurify from 'dompurify';
 import '../styles/Transaction.css';
-import NavBar from './Navbars/NavBar.jsx';
+import NavBar from './Navbars/NavBar';
+
 function PaymentForm() {
     const navigate = useNavigate();
     const [paymentInfo, setPaymentInfo] = useState({
@@ -23,10 +25,15 @@ function PaymentForm() {
         currency: ''
     });
 
+    const sanitizeInput = (input) => {
+        return DOMPurify.sanitize(input);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const sanitizedValue = sanitizeInput(value);
         const newPaymentInfo = { ...paymentInfo };
-        newPaymentInfo[name] = value;
+        newPaymentInfo[name] = sanitizedValue;
         setPaymentInfo(newPaymentInfo);
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -99,20 +106,20 @@ function PaymentForm() {
         }
 
         try {
-            const token = localStorage.getItem('token'); // Get the token from local storage
+            const token = localStorage.getItem('token');
             const url = "https://localhost:5050/payment/process";
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Include the token in the request headers
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(paymentInfo),
             });
             const result = await response.json();
             const { success, message, errors } = result;
             if (success) {
-                handleSucess(message); // Use the correct function name
+                handleSucess(message);
                 navigate('/');
             } else {
                 if (errors) {
@@ -206,7 +213,6 @@ function PaymentForm() {
                         <div>
                             <label htmlFor='currency'>Currency</label>
                             <div className="input-group2">
-
                                 <select className="input-field"
                                     onChange={handleChange}
                                     name="currency"
@@ -227,7 +233,7 @@ function PaymentForm() {
                                 {errors.currency && <div className="error">{errors.currency}</div>}
                             </div>
                         </div>
-                        <button type="submit"className="button-accept2"> Pay Now</button>
+                        <button type="submit" className="button-accept2"> Pay Now</button>
                         <button type="button" onClick={handleCancel}>Cancel</button>
                     </form>
                 </div>
