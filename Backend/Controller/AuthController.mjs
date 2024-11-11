@@ -152,6 +152,15 @@ const login = async (req, res) => {
       email: user.email,
       name: `${user.firstname} ${user.lastname}`
     };
+
+    // Set the cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -199,6 +208,14 @@ const employeeLogin = async (req, res) => {
       name: `${employee.firstname} ${employee.lastname}`
     };
 
+    // Set the cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -214,4 +231,4 @@ const employeeLogin = async (req, res) => {
 };
 // Export the signup and login controller functions
 export { signup, login, preRegister, employeeLogin };
-//(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
+// (Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____

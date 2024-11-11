@@ -1,4 +1,3 @@
-
 // Import the https module to create an HTTPS server
 import https from 'https';
 // Import the fs module to read files
@@ -8,6 +7,7 @@ import express from 'express';
 // Import the cors module for handling Cross-Origin Resource Sharing
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 // Import the routes
 import employees from './routes/employee.mjs';
@@ -15,12 +15,14 @@ import users from './routes/user.mjs';
 import home from './routes/home.mjs';
 import payment from './routes/payment.mjs';
 
+// Import the IP blacklisting and rate limiting middleware
+import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
+import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs';
+
 const PORT = 5050; 
 // Create an instance of an Express application
 const app = express();
 
-
-// Define HTTPS options
 // Define HTTPS options
 const options = {
     key: fs.readFileSync('./keys/privatekey.pem'),
@@ -50,7 +52,8 @@ const options = {
     ].join(':'),
     honorCipherOrder: true
 };
-    // Use helmet middleware to set security-related HTTP headers
+
+// Use helmet middleware to set security-related HTTP headers
 app.use(helmet());
 
 // Set the X-Frame-Options header to DENY
@@ -65,11 +68,15 @@ app.use(helmet.hsts({
     includeSubDomains: true, // Apply HSTS to all subdomains
     preload: true // Add the preload flag for HSTS preload list
 }));
+
 // Use CORS middleware for all routes ( domain)
 app.use(cors());
+
 // Use express.json() middleware to parse JSON request bodies
 app.use(express.json());
-//app.user(bodyParser.json());
+
+// Use cookie-parser middleware
+app.use(cookieParser());
 
 // Set headers for CORS
 app.use((req, res, next) => {
@@ -77,11 +84,16 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
     next();
-})
+});
 
+// Apply IP blacklisting middleware
+app.use(ipFilter);
+app.use(handleIpFilterErrors);
+
+// Apply rate limiting middleware globally
+app.use(limiter);
 
 // Use the imported routes
-
 app.use("/employee", employees);
 app.route("/employee", employees);
 
@@ -94,8 +106,6 @@ app.route("/home", home);
 app.use('/payment', payment);
 app.route('/payment', payment);
 
-
-
 // Add a simple test route
 app.get('/test', (req, res) => {
     res.send('Server is working!');
@@ -103,15 +113,11 @@ app.get('/test', (req, res) => {
 
 // Create an HTTPS server
 const server = https.createServer(options, app);
-//let server = https.createServer(options, app);
-
 
 // Increase the timeout settings
 server.setTimeout(30000); 
+
 // Start the server and listen on the defined PORT
 server.listen(PORT, () => {
     console.log(`Server is running on https://localhost:${PORT}`);
-});;
-
-//  (The Independent Institute of Education, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____---____---____---____---__\\
-
+});
