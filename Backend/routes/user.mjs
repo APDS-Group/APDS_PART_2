@@ -22,6 +22,7 @@ var bruteforce = new ExpressBrute(store, {
     freeRetries: 5,
     minWait: 0.5 * 60 * 1000, // 30 seconds
     maxWait: 5 * 60 * 1000, // 5 minutes
+    //eslint-disable-next-line
     failCallback: function (req, res, next, nextValidRequestDate) {
         res.status(429).json({
             success: false,
