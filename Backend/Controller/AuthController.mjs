@@ -19,7 +19,7 @@ import jwt from 'jsonwebtoken';
 const db = await connectToDatabase();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-const store = new ExpressBrute.MemoryStore();
+//const store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
 //var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
