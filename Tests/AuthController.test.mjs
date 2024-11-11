@@ -1,4 +1,4 @@
-import { signup, login, preRegister, employeeLogin } from '../Backend/Controller/AuthController.mjs';
+import { signup, login } from '../Backend/Controller/AuthController.mjs';
 import { connectToDatabase } from '../Backend/db/conn.mjs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -8,7 +8,7 @@ jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
 
 describe('AuthController', () => {
-    let req, res, db, collection;
+    let req, res, db;
 
     beforeEach(() => {
         req = {

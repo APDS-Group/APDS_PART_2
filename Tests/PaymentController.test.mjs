@@ -1,8 +1,6 @@
 import { jest } from '@jest/globals';
 import { processPayment, pendingPayments, finalizeVerification, getPaymentById } from '../Backend/Controller/PaymentController.mjs';
 import { connectToDatabase } from '../Backend/db/conn.mjs';
-import { Payment } from '../Backend/Models/Payment.mjs';
-import { PaymentVerification } from '../Backend/Models/PaymentVerification.mjs';
 import { checkSwiftCode } from '../Backend/Middlewares/Validation.mjs';
 
 jest.mock('../db/conn.mjs');
