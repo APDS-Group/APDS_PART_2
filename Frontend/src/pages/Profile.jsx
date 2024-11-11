@@ -29,7 +29,7 @@ function Profile() {
   }, []);
 
   const handlePayAgain = (receipt) => {
-    // Handle pay again logic here
+    // Handl e pay again logic here
     console.log('Pay again:', receipt);
   };
 

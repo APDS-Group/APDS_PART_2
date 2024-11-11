@@ -1,16 +1,15 @@
 version: 2.1
-
 # Define reusable jobs for your workflow
 jobs:
   build_test:
     docker:
-      - image: circleci/node:14  # Use a Node.js image suitable for your project
+      - image: circleci/node:14  # Use a Node.js image for project
     steps:
-      - checkout  # Check out your project repository
+      - checkout  
       - run:
           name: Install npm dependencies
           command: npm install
-          working_directory: Backend  # Change to your specific project folder
+          working_directory: Backend 
       - run:
           name: Run tests
           command: npm test
