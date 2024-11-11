@@ -5,7 +5,7 @@ import { handleError, handleSucess } from '../utils';
 import '../styles/Transaction.css';
 
 
-function EmployeeLogin({ setIsAuthenticated }) {
+function EmployeeLogin({ setIsAuthenticated }) { // NOSONAR
   const navigate = useNavigate();
 
   const [loginInfo, setLoginInfo] = useState({

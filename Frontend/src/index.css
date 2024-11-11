@@ -255,13 +255,6 @@ button {
 }
 
 
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
 .home-page {
   color: rgb(20, 15, 17);
   flex: 1;
