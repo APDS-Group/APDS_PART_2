@@ -70,7 +70,7 @@ function Home() {
   }
 
   const handleButtonClick = (path) => {
-    navigate(path);
+    navigate(path, { state: { from: '/' } });
   };
 
   return (

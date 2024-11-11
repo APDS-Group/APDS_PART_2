@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbars/NavBar';
+import NavbarEmp from './Navbars/NavBarEmployee';
 import '../App.css'; // Import the CSS file
 
 function Profile() {
   const [user, setUser] = useState({});
   const [bankDetails, setBankDetails] = useState({});
   const [paymentReceipts, setPaymentReceipts] = useState([]);
+  const [isEmployee, setIsEmployee] = useState(false);
 
   useEffect(() => {
     // Fetch user details from local storage
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     setUser(userDetails);
+    setIsEmployee(userDetails.isEmployee);
 
     // Fetch bank details and payment receipts from an API or define them here
     setBankDetails({
@@ -32,7 +35,7 @@ function Profile() {
 
   return (
     <div className="profile-container">
-      <Navbar />
+      {isEmployee ? <NavbarEmp /> : <Navbar />}
       <div className="profile-card">
         <h1>Profile</h1>
         <div className="profile-details">

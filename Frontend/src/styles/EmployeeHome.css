@@ -84,7 +84,6 @@ h1 {
   font-weight: bold;
   color: #333;
   padding: 20px;
-  margin-top: 20px; 
   font-size: 30px;
   margin-bottom: 20px;
   text-align: center;
@@ -95,7 +94,7 @@ h1 {
   flex-direction: column;
   align-items: center; 
   justify-content: center; 
-  height: 100vh; 
+  height: 85vh; 
 }
 
 .dashboard-h {
@@ -105,7 +104,6 @@ h1 {
   justify-content: center;
   width: 100%;
   max-width: 800px; 
-  padding: 20px;
   background-color: #f9f9f9; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   border-radius: 8px; 

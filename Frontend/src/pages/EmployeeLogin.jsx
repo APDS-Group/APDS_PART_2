@@ -63,6 +63,7 @@ function EmployeeLogin({ setIsAuthenticated }) {
           name,
           email,
           joined: 'January 1, 2020',
+          isEmployee: true
         }));
         setIsAuthenticated(true);
         handleSucess(message);

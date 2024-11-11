@@ -83,9 +83,8 @@ function EmployeeHome() {
     }, [navigate]);
 
     const handleButtonClick = (path) => {
-        navigate(path);
+      navigate(path, { state: { from: '/home' } });
     };
-
     return (
         <>
         <Navbar />
