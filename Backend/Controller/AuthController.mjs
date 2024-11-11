@@ -41,15 +41,15 @@ const signup = async (req, res) => {
     console.log("Checking if user already exists with email, username, or account number");
     const user = await collection.findOne({
       $or: [
-        { email: email },
-        { username: username },
-        { accountNumber: accountNumber },
-        { idNumber: idNumber }
+        { email: email.toString() },
+        { username: username.toString() },
+        { accountNumber: accountNumber.toString() },
+        { idNumber: idNumber.toString() }
       ]
     });
 
     if (user) {
-      let errors = {};
+      const errors = {};
       if (user.email === email) errors.email = "Email already exists";
       if (user.username === username) errors.username = "Username already exists";
       if (user.accountNumber === accountNumber) errors.accountNumber = "Account number already exists";
@@ -58,10 +58,9 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: "User already exists", success: false, errors });
     }
 
-
     // Create a new user instance with the provided name, email, and password
     const newUser = new User({ firstname, lastname, username, email, password, accountNumber, idNumber });
-    newUser.password = await bcrypt.hash(req.body.password, 10);
+    newUser.password = await bcrypt.hash(password, 10);
 
     console.log("Inserting new user into the database");
     const result = await collection.insertOne(newUser);
@@ -77,6 +76,7 @@ const signup = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
+
 // Define the pre-register controller function
 const preRegister = async (req, res) => {
   try {
@@ -90,8 +90,8 @@ const preRegister = async (req, res) => {
     console.log("Checking if employee user already exists with username, or employee number");
     const employee = await collection.findOne({
       $or: [
-        { username: username },
-        { empNum: empNum }
+        { username: username.toString() },
+        { empNum: empNum.toString() }
       ]
     });
 
@@ -105,10 +105,9 @@ const preRegister = async (req, res) => {
 
     // Create a new employee instance with the provided data
     const newEmployee = new Employee({ firstname, lastname, username, password, empNum, idNumber });
-    newEmployee.password = await bcrypt.hash(req.body.password, 10);
+    newEmployee.password = await bcrypt.hash(password, 10);
 
     console.log("Inserting new employee user into the database");
-    // await newEmployee.save();    
     const result = await collection.insertOne(newEmployee);
 
     console.log("Registration successful for employee:", username);
@@ -123,7 +122,6 @@ const preRegister = async (req, res) => {
   }
 };
 
-// Define the login controller function
 // Define the login controller function
 const login = async (req, res) => {
   try {
@@ -183,9 +181,9 @@ const employeeLogin = async (req, res) => {
 
     console.log("Login attempt with username:", username);
 
-     // Sanitize user inputs
-     const sanitizedUsername = username.toString();
-     const sanitizedPassword = password.toString();
+    // Sanitize user inputs
+    const sanitizedUsername = username.toString();
+    const sanitizedPassword = password.toString();
 
     const db = await connectToDatabase();
     const collection = db.collection("employees");
@@ -193,13 +191,13 @@ const employeeLogin = async (req, res) => {
     const employee = await collection.findOne({ username: sanitizedUsername });
 
     if (!employee) {
-      console.log("Employee not found with username:",sanitizedUsername);
+      console.log("Employee not found with username:", sanitizedUsername);
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
     const isMatch = await bcrypt.compare(sanitizedPassword, employee.password);
     if (!isMatch) {
-      console.log("Invalid password for username:",sanitizedUsername);
+      console.log("Invalid password for username:", sanitizedUsername);
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
@@ -217,13 +215,14 @@ const employeeLogin = async (req, res) => {
       token: token,
       id: employee._id,
       username: employee.username,
-      name: `${employee.firstname} ${employee.lastname}`,     
+      name: `${employee.firstname} ${employee.lastname}`,
     });
   } catch (error) {
     console.log("Error during login:", error);
     res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
+
 // Export the signup and login controller functions
 export { signup, login, preRegister, employeeLogin };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
