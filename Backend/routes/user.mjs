@@ -14,10 +14,10 @@ import ExpressBrute from 'express-brute';
 const router = express.Router();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore();
+const store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store);
+const bruteforce = new ExpressBrute(store);
 
 // Define a POST route for the "/signup" path
 // The signupValidation middleware is used to validate the request data
