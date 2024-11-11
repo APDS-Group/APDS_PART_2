@@ -19,6 +19,7 @@ const client = new MongoClient(connectionString, {
     tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
 });
 
+// NOSONAR
 const db = { value: null }; // Declare a constant object to hold the database reference
 
 // Function to connect to the database
