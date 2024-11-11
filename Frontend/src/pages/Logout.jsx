@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'; // Import the CSS file
+import Navbar from './Navbars/NavBar';
+import NavbarEmp from './Navbars/NavBarEmployee';
 
 function Logout({ setIsAuthenticated }) { // NOSONAR
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const [isEmployee, setIsEmployee] = useState(false);
 
   const handleLogout = () => {
     // Clear the authentication token from local storage
@@ -15,6 +18,9 @@ function Logout({ setIsAuthenticated }) { // NOSONAR
   };
 
   return (
+    <>
+ 
+ {isEmployee ? <NavbarEmp /> : <Navbar />}
     <div className="logout-container">
       <button className="primary-button" onClick={() => setShowModal(true)}>
         Logout
@@ -33,6 +39,7 @@ function Logout({ setIsAuthenticated }) { // NOSONAR
         </div>
       )}
     </div>
+    </>
   );
 }
 

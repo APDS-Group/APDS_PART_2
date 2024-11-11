@@ -34,34 +34,36 @@ function Profile() {
   };
 
   return (
-    <div className="profile-container">
+    <>
       {isEmployee ? <NavbarEmp /> : <Navbar />}
-      <div className="profile-card">
-        <h1>Profile</h1>
-        <div className="profile-details">
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Joined:</strong> {user.joined}</p>
-        </div>
-        <div className="bank-details">
-          <h2>Banking Details</h2>
-          <p><strong>Current Account:</strong> {bankDetails.currentAccount}</p>
-          <p><strong>Account Number:</strong> {bankDetails.accountNumber}</p>
-          <p><strong>Available Balance:</strong> {bankDetails.availableBalance}</p>
-        </div>
-        <div className="payment-receipts">
-          <h2>Payment Receipts</h2>
-          {paymentReceipts.map((receipt, index) => (
-            <div key={index} className="receipt">
-              <p><strong>Date:</strong> {receipt.date}</p>
-              <p><strong>Beneficiary Name:</strong> {receipt.beneficiaryName}</p>
-              <p><strong>Amount:</strong> {receipt.amount}</p>
-              <button className="primary-button" onClick={() => handlePayAgain(receipt)}>Pay Again</button>
-            </div>
-          ))}
+      <div className="profile-container">
+        <div className="profile-card">
+          <h1>Profile</h1>
+          <div className="profile-details">
+            <p><strong>Name:</strong> {user.name}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Joined:</strong> {user.joined}</p>
+          </div>
+          <div className="bank-details">
+            <h2>Banking Details</h2>
+            <p><strong>Current Account:</strong> {bankDetails.currentAccount}</p>
+            <p><strong>Account Number:</strong> {bankDetails.accountNumber}</p>
+            <p><strong>Available Balance:</strong> {bankDetails.availableBalance}</p>
+          </div>
+          <div className="payment-receipts">
+            <h2>Payment Receipts</h2>
+            {paymentReceipts.map((receipt, index) => (
+              <div key={index} className="receipt">
+                <p><strong>Date:</strong> {receipt.date}</p>
+                <p><strong>Beneficiary Name:</strong> {receipt.beneficiaryName}</p>
+                <p><strong>Amount:</strong> {receipt.amount}</p>
+                <button className="primary-button" onClick={() => handlePayAgain(receipt)}>Pay Again</button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
