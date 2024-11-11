@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils';
 import { useNavigate } from 'react-router-dom';
 import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation'; // Adjust the import path as necessary
+import validator from 'validator';
 
 function PaymentForm() {
     const navigate = useNavigate();
@@ -50,8 +51,16 @@ function PaymentForm() {
             return handleError('All fields are required');
         }
 
+        // Sanitize inputs
+        const sanitizedRecipientName = validator.escape(validator.trim(recipientName));
+        const sanitizedBank = validator.escape(validator.trim(bank));
+        const sanitizedAccountNumber = validator.escape(validator.trim(accountNumber));
+        const sanitizedTransferAmount = validator.escape(validator.trim(transferAmount));
+        const sanitizedSwiftCode = validator.escape(validator.trim(swiftCode));
+        const sanitizedCurrency = validator.escape(validator.trim(currency));
+
         // Validate the account number
-        const accountNumberError = checkAccountNumber(accountNumber);
+        const accountNumberError = checkAccountNumber(sanitizedAccountNumber);
         if (accountNumberError) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -61,7 +70,7 @@ function PaymentForm() {
         }
 
         // Validate the transfer amount
-        const transferAmountError = checkTransferAmount(transferAmount);
+        const transferAmountError = checkTransferAmount(sanitizedTransferAmount);
         if (transferAmountError) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -71,7 +80,7 @@ function PaymentForm() {
         }
 
         // Validate the SWIFT code
-        const swiftCodeError = checkSwiftCode(swiftCode);
+        const swiftCodeError = checkSwiftCode(sanitizedSwiftCode);
         if (swiftCodeError) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
@@ -87,7 +96,14 @@ function PaymentForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(paymentInfo),
+                body: JSON.stringify({
+                    recipientName: sanitizedRecipientName,
+                    bank: sanitizedBank,
+                    accountNumber: sanitizedAccountNumber,
+                    transferAmount: sanitizedTransferAmount,
+                    swiftCode: sanitizedSwiftCode,
+                    currency: sanitizedCurrency
+                }),
             });
             const result = await response.json();
             const { success, message, errors } = result;

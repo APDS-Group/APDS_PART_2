@@ -87,6 +87,13 @@ const login = async (req, res) => {
     // Generate a JWT token with the user's email and ID, and set it to expire in 1 hour
     const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+    // Set the cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      secure: true,   // Ensures the cookie is sent over HTTPS only
+      maxAge: 3600000 // Optional: Set the cookie expiration time (in milliseconds)
+    });
+
     // Return a 200 status with a success message, token, email, and name
     res.status(200).json({
       message: "Login successful",
@@ -104,6 +111,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 // Export the signup and login controller functions
 export { signup, login };
 //(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____

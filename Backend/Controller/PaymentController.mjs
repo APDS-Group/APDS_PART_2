@@ -1,6 +1,7 @@
 import { connectToDatabase } from '../db/conn.mjs';
 import { Payment } from '../Models/Payment.mjs';
 import { checkSwiftCode } from '../Middlewares/AuthValidation.mjs';
+import validator from 'validator';
 
 // Establish a connection to the database
 const db = await connectToDatabase();
@@ -27,8 +28,16 @@ const processPayment = async (req, res) => {
         });
     }
 
+    // Sanitize inputs
+    const sanitizedRecipientName = validator.escape(validator.trim(recipientName));
+    const sanitizedBank = validator.escape(validator.trim(bank));
+    const sanitizedAccountNumber = validator.escape(validator.trim(accountNumber));
+    const sanitizedTransferAmount = validator.escape(validator.trim(transferAmount));
+    const sanitizedSwiftCode = validator.escape(validator.trim(swiftCode));
+    const sanitizedCurrency = validator.escape(validator.trim(currency));
+
     // Validate the SWIFT code
-    const swiftCodeError = checkSwiftCode(swiftCode);
+    const swiftCodeError = checkSwiftCode(sanitizedSwiftCode);
     if (swiftCodeError) {
         console.log('Validation failed: Invalid SWIFT code');
         return res.status(400).json({
@@ -42,20 +51,23 @@ const processPayment = async (req, res) => {
 
     // Create a new payment instance
     const payment = new Payment({
-        recipientName,
-        bank,
-        accountNumber,
-        transferAmount,
-        swiftCode,
-        currency
+        recipientName: sanitizedRecipientName,
+        bank: sanitizedBank,
+        accountNumber: sanitizedAccountNumber,
+        transferAmount: sanitizedTransferAmount,
+        swiftCode: sanitizedSwiftCode,
+        currency: sanitizedCurrency
     });
-    
-    
+
     try {
         // Save the payment to the database
         let result = await collection.insertOne(payment); // eslint-disable-line no-unused-vars
         console.log('Payment saved:', payment);
-        res.json({ success: true, message: 'Payment processed successfully' });
+
+        // Encode the response data
+        const encodedMessage = Buffer.from('Payment processed successfully').toString('base64');
+
+        res.json({ success: true, message: encodedMessage });
     } catch (error) {
         console.error('Error saving payment:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error', error: error.message });
