@@ -14,11 +14,7 @@ import employees from './routes/employee.mjs';
 import users from './routes/user.mjs';
 import home from './routes/home.mjs';
 import payment from './routes/payment.mjs';
-
-// Import the IP blacklisting and rate limiting middleware
 import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
-import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs';
-
 const PORT = 5050; 
 // Create an instance of an Express application
 const app = express();
@@ -86,13 +82,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Apply IP blacklisting middleware
 app.use(ipFilter);
 app.use(handleIpFilterErrors);
-
-// Apply rate limiting middleware globally
-app.use(limiter);
-
 // Use the imported routes
 app.use("/employee", employees);
 app.route("/employee", employees);

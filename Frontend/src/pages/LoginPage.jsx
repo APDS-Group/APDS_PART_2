@@ -40,7 +40,7 @@ function LoginPage({ setIsAuthenticated }) {
     const handleLogin = async (e) => {
         e.preventDefault();
         const { usernameOrAccountNumber, password } = loginInfo;
-
+    
         // Validate usernameOrAccountNumber and password fields
         if (!usernameOrAccountNumber || !password) {
             setErrors({
@@ -49,12 +49,12 @@ function LoginPage({ setIsAuthenticated }) {
             });
             return handleError('Username or Account Number and password are required');
         }
-
+    
         try {
             const url = "https://localhost:5050/user/login/";
             // Disable SSL verification (for development purposes only)
             //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
+    
             // Send login request to the server
             const response = await fetch(url, {
                 method: 'POST',
@@ -63,22 +63,26 @@ function LoginPage({ setIsAuthenticated }) {
                 },
                 body: JSON.stringify(loginInfo),
             });
-
+    
+            if (response.status === 429) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    password: 'Too many requests please try again in 5 minutes'
+                }));
+                return handleError('Too many requests, please try again in 5 minutes.');
+            }
+    
             const result = await response.json();
             const { success, message, token, name, error } = result;
-
+    
             if (success) {
                 // Handle successful login
-                // localStorage.setItem('token', token);
-                // localStorage.setItem('loggedInUser', name);
-                // handleSucess(message);
-                // navigate('/home');
                 localStorage.setItem('token', token);
                 localStorage.setItem('userDetails', JSON.stringify({ name: name, email: result.email, joined: 'January 1, 2020' }));
                 setIsAuthenticated(true);
                 handleSucess(message);
                 navigate('/');
-
+    
             } else if (error) {
                 // Handle server-side validation errors
                 const details = error?.details[0]?.message || error;
