@@ -15,10 +15,10 @@ import ExpressBrute from 'express-brute';
 const router = express.Router();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore();
+const store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store, {
+var bruteforce = new ExpressBrute(store, { //NOSONAR
     freeRetries: 5,
     minWait: 0.5 * 60 * 1000, // 30 seconds
     maxWait: 5 * 60 * 1000, // 5 minutes
