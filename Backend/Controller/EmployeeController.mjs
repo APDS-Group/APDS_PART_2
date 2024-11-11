@@ -15,6 +15,8 @@ const db = await connectToDatabase();
 // Create a memory store for ExpressBrute (not recommended for production)
 //var store = new ExpressBrute.MemoryStore(); 
 
+// Import bcrypt for hashing passwords
+import bcrypt from 'bcrypt';
 // Create a brute force instance with the store
 //var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
 
