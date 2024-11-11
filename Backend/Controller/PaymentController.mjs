@@ -118,14 +118,14 @@ const finalizeVerification = async (req, res) => {
         // Update the payment status if overall_status is 'Verified'
         if (overall_status === 'Verified') {
             await db.collection("payments").updateOne(
-                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { _id: mongoose.Types.ObjectId.createFromHexString(paymentId) },
                 { $set: { status: 'Verified' } }
             );
             console.log('Payment status updated to Verified');
         }
         if (overall_status === 'Rejected') {
             await db.collection("payments").updateOne(
-                { _id: new mongoose.Types.ObjectId(paymentId) },
+                { _id: mongoose.Types.ObjectId.createFromHexString(paymentId) },
                 { $set: { status: 'Rejected' } }
             );
             console.log('Payment status updated to Verified');
@@ -149,7 +149,7 @@ const finalizeVerification = async (req, res) => {
 const getPaymentById = async (req, res) => {
     const { paymentId } = req.params;
     try {
-        const payment = await db.collection("payments").findOne({ _id: new mongoose.Types.ObjectId(paymentId) });
+        const payment = await db.collection("payments").findOne({ _id: mongoose.Types.ObjectId.createFromHexString(paymentId) });
 
         if (!payment) {
             return res.status(404).json({
