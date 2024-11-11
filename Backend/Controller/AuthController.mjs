@@ -69,36 +69,46 @@ const signup = async (req, res) => {
 // Define the login controller function
 const login = async (req, res) => {
   try {
-    // Extract email and password from the request body
     const { email, password } = req.body;
-
-    // Find a user with the given email in the users collection
     const user = await db.collection("users").findOne({ email });
 
-    // If the user is not found, return a 403 status with an error message
     if (!user) {
       return res.status(403).json({ message: "User does not exist", success: false });
     }
 
-    // Compare the provided password with the hashed password in the database
+    // Check if the user is currently locked out
+    if (user.lockoutUntil && user.lockoutUntil > new Date()) {
+      return res.status(403).json({ message: "Account locked. Try again later.", success: false });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
-    // If the password does not match, return a 403 status with an error message
     if (!isMatch) {
+      // Increment failed login attempts
+      user.failedLoginAttempts += 1;
+
+      // Check if failed login attempts have reached the limit
+      if (user.failedLoginAttempts >= 4) {
+        user.lockoutUntil = new Date(Date.now() + 5 * 60 * 1000); // Lockout for 5 minutes
+      }
+
+      await db.collection("users").updateOne({ email }, { $set: user });
+
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
-    // Generate a JWT token with the user's email and ID, and set it to expire in 1 hour
-    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    // Reset failed login attempts and lockout time on successful login
+    user.failedLoginAttempts = 0;
+    user.lockoutUntil = null;
+    await db.collection("users").updateOne({ email }, { $set: user });
 
-    // Set the cookie with HttpOnly and Secure flags
+    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
     res.cookie('token', token, {
-      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: true,   // Ensures the cookie is sent over HTTPS only
-      maxAge: 3600000 // Optional: Set the cookie expiration time (in milliseconds)
+      httpOnly: true,
+      secure: true,
+      maxAge: 3600000
     });
 
-    // Return a 200 status with a success message, token, email, and name
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -107,12 +117,7 @@ const login = async (req, res) => {
       name: user.name
     });
   } catch (error) {
-    // If an error occurs, return a 500 status with an error message
-    res.status(500).json({
-      message: "Internal Server Error",
-      success: false,
-      error: error.message
-    });
+    res.status(500).json({ message: "Internal Server Error", success: false, error: error.message });
   }
 };
 
