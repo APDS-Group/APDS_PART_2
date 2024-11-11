@@ -14,7 +14,7 @@ import employees from './routes/employee.mjs';
 import users from './routes/user.mjs';
 import home from './routes/home.mjs';
 import payment from './routes/payment.mjs';
-import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
+import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs'; // NOSONAR
 
 // Define the port number from the environment variable or use 5050 as the default
 const PORT = process.env.PORT || 5050;

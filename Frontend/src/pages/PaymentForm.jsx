@@ -233,8 +233,10 @@ function PaymentForm() {
                                 {errors.currency && <div className="error">{errors.currency}</div>}
                             </div>
                         </div>
+                        <div className="button-container">
                         <button type="submit" className="button-accept2"> Pay Now</button>
-                        <button type="button" onClick={handleCancel}>Cancel</button>
+                        <button type="submit" className="button-reject" onClick={handleCancel}>Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
