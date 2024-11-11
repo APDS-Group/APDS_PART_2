@@ -10,15 +10,15 @@
 }
 
 .image-container {
-    flex: 1;
-    margin: 10px;
-    align-items: baseline;
-    background-color: #1E2772;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%; /* Ensure the container takes the full height of its parent */
 }
 
-.image {
-    margin-top: 20px;
-    background-color: #1E2772;
+.login-image {
+  max-width: 100%;
+  height: auto;
 }
 
 .input-field::placeholder {
