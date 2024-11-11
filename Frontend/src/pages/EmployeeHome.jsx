@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbars/NavBar';
+import Navbar from './Navbars/NavBarEmployee';
 import '../App.css'; // Import the CSS file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -90,30 +90,8 @@ function EmployeeHome() {
         <div className="home-container">
             <Navbar />
             <div className="dashboard">
-                <div className="sidebar">
-                    <ul>
-                        <li className="sidebar-item" onClick={() => handleButtonClick('/profile')}>
-                            <FontAwesomeIcon icon={faUser} size="sm" /> Profile
-                        </li>
-                        <li className="sidebar-item" onClick={() => handleButtonClick('/transactions')}>
-                            <FontAwesomeIcon icon={faExchangeAlt} size="sm" /> Transaction Verification
-                        </li>
-                        <li className="sidebar-item" onClick={() => handleButtonClick('/logout')}>
-                            <FontAwesomeIcon icon={faSignOutAlt} size="sm" /> Logout
-                        </li>
-                    </ul>
-                </div>
                 <div className="main-content">
                     <h1>Welcome, {user.name}</h1>
-                    <p className="welcome-message">This is your dashboard where you can manage your settings and profile.</p>
-                    <div className="stats">
-                        {stats.map((stat, index) => (
-                            <div className="stat-box" key={index}>
-                                <h2>{stat.title}</h2>
-                                <p>{stat.value}</p>
-                            </div>
-                        ))}
-                    </div>
                     <h2>Pending Payments</h2>
                     <div className="PaymentWrapper">
                         <PaymentHolder addPayment={addPayment} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../pages/Navbars/NavBar';
+import Navbar from '../pages/Navbars/NavBarEmployee';
 import '../styles/Transaction.css';
 
 function TransactionVerification() {
