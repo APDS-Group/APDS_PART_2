@@ -16,7 +16,6 @@ function Home() {
 
     // Fetch stats from an API or define them here
     setStats([
-      { title: 'Current User', value: userDetails.name },
       { title: 'Current Balance', value: '$5,000' },
       { title: 'Bank Name', value: 'Bank of America' },
     ]);
@@ -115,7 +114,6 @@ function Home() {
           </ul>
         </div>
         <div className="main-content">
-          <h1>Welcome, {user.name}</h1>
           <p className="welcome-message">This is your dashboard where you can manage your settings and profile.</p>
           <div className="stats">
             {stats.map((stat, index) => (

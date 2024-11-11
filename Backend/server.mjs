@@ -7,6 +7,7 @@ import fs from 'fs';
 import express from 'express'; 
 // Import the cors module for handling Cross-Origin Resource Sharing
 import cors from 'cors';
+import helmet from 'helmet';
 
 // Import the routes
 import employees from './routes/employee.mjs';
@@ -20,12 +21,50 @@ const app = express();
 
 
 // Define HTTPS options
+// Define HTTPS options
 const options = {
     key: fs.readFileSync('./keys/privatekey.pem'),
-    cert: fs.readFileSync('./keys/cert.pem')
-    
-}
-    
+    cert: fs.readFileSync('./keys/cert.pem'),
+    minVersion: 'TLSv1.2',
+    ciphers: [
+        'ECDHE-ECDSA-AES256-GCM-SHA384',
+        'ECDHE-RSA-AES256-GCM-SHA384',
+        'ECDHE-ECDSA-CHACHA20-POLY1305',
+        'ECDHE-RSA-CHACHA20-POLY1305',
+        'ECDHE-ECDSA-AES128-GCM-SHA256',
+        'ECDHE-RSA-AES128-GCM-SHA256',
+        'ECDHE-ECDSA-AES256-SHA384',
+        'ECDHE-RSA-AES256-SHA384',
+        'ECDHE-ECDSA-AES128-SHA256',
+        'ECDHE-RSA-AES128-SHA256',
+        '!aNULL',
+        '!eNULL',
+        '!EXPORT',
+        '!DES',
+        '!RC4',
+        '!3DES',
+        '!MD5',
+        '!PSK',
+        '!SRP',
+        '!CAMELLIA'
+    ].join(':'),
+    honorCipherOrder: true
+};
+    // Use helmet middleware to set security-related HTTP headers
+app.use(helmet());
+
+// Set the X-Frame-Options header to DENY
+app.use((req, res, next) => {
+    res.setHeader('X-Frame-Options', 'DENY');
+    next();
+});
+
+// Enable HSTS with Helmet
+app.use(helmet.hsts({
+    maxAge: 31536000, // 1 year in seconds
+    includeSubDomains: true, // Apply HSTS to all subdomains
+    preload: true // Add the preload flag for HSTS preload list
+}));
 // Use CORS middleware for all routes ( domain)
 app.use(cors());
 // Use express.json() middleware to parse JSON request bodies
