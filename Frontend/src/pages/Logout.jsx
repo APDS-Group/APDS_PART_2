@@ -19,28 +19,26 @@ function Logout({ setIsAuthenticated }) { // NOSONAR
 
   return (
     <>
- 
- {isEmployee ? <NavbarEmp /> : <Navbar />}
-    <div className="logout-container">
-      <button className="primary-button" onClick={() => setShowModal(true)}>
-        Logout
-      </button>
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Are you sure you want to logout?</h2>
-            <button className="primary-button" onClick={handleLogout}>
-              Yes
-            </button>
-            <button className="secondary-button" onClick={() => setShowModal(false)}>
-              No
-            </button>
+      {isEmployee ? <NavbarEmp /> : <Navbar />}
+      <div className="logout-container">
+        <h2>Are you sure you want to logout?</h2>
+        <button className="primary-button" onClick={() => setShowModal(true)}>
+          Logout
+        </button>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <button className="primary-button" onClick={handleLogout}>
+                Yes
+              </button>
+              <button className="secondary-button" onClick={() => setShowModal(false)}>
+                No
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
     </>
   );
 }
-
 export default Logout;
