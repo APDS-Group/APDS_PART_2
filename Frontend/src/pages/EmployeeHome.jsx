@@ -87,9 +87,10 @@ function EmployeeHome() {
     };
 
     return (
-        <div className="home-container">
-            <Navbar />
-            <div className="dashboard">
+        <>
+        <Navbar />
+        <div className="home-container-h">        
+            <div className="dashboard-h">
                 <div className="main-content">
                     <h1>Welcome, {user.name}</h1>
                     <h2>Pending Payments</h2>
@@ -107,6 +108,7 @@ function EmployeeHome() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

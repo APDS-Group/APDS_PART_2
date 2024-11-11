@@ -89,7 +89,9 @@ function Home() {
                 </div>
               ))}
             </div>
-            <button className="primary-button" onClick={() => handleButtonClick('/payment')}>Make a Payment</button>
+            <div className="button-container">
+              <button className="primary-button" onClick={() => handleButtonClick('/payment')}>Make a Payment</button>
+            </div>
           </div>
         </div>
       </div>
