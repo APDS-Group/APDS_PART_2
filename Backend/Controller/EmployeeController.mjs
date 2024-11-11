@@ -2,21 +2,21 @@
 import { connectToDatabase } from '../db/conn.mjs';
 
 // Import ExpressBrute for brute force protection
-import ExpressBrute from 'express-brute';
+//import ExpressBrute from 'express-brute';
 
 // Import the Employee model
 import { Employee } from '../Models/Employee.mjs';
 // Import jsonwebtoken for generating JWT tokens
-import jwt from 'jsonwebtoken';
+//import jwt from 'jsonwebtoken';
 
 // Establish a connection to the database
 const db = await connectToDatabase();
 
 // Create a memory store for ExpressBrute (not recommended for production)
-var store = new ExpressBrute.MemoryStore(); 
+//var store = new ExpressBrute.MemoryStore(); 
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
+//var bruteforce = new ExpressBrute(store); // eslint-disable-line no-unused-vars
 
 // Import the dotenv package to load environment variables from a .env file
 import dotenv from "dotenv";
@@ -52,9 +52,8 @@ const verification = async (req, res) => {
       return res.status(400).json({ message: "User already exists", success: false, errors });
     }
 
-
      // Create a new user instance with the provided name, email, and password
-    const newUser = new User({ firstname, lastname, username, email, password, accountNumber, idNumber });
+    const newUser = new Employee({ firstname, lastname, username, email, password, accountNumber, idNumber });
     newUser.password = await bcrypt.hash(req.body.password, 10);
 
     console.log("Inserting new user into the database");

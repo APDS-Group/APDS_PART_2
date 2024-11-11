@@ -79,13 +79,7 @@ function TransactionVerification() {
       [field]: !prevTransaction[field], // Toggle the value
     }));
   };
-
-  const handleChange = (field, value) => {
-    setTransaction((prevTransaction) => ({
-      ...prevTransaction,
-      [field]: value,
-    }));
-  };
+ 
 
   const handleSubmit = async (e, status) => {
     e.preventDefault();
