@@ -4,6 +4,7 @@ import NavbarPublic from '../pages/Navbars/NavbarPublic';
 import { handleError, handleSucess } from '../utils';
 import '../styles/Transaction.css';
 
+
 function EmployeeLogin({ setIsAuthenticated }) {
   const navigate = useNavigate();
 
@@ -84,6 +85,9 @@ function EmployeeLogin({ setIsAuthenticated }) {
       handleError(error.message);
     }
   };
+  const handleUserLogin = () => {
+    navigate('/login');
+};
 
   return (
     <>
@@ -115,10 +119,8 @@ function EmployeeLogin({ setIsAuthenticated }) {
             />
             {errors.password && <div className="error">{errors.password}</div>}
           </div>
-          <button type="submit">Login</button>
-          <div className="center-text">
-            <span>Not an employee? <a href="/login">User Login</a></span>
-          </div>
+          <button type="submit" className="empLogin-btn">Login</button>
+         <button type="submit" className="button-bordered" onClick={handleUserLogin}>User Login</button>         
         </form>
       </div>
     </div>
