@@ -11,7 +11,7 @@ const limiter = rateLimit({
 });
 const loginRateLimiter = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 4, // Limit each IP to 4 login attempts per `window` (here, per 5 minutes)
+    max: 3, // Limit each IP to 4 login attempts per `window` (here, per 5 minutes)
     message: {
       message: "Too many login attempts from this IP, please try again after 5 minutes",
       success: false

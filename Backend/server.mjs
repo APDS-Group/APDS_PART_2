@@ -14,12 +14,24 @@ import employees from './routes/employee.mjs';
 import users from './routes/user.mjs';
 import home from './routes/home.mjs';
 import payment from './routes/payment.mjs';
+import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs'; // NOSONAR
 
-// Import the IP blacklisting and rate limiting middleware
-import { ipFilter, handleIpFilterErrors } from './Middlewares/IPBlacklisting.mjs';
-import { limiter, loginRateLimiter } from './Middlewares/RateLimiting.mjs';
+// Define the port number from the environment variable or use 5050 as the default
+const PORT = process.env.PORT || 5050;
 
-const PORT = 5050; 
+// Define the path to the SSL certificate file from the environment variable
+const SSL_CRT_FILE = process.env.SSL_CRT_FILE;
+
+// Define the path to the SSL key file from the environment variable
+const SSL_KEY_FILE = process.env.SSL_KEY_FILE;
+
+// Check if the SSL certificate and key files are specified
+if (!SSL_CRT_FILE || !SSL_KEY_FILE) {
+    // Log an error message if either the certificate or key file is not specified
+    console.error('SSL certificate or key file not specified.');
+    // Exit the process with a failure code
+    process.exit(1);
+}
 // Create an instance of an Express application
 const app = express();
 
@@ -86,13 +98,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Apply IP blacklisting middleware
 app.use(ipFilter);
 app.use(handleIpFilterErrors);
-
-// Apply rate limiting middleware globally
-app.use(limiter);
-
 // Use the imported routes
 app.use("/employee", employees);
 app.route("/employee", employees);

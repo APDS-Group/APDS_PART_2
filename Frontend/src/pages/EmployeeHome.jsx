@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbars/NavBarEmployee';
 import '../App.css'; // Import the CSS file
+//eslint-disable-next-line
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR
+//eslint-disable-next-line
+import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // NOSONAR
 import { Payment } from "./Payment";
 import { PaymentHolder } from "./PaymentHolder";
 import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR
-import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // NOSONAR
 import '../styles/EmployeeHome.css';
 
 function EmployeeHome() {
     const [user, setUser] = useState({});
-    const [stats, setStats] = useState([]);  // NOSONAR
-    const [pendingPayments, setPendingPayments] = useState([]);  // NOSONAR
+    //eslint-disable-next-line
+    const [stats, setStats] = useState([]); // NOSONAR
+    //eslint-disable-next-line
+    const [pendingPayments, setPendingPayments] = useState([]); // NOSONAR
     const [paymentItem, setPayments] = useState([]); // NOSONAR
     const navigate = useNavigate();
 
@@ -81,11 +85,14 @@ function EmployeeHome() {
         fetchPendingPayments();
     }, [navigate]);
 
-
+    const handleButtonClick = (path) => { // NOSONAR
+      navigate(path, { state: { from: '/home' } });
+    };
     return (
-        <div className="home-container">
-            <Navbar />
-            <div className="dashboard">
+        <>
+        <Navbar />
+        <div className="home-container-h">        
+            <div className="dashboard-h">
                 <div className="main-content">
                     <h1>Welcome, {user.name}</h1>
                     <h2>Pending Payments</h2>
@@ -103,6 +110,7 @@ function EmployeeHome() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

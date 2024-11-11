@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbars/NavBar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR
-import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // NOSONAR
+// eslint-disable-next-line
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR 
+// eslint-disable-next-line
+import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // NOSONAR eslint-disable-next-line
 import '../App.css'; // Import the CSS file
 
 function Home() {
