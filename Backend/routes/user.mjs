@@ -10,8 +10,6 @@ import { signupValidation, loginValidation } from '../Middlewares/AuthValidation
 // Import ExpressBrute for brute force protection
 import ExpressBrute from 'express-brute';
 
-// Import the login rate limiter
-import { loginRateLimiter } from '../Middlewares/RateLimiting.mjs';
 
 // Create a new router instance using express.Router()
 const router = express.Router();
@@ -20,8 +18,17 @@ const router = express.Router();
 var store = new ExpressBrute.MemoryStore();
 
 // Create a brute force instance with the store
-var bruteforce = new ExpressBrute(store);
-
+var bruteforce = new ExpressBrute(store, {
+    freeRetries: 3,
+    minWait: 5 * 60 * 1000, // 5 minutes
+    maxWait: 5 * 60 * 1000, // 1 hour
+    failCallback: function (req, res, next, nextValidRequestDate) {
+        res.status(429).json({
+            success: false,
+            message: 'Too many login attempts. Please try again later.'
+        });
+    }
+});
 // Define a POST route for the "/signup" path
 // The signupValidation middleware is used to validate the request data
 // If the validation passes, the signup controller function is called to handle the request
@@ -31,7 +38,7 @@ router.post("/signup", signupValidation, signup);
 // The bruteforce middleware is used to protect against brute force attacks
 // The loginValidation middleware is used to validate the request data
 // The loginRateLimiter middleware is used to limit login attempts
-router.post("/login", bruteforce.prevent, loginRateLimiter, loginValidation, login);
+router.post("/login", bruteforce.prevent,  loginValidation, login);
 
 // Define a GET route for the root path ("/")
 // This route sends a simple response indicating that it is the user route

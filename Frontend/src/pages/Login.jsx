@@ -39,63 +39,65 @@ function Login({ setIsAuthenticated }) { // NOSONAR
 
     // Validate usernameOrAccountNumber and password fields
     if (!usernameOrAccountNumber || !password) {
-      setErrors({
-        usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
-        password: !password ? 'Password is required' : ''
-      });
-      return handleError('Username or Account Number and password are required');
+        setErrors({
+            usernameOrAccountNumber: !usernameOrAccountNumber ? 'Username or Account Number is required' : '',
+            password: !password ? 'Password is required' : ''
+        });
+        return handleError('Username or Account Number and password are required');
     }
 
     try {
-      const url = "https://localhost:5050/user/login/";
-      // Disable SSL verification (for development purposes only)
-      //  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+        const url = "https://localhost:5050/user/login/";
 
-      // Send login request to the server
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginInfo),
-      });
+        // Send login request to the server
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginInfo),
+        });
 
-      const result = await response.json();
-      const { success, message, token, name, error } = result;
-
-      if (success) {
-        // Handle successful login
-       // localStorage.setItem('token', token);
-       // localStorage.setItem('loggedInUser', name);
-       // handleSucess(message);
-       // navigate('/home');
-       localStorage.setItem('token',token);
-       localStorage.setItem('userDetails', JSON.stringify({ name: name, email: result.email, joined: 'January 1, 2020' }));
-       setIsAuthenticated(true);
-       handleSucess(message);
-       navigate('/');
-
-      } else if (error) {
-        // Handle server-side validation errors
-        const details = error?.details[0]?.message || error;
-        handleError(details);
-      } else if (!success) {
-        // Handle specific error messages for non-existent user or invalid credentials
-        if (message === "User does not exist" || message === "Invalid credentials") {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            usernameOrAccountNumber: message === "" ? message : '',
-            password: message === "Invalid credentials" ? message : ''
-          }));
-        } else {
-          handleError(message);
+        if (response.status === 429) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                password: 'Too many requests timeout'
+            }));
+            return handleError('Too many requests, please try again in 5 minutes.');
         }
-      }
+
+        const result = await response.json();
+        const { success, message, token, name, error } = result;
+
+        if (success) {
+            // Handle successful login
+            localStorage.setItem('token', token);
+            localStorage.setItem('userDetails', JSON.stringify({ name: name, email: result.email, joined: 'January 1, 2020' }));
+            setIsAuthenticated(true);
+            handleSucess(message);
+            navigate('/');
+
+        } else if (error) {
+            // Handle server-side validation errors
+            const details = error?.details[0]?.message || error;
+            handleError(details);
+        } else if (!success) {
+            // Handle specific error messages for non-existent user or invalid credentials
+            if (message === "User does not exist" || message === "Invalid credentials") {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    usernameOrAccountNumber: message === "" ? message : '',
+                    password: message === "Invalid credentials" ? message : ''
+                }));
+            } else {
+                handleError(message);
+            }
+        }
     } catch (error) {
-      // Handle network or other errors
-      handleError(error.message);
+        // Handle network or other errors
+        handleError(error.message);
     }
-  };
+};
   return (
     <div className="auth-container">
       <div className="auth-card">
