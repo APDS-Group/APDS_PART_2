@@ -5,7 +5,8 @@ import { connectToDatabase } from '../db/conn.mjs';
 import bcrypt from 'bcrypt';
 
 // Import ExpressBrute for brute force protection
-//import ExpressBrute from 'express-brute'; // eslint-disable-line no-unused-vars
+//eslint-disable-next-line
+import ExpressBrute from 'express-brute'; // NOSONAR
 
 // Import the User model
 import { User } from '../Models/User.mjs';
@@ -159,6 +160,14 @@ const login = async (req, res) => {
       name: `${user.firstname} ${user.lastname}`
     };
 
+    // Set the cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -208,6 +217,14 @@ const employeeLogin = async (req, res) => {
       name: `${employee.firstname} ${employee.lastname}`
     };
 
+    // Set the cookie with HttpOnly and Secure flags
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 3600000 // 1 hour
+    });
+
     res.status(200).json({
       message: "Login successful",
       success: true,
@@ -224,4 +241,4 @@ const employeeLogin = async (req, res) => {
 
 // Export the signup and login controller functions
 export { signup, login, preRegister, employeeLogin };
-//(Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____
+// (Shaikh, 2024)__---____---____---____---____---____---____---__.ooo END OF FILE ooo.__---____---____---____

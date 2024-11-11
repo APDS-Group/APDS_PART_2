@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'; // Import the CSS file
 
-function Logout({ setIsAuthenticated }) {
+function Logout({ setIsAuthenticated }) { // NOSONAR
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 

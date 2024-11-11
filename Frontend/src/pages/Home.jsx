@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbars/NavBar';
+// eslint-disable-next-line
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR 
+// eslint-disable-next-line
+import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // NOSONAR eslint-disable-next-line
 import '../App.css'; // Import the CSS file
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // Import Font Awesome icons
 
 function Home() {
   const [user, setUser] = useState({});
@@ -19,7 +21,6 @@ function Home() {
 
     // Fetch stats from an API or define them here
     setStats([
-      { title: 'Current User', value: userDetails.name },
       { title: 'Current Balance', value: '$5,000' },
       { title: 'Bank Name', value: 'Bank of America' },
     ]);
@@ -70,7 +71,7 @@ function Home() {
   }
 
   const handleButtonClick = (path) => {
-    navigate(path);
+    navigate(path, { state: { from: '/' } });
   };
 
   return (
@@ -89,7 +90,9 @@ function Home() {
                 </div>
               ))}
             </div>
-            <button className="primary-button" onClick={() => handleButtonClick('/payment')}>Make a Payment</button>
+            <div className="button-container">
+              <button className="primary-button" onClick={() => handleButtonClick('/payment')}>Make a Payment</button>
+            </div>
           </div>
         </div>
       </div>

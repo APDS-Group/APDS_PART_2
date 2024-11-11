@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { handleError, handleSucess } from '../utils'; // Correct the import statement
+import { handleError, handleSucess } from '../utils';
 import { useNavigate } from 'react-router-dom';
-import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation.jsx'; // Adjust the import path as necessary
+import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation';
+import DOMPurify from 'dompurify';
 import '../styles/Transaction.css';
-import NavBar from './Navbars/NavBar.jsx';
+import NavBar from './Navbars/NavBar';
+
 function PaymentForm() {
     const navigate = useNavigate();
     const [paymentInfo, setPaymentInfo] = useState({
@@ -23,10 +25,15 @@ function PaymentForm() {
         currency: ''
     });
 
+    const sanitizeInput = (input) => {
+        return DOMPurify.sanitize(input);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const sanitizedValue = sanitizeInput(value);
         const newPaymentInfo = { ...paymentInfo };
-        newPaymentInfo[name] = value;
+        newPaymentInfo[name] = sanitizedValue;
         setPaymentInfo(newPaymentInfo);
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -34,68 +41,85 @@ function PaymentForm() {
         }));
     };
 
-    const handlePayment = async (e) => {
-        e.preventDefault();
+    const validateFields = () => {
         const { recipientName, bank, accountNumber, transferAmount, swiftCode, currency } = paymentInfo;
+        const newErrors = {
+            recipientName: !recipientName ? 'Recipient name is required' : '',
+            bank: !bank ? 'Bank is required' : '',
+            accountNumber: !accountNumber ? 'Account number is required' : '',
+            transferAmount: !transferAmount ? 'Transfer amount is required' : '',
+            swiftCode: !swiftCode ? 'SWIFT code is required' : '',
+            currency: !currency ? 'Currency is required' : ''
+        };
+        setErrors(newErrors);
+        return Object.values(newErrors).every(error => !error);
+    };
 
-        // Validate that all fields are filled
-        if (!recipientName || !bank || !accountNumber || !transferAmount || !swiftCode || !currency) {
-            setErrors({
-                recipientName: !recipientName ? 'Recipient name is required' : '',
-                bank: !bank ? 'Bank is required' : '',
-                accountNumber: !accountNumber ? 'Account number is required' : '',
-                transferAmount: !transferAmount ? 'Transfer amount is required' : '',
-                swiftCode: !swiftCode ? 'SWIFT code is required' : '',
-                currency: !currency ? 'Currency is required' : ''
-            });
-            return handleError('All fields are required');
-        }
-
-        // Validate the account number
-        const accountNumberError = checkAccountNumber(accountNumber);
+    const validateAccountNumber = () => {
+        const accountNumberError = checkAccountNumber(paymentInfo.accountNumber);
         if (accountNumberError) {
-            setErrors((prevErrors) => ({
+            setErrors(prevErrors => ({
                 ...prevErrors,
                 accountNumber: accountNumberError
             }));
-            return handleError(accountNumberError);
+            handleError(accountNumberError);
+            return false;
         }
+        return true;
+    };
 
-        // Validate the transfer amount
-        const transferAmountError = checkTransferAmount(transferAmount);
+    const validateTransferAmount = () => {
+        const transferAmountError = checkTransferAmount(paymentInfo.transferAmount);
         if (transferAmountError) {
-            setErrors((prevErrors) => ({
+            setErrors(prevErrors => ({
                 ...prevErrors,
                 transferAmount: transferAmountError
             }));
-            return handleError(transferAmountError);
+            handleError(transferAmountError);
+            return false;
         }
+        return true;
+    };
 
-        // Validate the SWIFT code
-        const swiftCodeError = checkSwiftCode(swiftCode);
+    const validateSwiftCode = () => {
+        const swiftCodeError = checkSwiftCode(paymentInfo.swiftCode);
         if (swiftCodeError) {
-            setErrors((prevErrors) => ({
+            setErrors(prevErrors => ({
                 ...prevErrors,
                 swiftCode: swiftCodeError
             }));
-            return handleError(swiftCodeError);
+            handleError(swiftCodeError);
+            return false;
+        }
+        return true;
+    };
+
+    const handlePayment = async (e) => {
+        e.preventDefault();
+
+        if (!validateFields()) {
+            return handleError('All fields are required');
+        }
+
+        if (!validateAccountNumber() || !validateTransferAmount() || !validateSwiftCode()) {
+            return;
         }
 
         try {
-            const token = localStorage.getItem('token'); // Get the token from local storage
+            const token = localStorage.getItem('token');
             const url = "https://localhost:5050/payment/process";
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Include the token in the request headers
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(paymentInfo),
             });
             const result = await response.json();
             const { success, message, errors } = result;
             if (success) {
-                handleSucess(message); // Use the correct function name
+                handleSucess(message);
                 navigate('/');
             } else {
                 if (errors) {
@@ -189,7 +213,6 @@ function PaymentForm() {
                         <div>
                             <label htmlFor='currency'>Currency</label>
                             <div className="input-group2">
-
                                 <select className="input-field"
                                     onChange={handleChange}
                                     name="currency"
@@ -210,8 +233,10 @@ function PaymentForm() {
                                 {errors.currency && <div className="error">{errors.currency}</div>}
                             </div>
                         </div>
-                        <button type="submit"className="button-accept2"> Pay Now</button>
-                        <button type="button" onClick={handleCancel}>Cancel</button>
+                        <div className="button-container">
+                        <button type="submit" className="button-accept2"> Pay Now</button>
+                        <button type="submit" className="button-reject" onClick={handleCancel}>Cancel</button>
+                        </div>
                     </form>
                 </div>
             </div>
