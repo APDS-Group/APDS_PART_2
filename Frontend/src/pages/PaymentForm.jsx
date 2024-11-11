@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { handleError, handleSucess } from '../utils'; // Correct the import statement
 import { useNavigate } from 'react-router-dom';
 import { checkSwiftCode, checkAccountNumber, checkTransferAmount } from '../utils/validation.jsx'; // Adjust the import path as necessary
-import '../styles/EmployeeHome.css';
+import '../styles/Transaction.css';
 import NavBar from './Navbars/NavBar.jsx';
 function PaymentForm() {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ function PaymentForm() {
         accountNumber: '',
         transferAmount: '',
         swiftCode: '',
-        currency: 'USD' 
+        currency: 'USD'
     });
     const [errors, setErrors] = useState({
         recipientName: '',
@@ -114,90 +114,107 @@ function PaymentForm() {
 
     return (
         <>
-        <NavBar/>
-        <div className='container'>
-            <h1>International Payment</h1>
-            <form onSubmit={handlePayment}>
-                <div>
-                    <label htmlFor='recipientName'>Recipient Name</label>
-                    <input
-                        onChange={handleChange}
-                        type="text"
-                        name="recipientName"
-                        placeholder="Enter recipient name"
-                        value={paymentInfo.recipientName}
-                    />
-                    {errors.recipientName && <div className="error">{errors.recipientName}</div>}
+            <NavBar />
+            <div className='page-header'>
+                <h1>International Payment</h1>
+            </div>
+            <div className='page'>
+                <div className='container-payment'>
+                    <form onSubmit={handlePayment} className="centered-form">
+                        <div>
+                            <label htmlFor='recipientName'>Recipient Name</label>
+                            <div className="input-group">
+                                <input className="input-field"
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="recipientName"
+                                    placeholder="Enter recipient name"
+                                    value={paymentInfo.recipientName}
+                                />
+                                {errors.recipientName && <div className="error">{errors.recipientName}</div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor='bank'>Bank</label>
+                            <div className="input-group">
+                                <input className="input-field"
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="bank"
+                                    placeholder="Enter bank name"
+                                    value={paymentInfo.bank}
+                                />
+                                {errors.bank && <div className="error">{errors.bank}</div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor='accountNumber'>Account Number</label>
+                            <div className="input-group">
+                                <input className="input-field"
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="accountNumber"
+                                    placeholder="Enter account number"
+                                    value={paymentInfo.accountNumber}
+                                />
+                                {errors.accountNumber && <div className="error">{errors.accountNumber}</div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor='transferAmount'>Transfer Amount</label>
+                            <div className="input-group">
+                                <input className="input-field"
+                                    onChange={handleChange}
+                                    type="number"
+                                    name="transferAmount"
+                                    placeholder="Enter transfer amount"
+                                    value={paymentInfo.transferAmount}
+                                />
+                                {errors.transferAmount && <div className="error">{errors.transferAmount}</div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor='swiftCode'>SWIFT Code</label>
+                            <div className="input-group">
+                                <input className="input-field"
+                                    onChange={handleChange}
+                                    type="text"
+                                    name="swiftCode"
+                                    placeholder="Enter SWIFT code"
+                                    value={paymentInfo.swiftCode}
+                                />
+                                {errors.swiftCode && <div className="error">{errors.swiftCode}</div>}
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor='currency'>Currency</label>
+                            <div className="input-group">
+
+                                <select className="input-field"
+                                    onChange={handleChange}
+                                    name="currency"
+                                    value={paymentInfo.currency}
+                                >
+                                    <option value="USD">USD</option>
+                                    <option value="ZAR">ZAR</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="JPY">JPY</option>
+                                    <option value="AUD">AUD</option>
+                                    <option value="CAD">CAD</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="CNY">CNY</option>
+                                    <option value="SEK">SEK</option>
+                                    <option value="NZD">NZD</option>
+                                </select>
+                                {errors.currency && <div className="error">{errors.currency}</div>}
+                            </div>
+                        </div>
+                        <button type="submit"className="button-accept2"> Pay Now</button>
+                        <button type="button" onClick={handleCancel}>Cancel</button>
+                    </form>
                 </div>
-                <div>
-                    <label htmlFor='bank'>Bank</label>
-                    <input
-                        onChange={handleChange}
-                        type="text"
-                        name="bank"
-                        placeholder="Enter bank name"
-                        value={paymentInfo.bank}
-                    />
-                    {errors.bank && <div className="error">{errors.bank}</div>}
-                </div>
-                <div>
-                    <label htmlFor='accountNumber'>Account Number</label>
-                    <input
-                        onChange={handleChange}
-                        type="text"
-                        name="accountNumber"
-                        placeholder="Enter account number"
-                        value={paymentInfo.accountNumber}
-                    />
-                    {errors.accountNumber && <div className="error">{errors.accountNumber}</div>}
-                </div>
-                <div>
-                    <label htmlFor='transferAmount'>Transfer Amount</label>
-                    <input
-                        onChange={handleChange}
-                        type="number"
-                        name="transferAmount"
-                        placeholder="Enter transfer amount"
-                        value={paymentInfo.transferAmount}
-                    />
-                    {errors.transferAmount && <div className="error">{errors.transferAmount}</div>}
-                </div>
-                <div>
-                    <label htmlFor='swiftCode'>SWIFT Code</label>
-                    <input
-                        onChange={handleChange}
-                        type="text"
-                        name="swiftCode"
-                        placeholder="Enter SWIFT code"
-                        value={paymentInfo.swiftCode}
-                    />
-                    {errors.swiftCode && <div className="error">{errors.swiftCode}</div>}
-                </div>
-                <div>
-                    <label htmlFor='currency'>Currency</label>
-                    <select
-                        onChange={handleChange}
-                        name="currency"
-                        value={paymentInfo.currency}
-                    >
-                        <option value="USD">USD</option>
-                        <option value="ZAR">ZAR</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="JPY">JPY</option>
-                        <option value="AUD">AUD</option>
-                        <option value="CAD">CAD</option>
-                        <option value="CHF">CHF</option>
-                        <option value="CNY">CNY</option>
-                        <option value="SEK">SEK</option>
-                        <option value="NZD">NZD</option>
-                    </select>
-                    {errors.currency && <div className="error">{errors.currency}</div>}
-                </div>
-                <button type="submit">Pay Now</button>
-                <button type="button" onClick={handleCancel}>Cancel</button>
-            </form>
-        </div>
+            </div>
         </>
     );
 }

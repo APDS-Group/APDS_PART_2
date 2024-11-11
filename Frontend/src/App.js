@@ -59,7 +59,7 @@ function App() {
           <Route path="/home" element={isAuthenticated ? <EmployeeHome /> : <Navigate to="/employee" />} />
           <Route path="/employee" element={<EmployeeLogin setIsAuthenticated={setIsAuthenticated}  />} />
           <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/payment" element={isAuthenticated ? <PaymentForm /> : <Navigate to="/login" />} />
+          <Route path="/payment" element={ <PaymentForm /> } />
         </Routes>
       </Router>
     </div>

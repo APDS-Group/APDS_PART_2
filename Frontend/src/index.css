@@ -1,8 +1,6 @@
 /* General Styles */
 body, html {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -161,9 +159,7 @@ body.dark .center-text {
   font-size: 35px;
   margin-bottom: 30px;
   margin-top: 20px;
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: Arial, sans-serif;
   text-align: center;
 }
 
@@ -175,14 +171,13 @@ body.dark .center-text {
 
 .container div input {
   display: flex;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Arial, sans-serif;
   margin-top: 5px;
   flex-direction: column;
 }
 
-.center-text {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
+.center-text { 
+  font-family: Arial, sans-serif; display: flex;
   font-weight: 600;
   font-size: 15px;
   justify-content: center;
