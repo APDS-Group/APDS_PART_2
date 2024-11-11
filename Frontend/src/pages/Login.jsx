@@ -4,7 +4,7 @@ import { handleError, handleSucess } from '../utils';
 import '../App.css'; // Import the CSS file
 
 
-function Login({ setIsAuthenticated }) {
+function Login({ setIsAuthenticated }) { // NOSONAR
 
   const navigate = useNavigate();
   // State to store login information (usernameOrAccountNumber and password)

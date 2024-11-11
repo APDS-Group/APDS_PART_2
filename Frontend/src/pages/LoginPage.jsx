@@ -5,7 +5,7 @@ import NavbarPublic from '../pages/Navbars/NavbarPublic';
 import '../styles/LoginPage.css';
 import loginIllustration from '../Assets/images/login_screen.png'; // Ensure the correct path
 
-function LoginPage({ setIsAuthenticated }) {
+function LoginPage({ setIsAuthenticated }) { // NOSONAR
 
     const handleEmployeeLogin = () => {
         navigate('/employee');

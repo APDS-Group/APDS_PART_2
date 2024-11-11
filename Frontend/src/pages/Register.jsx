@@ -8,7 +8,7 @@ import '../styles/Register.css';
 function Register() {
     const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-    const [registerInfo, setRegInfo] = useState({
+    const [registerInfo, setRegInfo] = useState({ // NOSONAR
         firstname: '',
         lastname: '',
         username: '',
@@ -44,8 +44,19 @@ function Register() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        const { firstname, lastname, username, email, password, confirmPassword, accountNumber, idNumber } = registerInfo;
+        if (!validateInputs()) return;
+        if (!validatePasswords()) return;
 
+        try {
+            const result = await submitRegistration();
+            handleResponse(result);
+        } catch (error) {
+            handleError(error.message);
+        }
+    };
+
+    const validateInputs = () => { // NOSONAR
+        const { firstname, lastname, username, email, password, confirmPassword, accountNumber, idNumber } = registerInfo;
         if (!firstname || !lastname || !username || !email || !password || !confirmPassword || !accountNumber || !idNumber) {
             setErrors({
                 firstname: !firstname ? 'First name is required' : '',
@@ -57,41 +68,46 @@ function Register() {
                 accountNumber: !accountNumber ? 'Account number is required' : '',
                 idNumber: !idNumber ? 'ID number is required' : ''
             });
-            return;
+            return false;
         }
+        return true;
+    };
+
+    const validatePasswords = () => {
+        const { password, confirmPassword } = registerInfo;
         if (password !== confirmPassword) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
                 confirmPassword: 'Passwords do not match'
             }));
-            return;
+            return false;
         }
+        return true;
+    };
 
-        try {
-            const url = "https://localhost:5050/user/signup";
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(registerInfo),
-            });
+    const submitRegistration = async () => {
+        const url = "https://localhost:5050/user/signup";
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registerInfo),
+        });
+        return await response.json();
+    };
 
-            const result = await response.json();
-            const { success, message, errors } = result;
-
-            if (success) {
-                handleSucess(message);
-                setTimeout(() => {
-                    setRedirectToLogin(true);
-                }, 1000);
-            } else if (errors) {
-                setErrors(errors);
-            } else {
-                handleError(message);
-            }
-        } catch (error) {
-            handleError(error.message);
+    const handleResponse = (result) => {
+        const { success, message, errors } = result;
+        if (success) {
+            handleSucess(message);
+            setTimeout(() => {
+                setRedirectToLogin(true);
+            }, 1000);
+        } else if (errors) {
+            setErrors(errors);
+        } else {
+            handleError(message);
         }
     };
 

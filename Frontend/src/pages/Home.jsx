@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbars/NavBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR
+import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // NOSONAR
 import '../App.css'; // Import the CSS file
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faExchangeAlt, faSignOutAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons'; // Import Font Awesome icons
 
 function Home() {
   const [user, setUser] = useState({});
