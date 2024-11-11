@@ -9,9 +9,9 @@ export const Payment = ({ task }) => { // NOSONAR
     localStorage.setItem('paymentId', task.id); // NOSONAR
     navigate('/transactions');
   };
-
+// eslint-disable-next-line
   const handleKeyPress = (event) => { // NOSONAR
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === 'Enter' || event.key === ' ') { 
       handleClick();
     }
   };

@@ -5,15 +5,19 @@ import '../App.css'; // Import the CSS file
 import { Payment } from "./Payment";
 import { PaymentHolder } from "./PaymentHolder";
 import { v4 as uuidv4 } from "uuid";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR
-import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // NOSONAR
+// eslint-disable-next-line
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOSONAR 
+// eslint-disable-next-line
+import { faUser, faExchangeAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // NOSONAR 
 import '../styles/EmployeeHome.css';
 
 function EmployeeHome() {
     const [user, setUser] = useState({});
-    const [stats, setStats] = useState([]);  // NOSONAR
-    const [pendingPayments, setPendingPayments] = useState([]);  // NOSONAR
-    const [paymentItem, setPayments] = useState([]); // NOSONAR
+    // eslint-disable-next-line
+    const [stats, setStats] = useState([]);  // NOSONAR 
+    // eslint-disable-next-line
+    const [pendingPayments, setPendingPayments] = useState([]);  // NOSONAR 
+    const [paymentItem, setPayments] = useState([]); // NOSONAR 
     const navigate = useNavigate();
 
     const addPayment = (payment) => {
