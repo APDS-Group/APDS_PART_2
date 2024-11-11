@@ -124,14 +124,21 @@ const preRegister = async (req, res) => {
 };
 
 // Define the login controller function
+// Define the login controller function
 const login = async (req, res) => {
   try {
     const { usernameOrAccountNumber, password } = req.body;
 
-    const user = await db.collection("users").findOne({
+    // Sanitize user inputs
+    const sanitizedUsernameOrAccountNumber = usernameOrAccountNumber.toString();
+    const sanitizedPassword = password.toString();
+
+    // Find the user in the database
+    const collection = db.collection("users");
+    const user = await collection.findOne({
       $or: [
-        { username: usernameOrAccountNumber },
-        { accountNumber: usernameOrAccountNumber }
+        { username: sanitizedUsernameOrAccountNumber },
+        { accountNumber: sanitizedUsernameOrAccountNumber }
       ]
     });
 
@@ -139,32 +146,33 @@ const login = async (req, res) => {
       return res.status(403).json({ message: "User does not exist", success: false });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Compare the provided password with the stored hashed password
+    const isMatch = await bcrypt.compare(sanitizedPassword, user.password);
     if (!isMatch) {
       return res.status(403).json({ message: "Invalid credentials", success: false });
     }
 
-    const token = jwt.sign({ email: user.email, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    // Generate a JWT token
+    const token = jwt.sign({ username: user.username, _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     // Set req.user
     req.user = {
       _id: user._id,
-      email: user.email,
+      username: user.username,
       name: `${user.firstname} ${user.lastname}`
     };
+
     res.status(200).json({
       message: "Login successful",
       success: true,
       token: token,
-      email: user.email,
-      name: `${user.firstname} ${user.lastname}`
+      id: user._id,
+      username: user.username,
+      name: `${user.firstname} ${user.lastname}`,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      success: false,
-      error: error.message
-    });
+    console.log("Error during login:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };
 
