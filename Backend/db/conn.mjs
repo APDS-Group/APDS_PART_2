@@ -19,7 +19,7 @@ const client = new MongoClient(connectionString, {
     tlsAllowInvalidCertificates: true, // Disable SSL validation (for testing only)
 });
 
-const db = null; // Declare a variable to hold the database reference
+const db = { value: null }; // Declare a constant object to hold the database reference
 
 // Function to connect to the database
 export async function connectToDatabase() {
@@ -30,14 +30,14 @@ export async function connectToDatabase() {
             // Log a success message if the connection is established
             console.log('MongoDB is CONNECTED!!! :)');
             // Get a reference to the "users" database
-            db = client.db("apds");
+            db.value = client.db("apds");
         } catch (e) {
             // Log any errors that occur during the connection attempt
             console.error('Error connecting to MongoDB:', e);
             throw e; // Rethrow the error to be handled by the caller
         }
     }
-    return db; // Return the database reference
+    return db.value; // Return the database reference
 }
 
 // Export the database reference for use in other parts of the application
