@@ -26,7 +26,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Define the signup controller function
-const verification = async (req, res) => {
+/*const verification = async (req, res) => {
   try {
     const { firstname, lastname, username, email, password, accountNumber, idNumber } = req.body;
 
@@ -55,6 +55,53 @@ const verification = async (req, res) => {
     }
 
      // Create a new user instance with the provided name, email, and password
+    const newUser = new Employee({ firstname, lastname, username, email, password, accountNumber, idNumber });
+    newUser.password = await bcrypt.hash(req.body.password, 10);
+
+    console.log("Inserting new user into the database");
+    let result = await collection.insertOne(newUser);
+
+    console.log("Registration successful for user:", email);
+    res.status(201).json({ 
+      message: "Registration successful", 
+      success: true,
+      userId: result.insertedId // Use the insertedId from the result
+    });
+  } catch (error) {
+    console.log("Error during registration:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false });
+  }
+};*/
+// Define the verification controller function
+const verification = async (req, res) => {
+  try {
+    const { firstname, lastname, username, email, password, accountNumber, idNumber } = req.body;
+
+    console.log("Received signup request with data:", { firstname, lastname, username, email, accountNumber, idNumber });
+
+    let collection = db.collection("users");
+
+    console.log("Checking if user already exists with email, username, or account number");
+    const user = await collection.findOne({
+      $or: [
+        { email: email.toString() },
+        { username: username.toString() },
+        { accountNumber: accountNumber.toString() },
+        { idNumber: idNumber.toString() }
+      ]
+    });
+
+    if (user) {
+      let errors = {};
+      if (user.email === email) errors.email = "Email already exists";
+      if (user.username === username) errors.username = "Username already exists";
+      if (user.accountNumber === accountNumber) errors.accountNumber = "Account number already exists";
+      if (user.idNumber === idNumber) errors.idNumber = "ID number already exists";
+      console.log(errors);
+      return res.status(400).json({ message: "User already exists", success: false, errors });
+    }
+
+    // Create a new user instance with the provided name, email, and password
     const newUser = new Employee({ firstname, lastname, username, email, password, accountNumber, idNumber });
     newUser.password = await bcrypt.hash(req.body.password, 10);
 
